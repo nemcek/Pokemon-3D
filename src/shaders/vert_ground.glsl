@@ -21,7 +21,7 @@ const float gradient = 1.5;
 
 void main() {
   // Copy the input to the fragment shader
-  fragTexCoord = vec2(TexCoord) * 80.0f;
+  fragTexCoord = vec2(TexCoord);
 
   vec4 worldPosition = ModelMatrix * vec4(Position, 1.0);
   vec4 positionRelativeToCamera = ViewMatrix * worldPosition;

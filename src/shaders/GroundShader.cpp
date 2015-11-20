@@ -5,7 +5,7 @@
 #include "src/shaders/GroundShader.hpp"
 
 
-GroundShader::GroundShader() : ShaderProgram("src/shaders/ground.vert", "src/shaders/ground.frag") {
+GroundShader::GroundShader() : ShaderProgram("src/shaders/vert_ground.glsl", "src/shaders/frag_ground.glsl") {
     getAllUniformLocations();
 }
 
@@ -21,6 +21,11 @@ void GroundShader::getAllUniformLocations() {
     this->lightPosition = getUniformLocation("lightPosition");
     this->lightColor = getUniformLocation("lightColor");
     this->skyColor = getUniformLocation("skyColor");
+    this->backgroundTexture = getUniformLocation("BackgroundTexture");
+    this->rTexture = getUniformLocation("RTexture");
+    this->gTexture = getUniformLocation("GTexture");
+    this->bTexture = getUniformLocation("BTexture");
+    this->blendMap = getUniformLocation("BlendMap");
 }
 
 void GroundShader::loadModelMatrix(glm::mat4 matrix) {
@@ -46,4 +51,12 @@ void GroundShader::loadLight(Light *light) {
 
 void GroundShader::loadSkyColor(glm::vec3 skyColor) {
     loadVector(this->skyColor, skyColor);
+}
+
+void GroundShader::connectTextureUnits() {
+    loadInt(this->backgroundTexture, 0);
+    loadInt(this->rTexture, 1);
+    loadInt(this->gTexture, 2);
+    loadInt(this->bTexture, 3);
+    loadInt(this->blendMap, 4);
 }

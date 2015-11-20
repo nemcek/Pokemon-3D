@@ -1,0 +1,44 @@
+#version 150
+// A texture is expected as program attribute
+uniform sampler2D BackgroundTexture;
+uniform sampler2D RTexture;
+uniform sampler2D GTexture;
+uniform sampler2D BTexture;
+uniform sampler2D BlendMap;
+
+uniform vec3 lightColor;
+uniform vec3 skyColor;
+
+// The vertex shader fill feed this input
+in vec2 fragTexCoord;
+in vec3 surfaceNormal;
+in vec3 toLightVector;
+in float visibility;
+
+// The final color
+out vec4 FragmentColor;
+
+void main() {
+
+  vec4 blendMapColor = texture(BlendMap, fragTexCoord);
+
+  float backTextureAmount = 1 - (blendMapColor.r + blendMapColor.g + blendMapColor.b);
+  vec2 tiledCoords = fragTexCoord * 80.0;
+  vec4 backgroundTextureColor = texture(BackgroundTexture, tiledCoords) * backTextureAmount;
+  vec4 rTextureColor = texture(RTexture, tiledCoords) * blendMapColor.r;
+  vec4 gTextureColor = texture(GTexture, tiledCoords) * blendMapColor.g;
+  vec4 bTextureColor = texture(BTexture, tiledCoords) * blendMapColor.b;
+
+  vec4 totalColor = backgroundTextureColor + rTextureColor + gTextureColor + bTextureColor;
+
+  vec3 unitNormal = normalize(surfaceNormal);
+  vec3 unitLight = normalize(toLightVector);
+
+  float dotProd = dot(unitNormal, unitLight);
+  float brightness = max(dotProd, 0.0);
+  vec3 diffuse = brightness * lightColor;
+
+  // Lookup the color in Texture on coordinates given by fragTexCoord
+  FragmentColor = vec4(diffuse, 1.0) * totalColor;
+  FragmentColor = mix(vec4(skyColor, 1.0), FragmentColor, visibility);
+}

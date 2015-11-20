@@ -20,7 +20,14 @@ private:
     GLint lightColor;
     GLint skyColor;
 
+
 public:
+    GLint backgroundTexture;
+    GLint rTexture;
+    GLint gTexture;
+    GLint bTexture;
+    GLint blendMap;
+
     GroundShader();
 
     void bindAttributes() override;
@@ -31,6 +38,7 @@ public:
     void loadViewMatrix(glm::mat4 view);
     void loadLight(Light *light);
     void loadSkyColor(glm::vec3 skyColor);
+    void connectTextureUnits();
 
 };
 #endif //POKEMON3D_GROUNDSHADER_H

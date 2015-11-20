@@ -7,33 +7,28 @@
 
 #include "src/objects/Mesh.h"
 #include "glm/ext.hpp"
+#include "MovableCharacter.hpp"
 #include <GLFW/glfw3.h>
 
 
-class MainCharacter: public Mesh {
+class MainCharacter: public MovableCharacter {
 
 private:
 
-    int *keys;
-
     float runSpeed = 20.0f;
     float turnSpeed = 160.0f;
-    float currentSpeed = 0.0f;
-    float currenTurnSpeed = 0.0f;
-    float* delta;
+    InputManager *inputManager;
 
-    void centerOnScreen();
+    void checkInputs();
 
 public:
 
-    MainCharacter(GLint, const std::string &, const std::string &, int *, glm::vec3 position, float rotX, float rotY, float rotZ, float scale, float * delta);
-    MainCharacter(GLint, const std::string &, const std::string &, int *, glm::vec3 position, float rotX, float rotY, float rotZ, float scale, float * delta,
-                    float reflectivity, float shineDamper);
+    MainCharacter(GLint, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY,
+                  float rotZ, float scale, float * delta, InputManager *inputManager);
+    MainCharacter(GLint, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY, float rotZ,
+                  float scale, float * delta, float reflectivity, float shineDamper, InputManager *inputManager);
     void animate() override;
     glm::vec3 getCenter();
-    void increasePosition(float dX, float dY, float dZ);
-    void increaseRotation(float rX, float rY, float rZ);
-
 };
 
 #endif //POKEMON3D_MAINCHARACTER_H

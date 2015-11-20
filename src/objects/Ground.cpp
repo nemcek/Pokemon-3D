@@ -6,11 +6,14 @@
 
 namespace nsGround {
 
-    Ground::Ground(GLint program_id, int gridX, int gridZ, const std::string &image_file) {
+    Ground::Ground(GLint program_id, int gridX, int gridZ, const std::string &image_file, TerrainTexturePack *texturePack,
+                    TerrainTexture *blendMap) {
         this->mesh = new Mesh(program_id, image_file);
 
         this->x = gridX * size;
         this->z = gridZ * size;
+        this->texturePack = texturePack;
+        this->blendMap = blendMap;
 
         this->generateGround();
     }

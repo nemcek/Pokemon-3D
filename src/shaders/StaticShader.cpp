@@ -4,7 +4,7 @@
 
 #include "StaticShader.hpp"
 
-StaticShader::StaticShader() : ShaderProgram("src/shaders/gl_pokemon.vert", "src/shaders/gl_pokemon.frag") {
+StaticShader::StaticShader() : ShaderProgram("src/shaders/vert_pokemon.glsl", "src/shaders/frag_pokemon.glsl") {
     getAllUniformLocations();
 }
 

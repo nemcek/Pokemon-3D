@@ -17,7 +17,7 @@ private:
     void prepareInstance(nsGround::Ground *ground);
     void render(Mesh *mesh, glm::mat4 projection, glm::mat4 view);
     void loadModelMatrix(nsGround::Ground *ground);
-
+    void bindTextures(nsGround::Ground *ground);
 
 public:
     GroundShader *shader;

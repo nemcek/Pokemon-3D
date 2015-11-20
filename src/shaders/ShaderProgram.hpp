@@ -32,6 +32,7 @@ namespace nsShaderProgram {
         void loadBoolean(GLint location, bool value);
         void loadMatrix(GLint location, glm::mat4 matrix);
         void loadTexture(GLint location, GLint texture_id);
+        void loadInt(GLint location, int value);
 
     public:
         GLint programId;

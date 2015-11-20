@@ -26,6 +26,8 @@
 #include "src/shaders/StaticShader.hpp"
 #include "src/engine/MasterRenderer.hpp"
 #include "src/wrappers/MeshWrapper.hpp"
+#include "src/managers/InputManager.hpp"
+#include "src/objects/OtherCharacter.hpp"
 
 int SCREEN_WIDTH = 1600;
 int SCREEN_HEIGHT = 900;
@@ -35,6 +37,7 @@ GLfloat fov = 45.0f;
 
 nsThirdPersonCamera::ThirdPersonCamera *personCam = NULL;//nsThirdPersonCamera::ThirdPersonCamera(NULL, NULL);
 std::list<Mesh> meshes;
+InputManager *inputManager = NULL;
 
 float lastFrameTime;
 float delta;
@@ -205,29 +208,24 @@ glm::vec3 toScreenCoord( double x, double y ) {
     return coord;
 }
 
-void OnKeyPress(GLFWwindow* window, int key, int , int action, int ) {
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, GL_TRUE);
-
-    if (key >= 0 && key < 1024) {
-        if (action == GLFW_PRESS)
-        keys[key] = true;
-    else if (action == GLFW_RELEASE)
-        keys[key] = false;
-    }
+void OnKeyPress(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    inputManager->onKeyPress(window, key, scancode, action, mods);
 }
 
 // Mouse move event handler
 void OnMouseMove(GLFWwindow* window, double xpos, double ypos) {
     personCam->cursorCallback(window, xpos, ypos);
+    inputManager->cursorCallback(window, xpos, ypos);
 }
 
 void OnMouseScroll(GLFWwindow* window, double xoffset, double yoffset) {
     personCam->wheelCallBack(window, xoffset, yoffset);
+    inputManager->wheelCallBack(window, xoffset, yoffset);
 }
 
 void OnMouseButtonClick(GLFWwindow* window, int button, int action, int mods) {
     personCam->mouseButtonCallback(window, button, action, mods);
+    inputManager->mouseButtonCallback(window, button, action, mods);
 }
 
 float getCurrentTime() {
@@ -236,7 +234,7 @@ float getCurrentTime() {
 
 void createLoadingScreen(const std::string &file_name, GLFWwindow *window) {
 
-    auto program_id = ShaderProgram("src/shaders/texture.vert", "src/shaders/texture.frag");
+    auto program_id = ShaderProgram("src/shaders/vert_texture.glsl", "src/shaders/frag_texture.glsl");
     glUseProgram(program_id);
     InitializeGeometry(program_id);
 
@@ -267,6 +265,28 @@ void createLoadingScreen(const std::string &file_name, GLFWwindow *window) {
 
     glfwSwapBuffers(window);
     //glfwPollEvents();
+}
+
+GLint loadTexture(const std::string &file) {
+// Create new texture object
+    GLuint texture_id;
+    glGenTextures(1, &texture_id);
+    glBindTexture(GL_TEXTURE_2D, texture_id);
+
+// Set mipmaps
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+    FileLoader::TGAFILE_t tgafile;
+    FileLoader::LoadTGAFile(file.c_str(), &tgafile);
+
+    std::vector<char> buffer(tgafile.imageData,
+                             tgafile.imageData + tgafile.imageWidth * tgafile.imageHeight * (tgafile.bitCount / 8));
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tgafile.imageWidth, tgafile.imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE,
+                 buffer.data());
+
+    return texture_id;
 }
 
 int main() {
@@ -308,7 +328,8 @@ int main() {
         return EXIT_FAILURE;
     }
 
-    createLoadingScreen("models/textures/LoadingScreen.tga", window);
+    inputManager = new InputManager(SCREEN_WIDTH, SCREEN_HEIGHT);
+    //createLoadingScreen("models/textures/LoadingScreen.tga", window);
 
     // Load shaders
     StaticShader staticShader = StaticShader();
@@ -319,9 +340,9 @@ int main() {
             program_id,
             "models/objects/Trainer.obj",
             "models/textures/Trainer.tga",
-            keys,
             glm::vec3(0.0f),
-            0.0f, 180.0f, 0.0f, 0.1f, &delta, 0.2f, 50.0f
+            0.0f, 180.0f, 0.0f, 0.1f, &delta, 0.2f, 50.0f,
+            inputManager
     );
     meshes.push_back(*mainCharacter);
     personCam = new nsThirdPersonCamera::ThirdPersonCamera(mainCharacter, window);
@@ -335,12 +356,12 @@ int main() {
     );
     meshes.push_back(pokecenter);
 
-    Terrain squirle = Terrain(
+    OtherCharacter squirle = OtherCharacter(
             program_id,
             "models/objects/Squirtle.obj",
             "models/textures/Squirtle.tga",
             glm::vec3(-20.0f, 0.0f, -24.0f),
-            0.0f, 0.0f, 0.0f, 0.15f
+            0.0f, 0.0f, 0.0f, 0.15f, &delta
     );
     meshes.push_back(squirle);
 
@@ -365,16 +386,23 @@ int main() {
 //        );
 //    }
 
+    TerrainTexture *backgroundTexture = new TerrainTexture(loadTexture("models/textures/Ground_grass3.tga"));
+    TerrainTexture *rTexture = new TerrainTexture(loadTexture("models/textures/Ground.tga"));
+    TerrainTexture *gTexture = new TerrainTexture(loadTexture("models/textures/GrassFlowers.tga"));
+    TerrainTexture *bTexture = new TerrainTexture(loadTexture("models/textures/Path.tga"));
+    TerrainTexture *blendMap = new TerrainTexture(loadTexture("models/textures/BlendMap.tga"));
+
+    TerrainTexturePack *texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
     MeshWrapper *meshWrapper = new MeshWrapper(program_id, "models/objects/Tree2.obj", "models/textures/Tree2.tga", 250,
                                     glm::vec3(50.0f, 75.0f, 1.0f));
     MeshWrapper *meshWrapper2 = new MeshWrapper(program_id, "models/objects/Tree.obj", "models/textures/Tree.tga", 250,
                                     glm::vec3(4.0f, 2.0f, 100.f));
 
     std::vector<nsGround::Ground> grounds;
-    grounds.push_back(nsGround::Ground(program_id, 0, 0, "models/textures/Ground_grass3.tga"));
-    grounds.push_back(nsGround::Ground(program_id, 1, 0, "models/textures/Ground_grass3.tga"));
-    grounds.push_back(nsGround::Ground(program_id, 0, 1, "models/textures/Ground_grass3.tga"));
-    grounds.push_back(nsGround::Ground(program_id, 1, 1, "models/textures/Ground_grass3.tga"));
+    grounds.push_back(nsGround::Ground(program_id, 0, 0, "models/textures/Ground_grass3.tga", texturePack, blendMap));
+    grounds.push_back(nsGround::Ground(program_id, 1, 0, "models/textures/Ground_grass3.tga", texturePack, blendMap));
+    grounds.push_back(nsGround::Ground(program_id, 0, 1, "models/textures/Ground_grass3.tga", texturePack, blendMap));
+    grounds.push_back(nsGround::Ground(program_id, 1, 1, "models/textures/Ground_grass3.tga", texturePack, blendMap));
 
     // Add keyboard and mouse handlers
     glfwSetKeyCallback(window, OnKeyPress);
@@ -400,6 +428,7 @@ int main() {
 
         personCam->move();
         mainCharacter->animate();
+        squirle.animate();
 
         for (std::list<Mesh>::iterator it = meshes.begin(); it != meshes.end(); it++) {
             masterRenderer.processMesh(&(*it));

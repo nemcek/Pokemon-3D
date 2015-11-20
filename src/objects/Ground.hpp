@@ -6,6 +6,7 @@
 #define POKEMON3D_GROUND_H
 
 #include "src/objects/Mesh.h"
+#include "src/textures/TerrainTexturePack.hpp"
 
 namespace nsGround {
 
@@ -21,8 +22,11 @@ namespace nsGround {
         Mesh *mesh;
         float x;
         float z;
+        TerrainTexturePack *texturePack;
+        TerrainTexture *blendMap;
 
-        Ground(GLint program_id, int gridX, int gridZ, const std::string &image_file);
+        Ground(GLint program_id, int gridX, int gridZ, const std::string &image_file, TerrainTexturePack *texturePack,
+                    TerrainTexture *blendMap);
 
     };
 

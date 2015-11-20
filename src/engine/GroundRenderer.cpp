@@ -6,11 +6,13 @@
 
 GroundRenderer::GroundRenderer(GroundShader *shader) {
     this->shader = shader;
+    this->shader->connectTextureUnits();
 };
 
 void GroundRenderer::render(std::vector<nsGround::Ground> grounds, glm::mat4 projection, glm::mat4 view) {
     for ( std::vector<nsGround::Ground>::iterator it = grounds.begin(); it != grounds.end(); it++ ) {
         prepareGround(&(*it), projection, view);
+        bindTextures(&(*it));
 
         prepareInstance(&(*it));
 
@@ -38,7 +40,7 @@ void GroundRenderer::prepareGround(const nsGround::Ground *model, glm::mat4 proj
     shader->loadProjectionMatrix(projection);
     shader->loadViewMatrix(view);
 
-    shader->loadTextureUni(model->mesh->texturedModel->texture->textureId);
+    //shader->loadTextureUni(model->mesh->texturedModel->texture->textureId);
 }
 
 void GroundRenderer::unbindMesh() {
@@ -57,4 +59,28 @@ void GroundRenderer::loadModelMatrix(nsGround::Ground *ground) {
     ground->mesh->scale = 1.0f;
 
     shader->loadModelMatrix(ground->mesh->createTransformationMatrix());
+}
+
+void GroundRenderer::bindTextures(nsGround::Ground *ground) {
+    TerrainTexturePack *texturePack = ground->texturePack;
+
+    glUniform1i(shader->backgroundTexture, 0);
+    glActiveTexture(GL_TEXTURE0 + 0);
+    glBindTexture(GL_TEXTURE_2D, texturePack->backgroundTexture->textureId);
+
+    glUniform1i(shader->rTexture, 1);
+    glActiveTexture(GL_TEXTURE1 + 0);
+    glBindTexture(GL_TEXTURE_2D, texturePack->rTexture->textureId);
+
+    glUniform1i(shader->gTexture, 2);
+    glActiveTexture(GL_TEXTURE2 + 0);
+    glBindTexture(GL_TEXTURE_2D, texturePack->gTexture->textureId);
+
+    glUniform1i(shader->bTexture, 3);
+    glActiveTexture(GL_TEXTURE3 + 0);
+    glBindTexture(GL_TEXTURE_2D, texturePack->bTexture->textureId);
+
+    glUniform1i(shader->blendMap, 4);
+    glActiveTexture(GL_TEXTURE4 + 0);
+    glBindTexture(GL_TEXTURE_2D, ground->blendMap->textureId);
 }

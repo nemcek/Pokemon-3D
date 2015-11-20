@@ -23,7 +23,7 @@ void MeshWrapper::createMatrixes(int count, glm::vec3 scale) {
     for (int i = 0; i < count; i++) {
         glm::mat4 matrix = Transformations::createTransformationMatrix(
                 glm::vec3((float)(rand() % 1000 - 500), 0.0f, (float)(rand() % 1000 - 500)),
-                0.0f, 0.0f, 0.0f,
+                0.0f, (float)(rand() % 360), 0.0f,
                 (float)(rand() % (int)scale.x + scale.y) / (float)scale.z
         );
 
