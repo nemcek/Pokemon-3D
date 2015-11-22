@@ -5,22 +5,22 @@
 #include "src/objects/OtherCharacter.hpp"
 
 OtherCharacter::OtherCharacter(GLint program_id, const std::string & obj_file, const std::string &image_file, glm::vec3 position, float rotX,
-                               float rotY, float rotZ, float scale, float *delta)
-                : MovableCharacter(program_id, obj_file, image_file, position, rotX, rotY, rotZ, scale, delta) {
+                               float rotY, float rotZ, float scale)
+                : MovableCharacter(program_id, obj_file, image_file, position, rotX, rotY, rotZ, scale) {
 
 }
 
 OtherCharacter::OtherCharacter(GLint program_id, const std::string &obj_file, const std::string &image_file, glm::vec3 position, float rotX,
-                               float rotY, float rotZ, float scale, float *delta, float reflectivity,
+                               float rotY, float rotZ, float scale, float reflectivity,
                                float shineDamper)
-                : MovableCharacter(program_id, obj_file, image_file, position, rotX, rotY, rotZ, scale, delta, reflectivity,
+                : MovableCharacter(program_id, obj_file, image_file, position, rotX, rotY, rotZ, scale, reflectivity,
                                     shineDamper) {
 
 }
 
-void OtherCharacter::animate() {
+void OtherCharacter::animate(Scene *scene, float delta) {
     generateMovement();
-    move();
+    move(scene, delta);
     createTransformationMatrix();
 }
 

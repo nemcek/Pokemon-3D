@@ -25,7 +25,7 @@ public:
           nsThirdPersonCamera::ThirdPersonCamera *camera);
     void addObjectToScene(Mesh *mesh);
     void addGroundToScene(nsGround::Ground *ground);
-    void animate();
+    void animate(float delta);
     void render();
 
 };

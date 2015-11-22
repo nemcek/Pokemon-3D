@@ -19,11 +19,11 @@ private:
 public:
 
     OtherCharacter(GLint, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY,
-                    float rotZ, float scale, float * delta);
+                    float rotZ, float scale);
     OtherCharacter(GLint, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY,
-                    float rotZ, float scale, float * delta, float reflectivity, float shineDamper);
+                    float rotZ, float scale, float reflectivity, float shineDamper);
 
-    void animate() override;
+    void animate(Scene *scene, float delta) override;
 };
 
 #endif //POKEMON3D_OTHERCHARACTER_HPP

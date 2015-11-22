@@ -5,11 +5,7 @@
 #ifndef POKEMON3D_MAINCHARACTER_H
 #define POKEMON3D_MAINCHARACTER_H
 
-#include "src/objects/Mesh.h"
-#include "glm/ext.hpp"
 #include "MovableCharacter.hpp"
-#include <GLFW/glfw3.h>
-
 
 class MainCharacter: public MovableCharacter {
 
@@ -24,10 +20,10 @@ private:
 public:
 
     MainCharacter(GLint, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY,
-                  float rotZ, float scale, float * delta, InputManager *inputManager);
+                  float rotZ, float scale, InputManager *inputManager);
     MainCharacter(GLint, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY, float rotZ,
-                  float scale, float * delta, float reflectivity, float shineDamper, InputManager *inputManager);
-    void animate() override;
+                  float scale, float reflectivity, float shineDamper, InputManager *inputManager);
+    void animate(Scene *scene, float delta) override;
 };
 
 #endif //POKEMON3D_MAINCHARACTER_H

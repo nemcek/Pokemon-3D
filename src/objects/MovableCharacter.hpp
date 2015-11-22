@@ -6,27 +6,28 @@
 #define POKEMON3D_MOVABLECHARACTER_HPP
 
 #include "src/objects/Mesh.h"
-#include "src/managers/InputManager.hpp"
+
 class MovableCharacter : public Mesh {
 private:
 
-    float *delta;
+    bool collided();
+    bool collidedWith(Mesh *mesh);
 
 protected:
 
     float currentSpeed;
     float currentTurnSpeed;
 
-    void move();
+    void move(Scene *scene, float delta);
     void increasePosition(float dX, float dY, float dZ);
     void increaseRotation(float rX, float rY, float rZ);
 
 public:
 
     MovableCharacter(GLint, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY,
-                     float rotZ, float scale, float * delta);
+                     float rotZ, float scale);
     MovableCharacter(GLint, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY,
-                     float rotZ, float scale, float * delta, float reflectivity, float shineDamper);
+                     float rotZ, float scale, float reflectivity, float shineDamper);
 
 };
 

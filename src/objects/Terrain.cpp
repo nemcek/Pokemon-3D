@@ -17,6 +17,6 @@ Terrain::Terrain(GLint program_id, const std::string &object_name, const std::st
     createTransformationMatrix();
 }
 
-void Terrain::animate() {
+void Terrain::animate(Scene *scene, float delta) {
     return;
 }

@@ -346,7 +346,7 @@ int main() {
             "models/objects/Trainer.obj",
             "models/textures/Trainer.tga",
             glm::vec3(0.0f),
-            0.0f, 180.0f, 0.0f, 0.1f, &delta, 0.2f, 50.0f,
+            0.0f, 180.0f, 0.0f, 0.1f, 0.2f, 50.0f,
             inputManager
     );
     meshes.push_back(*mainCharacter);
@@ -367,7 +367,7 @@ int main() {
             "models/objects/Squirtle.obj",
             "models/textures/Squirtle.tga",
             glm::vec3(-20.0f, 0.0f, -24.0f),
-            0.0f, 0.0f, 0.0f, 0.15f, &delta
+            0.0f, 0.0f, 0.0f, 0.15f
     );
     meshes.push_back(squirle);
     movableCharacters.push_back(&squirle);
@@ -432,7 +432,7 @@ int main() {
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
 
-        scene->animate();
+        scene->animate(delta);
         scene->render();
 //        personCam->move();
 //        mainCharacter->animate();

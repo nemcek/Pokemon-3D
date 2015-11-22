@@ -5,25 +5,25 @@
 #include "src/objects/MainCharacter.h"
 
 MainCharacter::MainCharacter(GLint program_id, const std::string &object_name, const std::string &file_name,
-                             glm::vec3 position, float rotX, float rotY, float rotZ, float scale, float * delta,
+                             glm::vec3 position, float rotX, float rotY, float rotZ, float scale,
                              InputManager *inputManager)
-        : MovableCharacter(program_id, object_name, file_name, position, rotX, rotY, rotZ, scale, delta) {
+        : MovableCharacter(program_id, object_name, file_name, position, rotX, rotY, rotZ, scale) {
 
     this->inputManager;
 }
 
 MainCharacter::MainCharacter(GLint program_id, const std::string &object_name, const std::string &file_name,
-                             glm::vec3 position, float rotX, float rotY, float rotZ, float scale, float * delta,
+                             glm::vec3 position, float rotX, float rotY, float rotZ, float scale,
                              float reflectivity, float shineDamper, InputManager *inputManager)
-        : MovableCharacter(program_id, object_name, file_name, position, rotX, rotY, rotZ, scale, delta,
+        : MovableCharacter(program_id, object_name, file_name, position, rotX, rotY, rotZ, scale,
                            reflectivity, shineDamper) {
 
     this->inputManager = inputManager;
 }
 
-void MainCharacter::animate() {
+void MainCharacter::animate(Scene *scene, float delta) {
     checkInputs();
-    move();
+    move(scene, delta);
     createTransformationMatrix();
 }
 

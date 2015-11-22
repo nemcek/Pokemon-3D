@@ -9,13 +9,17 @@
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <GLFW/glfw3.h>
 
 #include "src/loaders/tiny_obj_loader.h"
 #include "src/loaders/FileLoader.h"
 #include "src/models/TexturedModel.hpp"
 #include "src/extensions/Transformations.hpp"
+#include "src/managers/InputManager.hpp"
+#include "glm/ext.hpp"
 
 class TexturedModel;
+class Scene;
 
 class Mesh {
 
@@ -43,7 +47,7 @@ public:
     Mesh(GLuint, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY, float rotZ, float scale);
     Mesh(GLuint, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY, float rotZ, float scale, float reflectivity, float shineDamper);
     virtual void render();
-    virtual void animate();
+    virtual void animate(Scene *scene, float delta);
     glm::vec3 getCenter();
     glm::mat4 createTransformationMatrix();
 

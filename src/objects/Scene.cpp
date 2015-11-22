@@ -20,9 +20,9 @@ void Scene::addGroundToScene(nsGround::Ground *ground) {
     this->grounds.push_back(ground);
 }
 
-void Scene::animate() {
+void Scene::animate(float delta) {
     for (auto objectLoop : this->objects) {
-        objectLoop->animate();
+        objectLoop->animate(this, delta);
     }
 
     camera->move();
