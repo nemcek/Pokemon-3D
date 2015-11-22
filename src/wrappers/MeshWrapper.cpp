@@ -4,15 +4,15 @@
 
 #include "src/wrappers/MeshWrapper.hpp"
 
-MeshWrapper::MeshWrapper(GLuint program_id, const std::string &obj_file, const std::string &image_file, int count, glm::vec3 scale) {
-    this->mesh = new Mesh(program_id, obj_file, image_file);
+MeshWrapper::MeshWrapper(GLuint program_id, Loader *loader, const std::string &obj_file, const std::string &image_file, int count, glm::vec3 scale) {
+    this->mesh = new Mesh(program_id, loader, obj_file, image_file);
 
     createMatrixes(count, scale);
 }
 
-MeshWrapper::MeshWrapper(GLuint program_id, const std::string &obj_file, const std::string &image_file, int count, glm::vec3 scale,
+MeshWrapper::MeshWrapper(GLuint program_id, Loader *loader, const std::string &obj_file, const std::string &image_file, int count, glm::vec3 scale,
                          float reflectivity, float shineDamper) {
-    this->mesh = new Mesh(program_id, obj_file, image_file);
+    this->mesh = new Mesh(program_id, loader, obj_file, image_file);
     this->mesh->texturedModel->texture->reflectivity = reflectivity;
     this->mesh->texturedModel->texture->shineDamper = shineDamper;
 

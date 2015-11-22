@@ -25,9 +25,9 @@ protected:
 
 public:
 
-    MovableCharacter(GLint, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY,
+    MovableCharacter(GLint, Loader *loader, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY,
                      float rotZ, float scale);
-    MovableCharacter(GLint, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY,
+    MovableCharacter(GLint, Loader *loader, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY,
                      float rotZ, float scale, float reflectivity, float shineDamper);
 
 };

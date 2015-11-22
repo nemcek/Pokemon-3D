@@ -18,8 +18,8 @@ public:
     Mesh *mesh;
     std::vector<glm::mat4> matrixes;
 
-    MeshWrapper(GLuint program_id, const std::string &obj_file, const std::string &image_file, int count, glm::vec3 scale);
-    MeshWrapper(GLuint program_id, const std::string &obj_file, const std::string &image_file, int count, glm::vec3 scale,
+    MeshWrapper(GLuint program_id, Loader *loader, const std::string &obj_file, const std::string &image_file, int count, glm::vec3 scale);
+    MeshWrapper(GLuint program_id, Loader *loader, const std::string &obj_file, const std::string &image_file, int count, glm::vec3 scale,
                 float reflectivity, float shineDamper);
 
 };

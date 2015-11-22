@@ -17,8 +17,8 @@
 #include "src/extensions/Transformations.hpp"
 #include "src/managers/InputManager.hpp"
 #include "glm/ext.hpp"
+#include "src/loaders/Loader.hpp"
 
-class TexturedModel;
 class Scene;
 
 typedef struct {
@@ -34,6 +34,7 @@ class Mesh {
 private:
     float calculateRadius();
     center_t calculateCenter();
+    Loader *loader;
 
 protected:
 
@@ -53,9 +54,9 @@ public:
     TexturedModel *texturedModel;
 
     Mesh(GLuint, const std::string &);
-    Mesh(GLuint, const std::string &, const std::string &);
-    Mesh(GLuint, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY, float rotZ, float scale);
-    Mesh(GLuint, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY, float rotZ, float scale, float reflectivity, float shineDamper);
+    Mesh(GLuint, Loader *loader, const std::string &, const std::string &);
+    Mesh(GLuint, Loader *loader, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY, float rotZ, float scale);
+    Mesh(GLuint, Loader *loader, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY, float rotZ, float scale, float reflectivity, float shineDamper);
     virtual void render();
     virtual void animate(Scene *scene, float delta);
     glm::vec3 getCenter();

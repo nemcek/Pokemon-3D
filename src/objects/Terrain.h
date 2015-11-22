@@ -13,9 +13,9 @@ class Terrain: public Mesh {
 private:
 
 public:
-    Terrain(GLint program_id, const std::string & object_name, const std::string & file_name, glm::vec3 position,
+    Terrain(GLint program_id, Loader *loader, const std::string & object_name, const std::string & file_name, glm::vec3 position,
                 float rotX, float rotY, float rotZ, float scale);
-    Terrain(GLint program_id, const std::string & object_name, const std::string & file_name, glm::vec3 position,
+    Terrain(GLint program_id, Loader *loader, const std::string & object_name, const std::string & file_name, glm::vec3 position,
             float rotX, float rotY, float rotZ, float scale, float reflectivity, float shineDamper);
 
     void animate(Scene *scene, float delta) override;

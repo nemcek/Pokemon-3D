@@ -16,8 +16,8 @@ void GroundRenderer::render(std::vector<nsGround::Ground> grounds, glm::mat4 pro
 
         prepareInstance(&(*it));
 
-        glBindVertexArray(it->mesh->texturedModel->vao);
-        glDrawElements(GL_TRIANGLES, it->mesh->texturedModel->mesh_indices_count, GL_UNSIGNED_INT, 0);
+        glBindVertexArray(it->mesh->texturedModel->rawModel->vao);
+        glDrawElements(GL_TRIANGLES, it->mesh->texturedModel->rawModel->mesh_indices_count, GL_UNSIGNED_INT, 0);
 
         unbindMesh();
     }
@@ -30,8 +30,8 @@ void GroundRenderer::render(Mesh *mesh, glm::mat4 projection, glm::mat4 view) {
     shader->loadTextureUni(mesh->texturedModel->texture->textureId);
     shader->loadModelMatrix(mesh->texturedModel->matrix);
 
-    glBindVertexArray(mesh->texturedModel->vao);
-    glDrawElements(GL_TRIANGLES, mesh->texturedModel->mesh_indices_count, GL_UNSIGNED_INT, 0);
+    glBindVertexArray(mesh->texturedModel->rawModel->vao);
+    glDrawElements(GL_TRIANGLES, mesh->texturedModel->rawModel->mesh_indices_count, GL_UNSIGNED_INT, 0);
     glBindVertexArray(NULL);
 
 }

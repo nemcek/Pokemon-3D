@@ -20,7 +20,7 @@ namespace nsMeshRenderer {
         loadTexturedModel(mesh->texturedModel, projection, view);
 
         loadVAO(mesh->texturedModel);
-        loadMatrixAndDraw(mesh->texturedModel->matrix, mesh->texturedModel->mesh_indices_count);
+        loadMatrixAndDraw(mesh->texturedModel->matrix, mesh->texturedModel->rawModel->mesh_indices_count);
 
         unbindMesh();
     }
@@ -36,7 +36,7 @@ namespace nsMeshRenderer {
         loadVAO(wrapper->mesh->texturedModel);
 
         for (std::vector<glm::mat4>::iterator it = wrapper->matrixes.begin(); it != wrapper->matrixes.end(); it++) {
-            loadMatrixAndDraw(*it, wrapper->mesh->texturedModel->mesh_indices_count);
+            loadMatrixAndDraw(*it, wrapper->mesh->texturedModel->rawModel->mesh_indices_count);
         }
 
         unbindMesh();
@@ -60,6 +60,6 @@ namespace nsMeshRenderer {
     }
 
     void MeshRenderer::loadVAO(TexturedModel *model) {
-        glBindVertexArray(model->vao);
+        glBindVertexArray(model->rawModel->vao);
     }
 }

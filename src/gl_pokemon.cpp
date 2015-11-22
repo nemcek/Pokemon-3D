@@ -339,10 +339,12 @@ int main() {
     // Load shaders
     StaticShader staticShader = StaticShader();
     GroundShader groundShader = GroundShader();
+    Loader *loader = new Loader(staticShader.programId);
     GLuint program_id = staticShader.programId;
 
     MainCharacter *mainCharacter = new MainCharacter(
             program_id,
+            loader,
             "models/objects/Trainer.obj",
             "models/textures/Trainer.tga",
             glm::vec3(0.0f),
@@ -355,6 +357,7 @@ int main() {
 
     Terrain pokecenter = Terrain(
             program_id,
+            loader,
             "models/objects/Pokecenter.obj",
             "models/textures/Pokecenter.tga",
             glm::vec3(30.0f, 0.0f, -50.0f),
@@ -364,6 +367,7 @@ int main() {
 
     OtherCharacter squirle = OtherCharacter(
             program_id,
+            loader,
             "models/objects/Squirtle.obj",
             "models/textures/Squirtle.tga",
             glm::vec3(-20.0f, 0.0f, -24.0f),
@@ -374,6 +378,7 @@ int main() {
 
     Terrain pikachu = Terrain(
             program_id,
+            loader,
             "models/objects/Pikachu.obj",
             "models/textures/Pikachu.tga",
             glm::vec3(5.0f, 0.0f, -100.0f),
@@ -389,9 +394,9 @@ int main() {
     TerrainTexture *blendMap = new TerrainTexture(loadTexture("models/textures/BlendMap2.tga"));
 
     TerrainTexturePack *texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
-    MeshWrapper *meshWrapper = new MeshWrapper(program_id, "models/objects/Tree2.obj", "models/textures/Tree2.tga", 300,
+    MeshWrapper *meshWrapper = new MeshWrapper(program_id, loader, "models/objects/Tree2.obj", "models/textures/Tree2.tga", 300,
                                     glm::vec3(50.0f, 75.0f, 1.0f));
-    MeshWrapper *meshWrapper2 = new MeshWrapper(program_id, "models/objects/Tree.obj", "models/textures/Tree.tga", 300,
+    MeshWrapper *meshWrapper2 = new MeshWrapper(program_id, loader, "models/objects/Tree.obj", "models/textures/Tree.tga", 300,
                                     glm::vec3(4.0f, 2.0f, 100.f));
 
     std::vector<nsGround::Ground> grounds;

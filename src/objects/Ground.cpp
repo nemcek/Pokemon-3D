@@ -63,12 +63,12 @@ namespace nsGround {
         glUseProgram(this->mesh->program_id);
 
         // Generate a vertex array object
-        glGenVertexArrays(1, &this->mesh->texturedModel->vao);
-        glBindVertexArray(this->mesh->texturedModel->vao);
+        glGenVertexArrays(1, &this->mesh->texturedModel->rawModel->vao);
+        glBindVertexArray(this->mesh->texturedModel->rawModel->vao);
 
         // Generate and upload a buffer with vertex positions to GPU
-        glGenBuffers(1, &this->mesh->texturedModel->vbo);
-        glBindBuffer(GL_ARRAY_BUFFER, this->mesh->texturedModel->vbo);
+        glGenBuffers(1, &this->mesh->texturedModel->rawModel->vbo);
+        glBindBuffer(GL_ARRAY_BUFFER, this->mesh->texturedModel->rawModel->vbo);
         glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), vertices.data(), GL_STATIC_DRAW);
 
         // Bind the buffer to "Position" attribute in program
@@ -77,8 +77,8 @@ namespace nsGround {
         glVertexAttribPointer(position_attrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
         // Generate and upload a buffer with texture coordinates to GPU
-        glGenBuffers(1, &this->mesh->texturedModel->tbo);
-        glBindBuffer(GL_ARRAY_BUFFER, this->mesh->texturedModel->tbo);
+        glGenBuffers(1, &this->mesh->texturedModel->rawModel->tbo);
+        glBindBuffer(GL_ARRAY_BUFFER, this->mesh->texturedModel->rawModel->tbo);
         glBufferData(GL_ARRAY_BUFFER, textureCoords.size() * sizeof(GLfloat), textureCoords.data(), GL_STATIC_DRAW);
 
         GLint texcoord_attrib = glGetAttribLocation(this->mesh->program_id, "TexCoord");
@@ -87,15 +87,15 @@ namespace nsGround {
 
         // --- Indices (define which triangles consists of which vertices) ---
         std::vector<GLuint> index_data;
-        this->mesh->texturedModel->mesh_indices_count = 6 * ((int)vertex_count - 1) * ((int)vertex_count - 1);
+        this->mesh->texturedModel->rawModel->mesh_indices_count = 6 * ((int)vertex_count - 1) * ((int)vertex_count - 1);
 
         // Generate and upload a buffer with indices to GPU
-        glGenBuffers(1, &this->mesh->texturedModel->ibo);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->mesh->texturedModel->ibo);
+        glGenBuffers(1, &this->mesh->texturedModel->rawModel->ibo);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->mesh->texturedModel->rawModel->ibo);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
 
-        glGenBuffers(1, &this->mesh->texturedModel->nbo);
-        glBindBuffer(GL_ARRAY_BUFFER, this->mesh->texturedModel->nbo);
+        glGenBuffers(1, &this->mesh->texturedModel->rawModel->nbo);
+        glBindBuffer(GL_ARRAY_BUFFER, this->mesh->texturedModel->rawModel->nbo);
         glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(GLfloat), normals.data(), GL_STATIC_DRAW );
 
         GLint normal_attrib = glGetAttribLocation(this->mesh->program_id, "Normal");
