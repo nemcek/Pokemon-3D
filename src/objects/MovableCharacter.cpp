@@ -44,8 +44,6 @@ void MovableCharacter::move(Scene *scene, float delta) {
     increasePosition(dx, 0.0f, dz);
 
     if (collided(scene)) {
-        std::cout <<"collided!" << std::endl;
-
         this->position = prevPos;
         this->rotX = prevRot.x;
         this->rotY = prevRot.y;
@@ -63,6 +61,16 @@ bool MovableCharacter::collided(Scene *scene) {
         if (collidedWith(objectLoop))
             return true;
     }
+
+    for (auto wrapperLoop : scene->wrappers) {
+        for (auto matrixLoop : wrapperLoop->matrixes) {
+            if (collidedWith(matrixLoop, wrapperLoop->mesh->radius)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 bool MovableCharacter::collidedWith(Mesh *mesh) {
@@ -70,4 +78,15 @@ bool MovableCharacter::collidedWith(Mesh *mesh) {
     if (glm::distance(this->position, mesh->position) < this->radius + mesh->radius) {
         return true;
     }
+
+    return false;
+}
+
+bool MovableCharacter::collidedWith(glm::mat4 matrix, float radius) {
+
+    if (glm::distance(this->position, Transformations::getPosition(matrix)) < this->radius + (radius * Transformations::getScaleFactor(matrix))) {
+        return true;
+    }
+
+    return false;
 }

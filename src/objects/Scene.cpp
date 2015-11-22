@@ -40,3 +40,8 @@ void Scene::render() {
 
     masterRenderer->render(this->projection, this->camera->getViewMatrix(), this->light);
 }
+
+void Scene::processWrapper(MeshWrapper *wrapper) {
+    this->wrappers.push_back(wrapper);
+    this->masterRenderer->processWrapper(wrapper);
+}

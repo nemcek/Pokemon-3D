@@ -12,6 +12,7 @@ private:
 
     bool collided(Scene *scene);
     bool collidedWith(Mesh *mesh);
+    bool collidedWith(glm::mat4 matrix, float radius);
 
 protected:
 

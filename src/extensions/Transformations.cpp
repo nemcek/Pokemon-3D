@@ -17,3 +17,11 @@ glm::mat4 Transformations::createTransformationMatrix(glm::vec3 position, float 
 
     return matrix;
 }
+
+float Transformations::getScaleFactor(glm::mat4 matrix) {
+    return glm::sqrt(matrix[0].x * matrix[0].x + matrix[1].x * matrix[1].x + matrix[2].x * matrix[2].x);
+}
+
+glm::vec3 Transformations::getPosition(glm::mat4 matrix) {
+    return glm::vec3(matrix[3].x, matrix[3].y, matrix[3].z);
+}

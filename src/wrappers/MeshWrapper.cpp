@@ -21,10 +21,11 @@ MeshWrapper::MeshWrapper(GLuint program_id, const std::string &obj_file, const s
 
 void MeshWrapper::createMatrixes(int count, glm::vec3 scale) {
     for (int i = 0; i < count; i++) {
+        float scaling = (float)(rand() % (int)scale.x + scale.y) / (float)scale.z;
         glm::mat4 matrix = Transformations::createTransformationMatrix(
                 glm::vec3((float)(rand() % 1000 - 500), 0.0f, (float)(rand() % 1000 - 500)),
                 0.0f, (float)(rand() % 360), 0.0f,
-                (float)(rand() % (int)scale.x + scale.y) / (float)scale.z
+                scaling
         );
 
         this->matrixes.push_back(matrix);

@@ -355,10 +355,10 @@ int main() {
 
     Terrain pokecenter = Terrain(
             program_id,
-            "models/objects/Pokecenter1.obj",
+            "models/objects/Pokecenter.obj",
             "models/textures/Pokecenter.tga",
-            glm::vec3(30.0f, 3.5f, -50.0f),
-            0.0f, 180.0f, 0.0f, 10.0f, 1.0f, 50.0f
+            glm::vec3(30.0f, 0.0f, -50.0f),
+            0.0f, 180.0f, 0.0f, 20.0f, 1.0f, 50.0f
     );
     meshes.push_back(pokecenter);
 
@@ -415,10 +415,11 @@ int main() {
     GroundRenderer *groundRenderer = new GroundRenderer(&groundShader);
     nsMaterRenderer::MasterRenderer masterRenderer = nsMaterRenderer::MasterRenderer(renderer, groundRenderer);
 
-    masterRenderer.processWrapper(meshWrapper);
-    masterRenderer.processWrapper(meshWrapper2);
-
     Scene *scene = new Scene(&masterRenderer, light, projection, personCam);
+
+    scene->processWrapper(meshWrapper);
+    scene->processWrapper(meshWrapper2);
+
 
     scene->addObjectToScene(mainCharacter);
     scene->addObjectToScene(&pokecenter);
