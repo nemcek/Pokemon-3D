@@ -13,7 +13,6 @@
 class Scene {
 
 private:
-    std::vector<Mesh *> objects;
     std::vector<nsGround::Ground *> grounds;
     nsMaterRenderer::MasterRenderer *masterRenderer;
     Light *light;
@@ -21,6 +20,8 @@ private:
     nsThirdPersonCamera::ThirdPersonCamera *camera;
 
 public:
+    std::vector<Mesh *> objects;
+
     Scene(nsMaterRenderer::MasterRenderer *masterRenderer, Light *light, glm::mat4 projection,
           nsThirdPersonCamera::ThirdPersonCamera *camera);
     void addObjectToScene(Mesh *mesh);

@@ -355,9 +355,9 @@ int main() {
 
     Terrain pokecenter = Terrain(
             program_id,
-            "models/objects/Pokecenter.obj",
+            "models/objects/Pokecenter1.obj",
             "models/textures/Pokecenter.tga",
-            glm::vec3(30.0f, 1.2f, -50.0f),
+            glm::vec3(30.0f, 3.5f, -50.0f),
             0.0f, 180.0f, 0.0f, 10.0f, 1.0f, 50.0f
     );
     meshes.push_back(pokecenter);

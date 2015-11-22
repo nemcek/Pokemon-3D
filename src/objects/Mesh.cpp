@@ -1,4 +1,5 @@
 #include <src/loaders/tiny_obj_loader.h>
+#include <loaders/tiny_obj_loader.h>
 #include "src/objects/Mesh.h"
 
 Mesh::Mesh(GLuint program_id, const std::string &image_file) {
@@ -11,6 +12,7 @@ Mesh::Mesh(GLuint program_id, const std::string &image_file) {
     this->rotY = 0.0f;
     this->rotZ = 0.0f;
     this->scale = 1.0f;
+    this->radius = calculateRadius();
 }
 
 Mesh::Mesh(GLuint program_id, const std::string &obj_file ,const std::string &image_file) {
@@ -24,6 +26,8 @@ Mesh::Mesh(GLuint program_id, const std::string &obj_file ,const std::string &im
     this->rotY = 0.0f;
     this->rotZ = 0.0f;
     this->scale = 1.0f;
+    this->radius = calculateRadius();
+
 }
 
 Mesh::Mesh(GLuint program_id, const std::string & obj_file, const std::string &image_file, glm::vec3 position, float rotX, float rotY, float rotZ,
@@ -39,6 +43,8 @@ Mesh::Mesh(GLuint program_id, const std::string & obj_file, const std::string &i
     this->rotY = rotY;
     this->rotZ = rotZ;
     this->scale = scale;
+    this->radius = calculateRadius();
+
 }
 
 Mesh::Mesh(GLuint program_id, const std::string & obj_file, const std::string &image_file, glm::vec3 position, float rotX, float rotY, float rotZ,
@@ -56,6 +62,8 @@ Mesh::Mesh(GLuint program_id, const std::string & obj_file, const std::string &i
     this->scale = scale;
     this->texturedModel->texture->reflectivity = reflectivity;
     this->texturedModel->texture->shineDamper = shineDamper;
+    this->radius = calculateRadius();
+
 }
 
 void Mesh::initGeometry(const std::string &obj_file) {
@@ -198,10 +206,10 @@ void Mesh::render() {
 //    glBindVertexArray(NULL);
 }
 
-glm::vec3 Mesh::calculateCenter() {
-    return glm::normalize( glm::vec3( ( this->center_point.X_min + this->center_point.X_max ) / 2.0f,
-                                      ( this->center_point.Y_min + this->center_point.Y_max ) / 2.0f,
-                                      ( this->center_point.Z_min + this->center_point.Z_max ) / 2.0f) );
+center_t Mesh::calculateCenter() {
+    return center_t {( this->center_point.X_min + this->center_point.X_max ) / 2.0f,
+                  ( this->center_point.Y_min + this->center_point.Y_max ) / 2.0f,
+                  ( this->center_point.Z_min + this->center_point.Z_max ) / 2.0f };
 }
 
 glm::mat4 Mesh::createTransformationMatrix() {
@@ -217,3 +225,13 @@ glm::vec3 Mesh::getCenter() {
 }
 
 void Mesh::animate(Scene *scene, float delta) { return; }
+
+float Mesh::calculateRadius() {
+    center_t c = calculateCenter();
+
+    if (this->center_point.X_max - c.x < this->center_point.Z_max - c.z) {
+        return (this->center_point.Z_max - c.z) * scale;
+    } else {
+        return (this->center_point.X_max - c.x) * scale;
+    }
+}

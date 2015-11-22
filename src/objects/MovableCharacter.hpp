@@ -10,7 +10,7 @@
 class MovableCharacter : public Mesh {
 private:
 
-    bool collided();
+    bool collided(Scene *scene);
     bool collidedWith(Mesh *mesh);
 
 protected:

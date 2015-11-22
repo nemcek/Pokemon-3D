@@ -21,15 +21,24 @@
 class TexturedModel;
 class Scene;
 
+typedef struct {
+    float x;
+    float y;
+    float z;
+} center_t;
+
 class Mesh {
 
 //    using namespace nsTexturedModel;
+
+private:
+    float calculateRadius();
+    center_t calculateCenter();
 
 protected:
 
     virtual void initGeometry(const std::string &);
     virtual void initTexture(const std::string &);
-    virtual glm::vec3 calculateCenter();
 
 public:
 
@@ -40,6 +49,7 @@ public:
     float rotX;
     float rotZ;
     float scale;
+    float radius;
     TexturedModel *texturedModel;
 
     Mesh(GLuint, const std::string &);
