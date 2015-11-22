@@ -104,7 +104,7 @@ namespace nsShaderProgram {
             glGetShaderiv(shader_id, GL_INFO_LOG_LENGTH, &info_length);
             std::string vertex_shader_log((unsigned int)info_length, ' ');
             glGetShaderInfoLog(shader_id, info_length, NULL, &vertex_shader_log[0]);
-            std::cout << vertex_shader_log << std::endl;
+//            std::cout << vertex_shader_log << std::endl;
         }
 
         return shader_id;
@@ -128,7 +128,7 @@ namespace nsShaderProgram {
             glGetProgramiv(program_id, GL_INFO_LOG_LENGTH, &info_length);
             std::string program_log((unsigned long)info_length, ' ');
             glGetProgramInfoLog(program_id, info_length, NULL, &program_log[0]);
-            std::cout << program_log << std::endl;
+   //         std::cout << program_log << std::endl;
         }
 
         glDeleteShader(vertex_shader_id);

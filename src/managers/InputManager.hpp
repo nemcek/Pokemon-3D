@@ -15,9 +15,10 @@ private:
     int *keys;
     glm::vec3 currentCursorPosition;
     glm::vec3 lastCursorPosition;
-    double wheelOffset;
     int windowWidth;
     int windowHeight;
+    double previousWheelOffset;
+    double currentWheerlOffset;
 
     glm::vec3 toScreenCoord(double x , double y);
 
@@ -28,10 +29,15 @@ public:
     bool isSPressed();
     bool isAPressed();
     bool isDPressed();
+    bool isRightMouseButtonPressed();
+    bool isLeftMouseButtonPressed();
     void mouseButtonCallback( GLFWwindow * window, int button, int action, int mods );
     void cursorCallback( GLFWwindow *, double x, double y );
     void wheelCallBack( GLFWwindow *, double, double yoffset );
     void onKeyPress( GLFWwindow *, int key, int scancode, int action, int mods);
+    float getDistanceY();
+    float getDistanceX();
+    double getDistanceZoom();
 };
 
 #endif //POKEMON3D_INPUTMANAGER_HPP

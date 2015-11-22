@@ -68,7 +68,7 @@ file(GLOB pokemon_shaders_programs "src/shaders/*.glsl")
 
 # Include header directories
 include_directories (
-        src
+        src/
         ${GLFW_INCLUDE_DIRS}
         ${GLEW_INCLUDE_DIRS}
         ${GLM_INCLUDE_DIRS}
@@ -97,7 +97,7 @@ add_library(libpokemon3d STATIC
         ${pokemon_extensions}
         ${pokemon_managers})
 
-target_link_libraries(libpokemon3d ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES})
+target_link_libraries(libpokemon3d ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} ${GLFW_LIBRARIES})
 
 
 #

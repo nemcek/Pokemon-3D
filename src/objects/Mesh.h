@@ -44,6 +44,7 @@ public:
     Mesh(GLuint, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY, float rotZ, float scale, float reflectivity, float shineDamper);
     virtual void render();
     virtual void animate();
+    glm::vec3 getCenter();
     glm::mat4 createTransformationMatrix();
 
 

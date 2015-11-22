@@ -6,6 +6,7 @@
 #define POKEMON3D_THIRDPERSONCAMERA_H
 
 #include "src/objects/MainCharacter.h"
+#include "src/managers/InputManager.hpp"
 
 namespace nsThirdPersonCamera {
 
@@ -18,13 +19,8 @@ namespace nsThirdPersonCamera {
         float yaw;
         float distance;
         float angle;
-        glm::vec3 prevPos;
-        glm::vec3 currPos;
-        bool leftButtonPressed;
-        bool rightButtonPressed;
-        int windowHeight;
-        int windowWidth;
-        MainCharacter *mainCharacter;
+        MovableCharacter *movableCharacter;
+        InputManager *inputManager;
 
         void calculateZoom();
         void calculatePitch();
@@ -32,17 +28,13 @@ namespace nsThirdPersonCamera {
         float calculateHorizontalDistance();
         float calculateVerticalDistance();
         void calculateCameraPosition(float horizntalDistance, float verticalDistance);
+        void initPosition();
 
     public:
-        ThirdPersonCamera(MainCharacter *mainCharacter, GLFWwindow * window);
-        glm::vec3 getPosition();
-        glm::vec3 getPitch();
-        void mouseButtonCallback( GLFWwindow * window, int button, int action, int mods );
-        void cursorCallback( GLFWwindow *, double x, double y );
-        void wheelCallBack( GLFWwindow *, double, double yoffset );
-        glm::vec3 toScreenCoord( double x, double y );
+        ThirdPersonCamera(MovableCharacter *movableCharacter, GLFWwindow * window, InputManager *inputManaget);
         void move();
         glm::mat4 getViewMatrix();
+        void setFollowTarget(MovableCharacter *movableCharacter);
 
     };
 

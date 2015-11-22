@@ -85,7 +85,7 @@ void Arcball::cursorCallback( GLFWwindow *, double x, double y ){
     /* Tracking the subsequent */
     currPos  = toScreenCoord( x, y );
     /* Calculate the angle in radians, and clamp it between 0 and 90 degrees */
-    angle    = acos( std::min(1.0f, glm::dot(prevPos, currPos) ));
+//    angle    = acos( std::min(1.0f, glm::dot(prevPos, currPos) ));
 
     /* Cross product to get the rotation axis, but it's still in camera coordinate */
     camAxis  = glm::cross( prevPos, currPos );

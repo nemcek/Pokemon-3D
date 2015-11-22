@@ -27,10 +27,6 @@ void MainCharacter::animate() {
     createTransformationMatrix();
 }
 
-glm::vec3 MainCharacter::getCenter() {
-    return glm::vec3(this->texturedModel->matrix[3].x, this->center.y, this->texturedModel->matrix[3].z);
-}
-
 void MainCharacter::checkInputs() {
     if (inputManager->isWPressed()) {
         currentSpeed = runSpeed;

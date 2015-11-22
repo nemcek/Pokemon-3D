@@ -5,10 +5,11 @@
 #include "src/managers/InputManager.hpp"
 
 InputManager::InputManager(int windowWidth, int windowHeight) {
-    this->keys = new int[1024];
+    this->keys = new int[1024]{0};
     this->windowWidth = windowWidth;
     this->windowHeight = windowHeight;
-    this->wheelOffset = 0.0;
+    this->previousWheelOffset = 0.0f;
+    this->currentWheerlOffset = 0.0f;
 }
 
 bool InputManager::isWPressed() {
@@ -28,7 +29,7 @@ bool InputManager::isDPressed() {
 }
 
 void InputManager::wheelCallBack(GLFWwindow *, double, double yoffset) {
-    this->wheelOffset -= yoffset;
+    this->currentWheerlOffset -= yoffset;
 }
 
 void InputManager::cursorCallback(GLFWwindow *, double x, double y) {
@@ -86,4 +87,27 @@ void InputManager::onKeyPress(GLFWwindow *window, int key, int , int action, int
         else if (action == GLFW_RELEASE)
             keys[key] = false;
     }
+}
+
+bool InputManager::isRightMouseButtonPressed() {
+    return this->keys[GLFW_MOUSE_BUTTON_RIGHT];
+}
+
+bool InputManager::isLeftMouseButtonPressed() {
+    return this->keys[GLFW_MOUSE_BUTTON_LEFT];
+}
+
+float InputManager::getDistanceX() {
+    return this->lastCursorPosition.x - this->currentCursorPosition.x;
+}
+
+float InputManager::getDistanceY() {
+    return this->lastCursorPosition.y - this->currentCursorPosition.y;
+}
+
+double InputManager::getDistanceZoom() {
+    double retVal = this->previousWheelOffset - currentWheerlOffset;
+    this->previousWheelOffset = currentWheerlOffset;
+
+    return retVal;
 }

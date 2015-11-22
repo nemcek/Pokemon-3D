@@ -212,4 +212,8 @@ glm::mat4 Mesh::createTransformationMatrix() {
     return this->texturedModel->matrix;
 }
 
+glm::vec3 Mesh::getCenter() {
+    return glm::vec3(this->texturedModel->matrix[3].x, this->center.y, this->texturedModel->matrix[3].z);
+}
+
 void Mesh::animate() { return; }

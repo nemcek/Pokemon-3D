@@ -28,7 +28,6 @@ public:
     MainCharacter(GLint, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY, float rotZ,
                   float scale, float * delta, float reflectivity, float shineDamper, InputManager *inputManager);
     void animate() override;
-    glm::vec3 getCenter();
 };
 
 #endif //POKEMON3D_MAINCHARACTER_H

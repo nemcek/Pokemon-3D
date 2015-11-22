@@ -28,6 +28,7 @@
 #include "src/wrappers/MeshWrapper.hpp"
 #include "src/managers/InputManager.hpp"
 #include "src/objects/OtherCharacter.hpp"
+#include "src/objects/Scene.hpp"
 
 int SCREEN_WIDTH = 1600;
 int SCREEN_HEIGHT = 900;
@@ -38,6 +39,9 @@ GLfloat fov = 45.0f;
 nsThirdPersonCamera::ThirdPersonCamera *personCam = NULL;//nsThirdPersonCamera::ThirdPersonCamera(NULL, NULL);
 std::list<Mesh> meshes;
 InputManager *inputManager = NULL;
+
+std::vector<MovableCharacter *> movableCharacters;
+int movableCharacterIndex = 0;
 
 float lastFrameTime;
 float delta;
@@ -210,21 +214,22 @@ glm::vec3 toScreenCoord( double x, double y ) {
 
 void OnKeyPress(GLFWwindow* window, int key, int scancode, int action, int mods) {
     inputManager->onKeyPress(window, key, scancode, action, mods);
+
+    if (key == GLFW_KEY_C && action == GLFW_PRESS) {
+        personCam->setFollowTarget(movableCharacters[++movableCharacterIndex % movableCharacters.size()]);
+    }
 }
 
 // Mouse move event handler
 void OnMouseMove(GLFWwindow* window, double xpos, double ypos) {
-    personCam->cursorCallback(window, xpos, ypos);
     inputManager->cursorCallback(window, xpos, ypos);
 }
 
 void OnMouseScroll(GLFWwindow* window, double xoffset, double yoffset) {
-    personCam->wheelCallBack(window, xoffset, yoffset);
     inputManager->wheelCallBack(window, xoffset, yoffset);
 }
 
 void OnMouseButtonClick(GLFWwindow* window, int button, int action, int mods) {
-    personCam->mouseButtonCallback(window, button, action, mods);
     inputManager->mouseButtonCallback(window, button, action, mods);
 }
 
@@ -329,7 +334,7 @@ int main() {
     }
 
     inputManager = new InputManager(SCREEN_WIDTH, SCREEN_HEIGHT);
-    //createLoadingScreen("models/textures/LoadingScreen.tga", window);
+    createLoadingScreen("models/textures/LoadingScreen.tga", window);
 
     // Load shaders
     StaticShader staticShader = StaticShader();
@@ -345,7 +350,8 @@ int main() {
             inputManager
     );
     meshes.push_back(*mainCharacter);
-    personCam = new nsThirdPersonCamera::ThirdPersonCamera(mainCharacter, window);
+    personCam = new nsThirdPersonCamera::ThirdPersonCamera(mainCharacter, window, inputManager);
+    movableCharacters.push_back(mainCharacter);
 
     Terrain pokecenter = Terrain(
             program_id,
@@ -364,6 +370,7 @@ int main() {
             0.0f, 0.0f, 0.0f, 0.15f, &delta
     );
     meshes.push_back(squirle);
+    movableCharacters.push_back(&squirle);
 
     Terrain pikachu = Terrain(
             program_id,
@@ -374,28 +381,17 @@ int main() {
     );
     meshes.push_back(pikachu);
 
-//    for (int i = 0; i < 500; i ++) {
-//        meshes.push_back(
-//                Terrain(
-//                        program_id,
-//                        "models/objects/Tree2.obj",
-//                        "models/textures/Tree2.tga",
-//                        glm::vec3((float)(rand() % 1000 - 500), 0.0f, (float)(rand() % 1000 - 500)),
-//                        0.0f, 0.0f, 0.0f, (float)(rand() % 3 + 1) / 100.0f
-//                )
-//        );
-//    }
 
     TerrainTexture *backgroundTexture = new TerrainTexture(loadTexture("models/textures/Ground_grass3.tga"));
     TerrainTexture *rTexture = new TerrainTexture(loadTexture("models/textures/Ground.tga"));
     TerrainTexture *gTexture = new TerrainTexture(loadTexture("models/textures/GrassFlowers.tga"));
     TerrainTexture *bTexture = new TerrainTexture(loadTexture("models/textures/Path.tga"));
-    TerrainTexture *blendMap = new TerrainTexture(loadTexture("models/textures/BlendMap.tga"));
+    TerrainTexture *blendMap = new TerrainTexture(loadTexture("models/textures/BlendMap2.tga"));
 
     TerrainTexturePack *texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
-    MeshWrapper *meshWrapper = new MeshWrapper(program_id, "models/objects/Tree2.obj", "models/textures/Tree2.tga", 250,
+    MeshWrapper *meshWrapper = new MeshWrapper(program_id, "models/objects/Tree2.obj", "models/textures/Tree2.tga", 300,
                                     glm::vec3(50.0f, 75.0f, 1.0f));
-    MeshWrapper *meshWrapper2 = new MeshWrapper(program_id, "models/objects/Tree.obj", "models/textures/Tree.tga", 250,
+    MeshWrapper *meshWrapper2 = new MeshWrapper(program_id, "models/objects/Tree.obj", "models/textures/Tree.tga", 300,
                                     glm::vec3(4.0f, 2.0f, 100.f));
 
     std::vector<nsGround::Ground> grounds;
@@ -412,7 +408,7 @@ int main() {
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL); // Hide mouse cursor
 
     lastFrameTime = getCurrentTime();
-    glm::mat4 projection = glm::perspective(fov, GLfloat(SCREEN_WIDTH) / GLfloat(SCREEN_HEIGHT), 0.1f, 500.0f);
+    glm::mat4 projection = glm::perspective(fov, GLfloat(SCREEN_WIDTH) / GLfloat(SCREEN_HEIGHT), 0.1f, 50000.0f);
 
     Light *light = new Light(glm::vec3(-50.0f, 150.0f, 10.0f), glm::vec3(1.0f));
     nsMeshRenderer::MeshRenderer *renderer = new nsMeshRenderer::MeshRenderer(&staticShader);
@@ -422,23 +418,35 @@ int main() {
     masterRenderer.processWrapper(meshWrapper);
     masterRenderer.processWrapper(meshWrapper2);
 
-    while (!glfwWindowShouldClose(window)) {
+    Scene *scene = new Scene(&masterRenderer, light, projection, personCam);
 
+    scene->addObjectToScene(mainCharacter);
+    scene->addObjectToScene(&pokecenter);
+    scene->addObjectToScene(&pikachu);
+    scene->addObjectToScene(&squirle);
+
+    for (std::vector<nsGround::Ground>::iterator it = grounds.begin(); it != grounds.end(); it++) {
+        scene->addGroundToScene(&(*it));
+    }
+
+    while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
 
-        personCam->move();
-        mainCharacter->animate();
-        squirle.animate();
-
-        for (std::list<Mesh>::iterator it = meshes.begin(); it != meshes.end(); it++) {
-            masterRenderer.processMesh(&(*it));
-        }
-
-        for (std::vector<nsGround::Ground>::iterator it = grounds.begin(); it != grounds.end(); it++) {
-            masterRenderer.processGround(&(*it));
-        }
-
-        masterRenderer.render(projection, personCam->getViewMatrix(), light);
+        scene->animate();
+        scene->render();
+//        personCam->move();
+//        mainCharacter->animate();
+//        squirle.animate();
+//
+//        for (std::list<Mesh>::iterator it = meshes.begin(); it != meshes.end(); it++) {
+//            masterRenderer.processMesh(&(*it));
+//        }
+//
+//        for (std::vector<nsGround::Ground>::iterator it = grounds.begin(); it != grounds.end(); it++) {
+//            masterRenderer.processGround(&(*it));
+//        }
+//
+//        masterRenderer.render(projection, personCam->getViewMatrix(), light);
 
         // Display result
         glfwSwapBuffers(window);
