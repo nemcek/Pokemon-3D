@@ -15,6 +15,7 @@ public:
     GLuint vao;
     GLuint nbo;
     int mesh_indices_count;
+    int mesh_vertex_count;
 
     RawModel();
 

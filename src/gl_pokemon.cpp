@@ -29,6 +29,7 @@
 #include "src/managers/InputManager.hpp"
 #include "src/objects/OtherCharacter.hpp"
 #include "src/objects/Scene.hpp"
+#include "src/gui/GuiRenderer.hpp"
 
 int SCREEN_WIDTH = 1600;
 int SCREEN_HEIGHT = 900;
@@ -355,15 +356,15 @@ int main() {
     personCam = new nsThirdPersonCamera::ThirdPersonCamera(mainCharacter, window, inputManager);
     movableCharacters.push_back(mainCharacter);
 
-    Terrain pokecenter = Terrain(
-            program_id,
-            loader,
-            "models/objects/Pokecenter.obj",
-            "models/textures/Pokecenter.tga",
-            glm::vec3(30.0f, 0.0f, -50.0f),
-            0.0f, 180.0f, 0.0f, 20.0f, 1.0f, 50.0f
-    );
-    meshes.push_back(pokecenter);
+//    Terrain pokecenter = Terrain(
+//            program_id,
+//            loader,
+//            "models/objects/Pokecenter.obj",
+//            "models/textures/Pokecenter.tga",
+//            glm::vec3(30.0f, 0.0f, -50.0f),
+//            0.0f, 180.0f, 0.0f, 20.0f, 1.0f, 50.0f
+//    );
+//    meshes.push_back(pokecenter);
 
     OtherCharacter squirle = OtherCharacter(
             program_id,
@@ -391,7 +392,7 @@ int main() {
     TerrainTexture *rTexture = new TerrainTexture(loadTexture("models/textures/Ground.tga"));
     TerrainTexture *gTexture = new TerrainTexture(loadTexture("models/textures/GrassFlowers.tga"));
     TerrainTexture *bTexture = new TerrainTexture(loadTexture("models/textures/Path.tga"));
-    TerrainTexture *blendMap = new TerrainTexture(loadTexture("models/textures/BlendMap2.tga"));
+    TerrainTexture *blendMap = new TerrainTexture(loadTexture("models/textures/BlendMap.tga"));
 
     TerrainTexturePack *texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
     MeshWrapper *meshWrapper = new MeshWrapper(program_id, loader, "models/objects/Tree2.obj", "models/textures/Tree2.tga", 300,
@@ -413,7 +414,7 @@ int main() {
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL); // Hide mouse cursor
 
     lastFrameTime = getCurrentTime();
-    glm::mat4 projection = glm::perspective(fov, GLfloat(SCREEN_WIDTH) / GLfloat(SCREEN_HEIGHT), 0.1f, 50000.0f);
+    glm::mat4 projection = glm::perspective(fov, GLfloat(SCREEN_WIDTH) / GLfloat(SCREEN_HEIGHT), 0.1f, 500.0f);
 
     Light *light = new Light(glm::vec3(-50.0f, 150.0f, 10.0f), glm::vec3(1.0f));
     nsMeshRenderer::MeshRenderer *renderer = new nsMeshRenderer::MeshRenderer(&staticShader);
@@ -427,7 +428,7 @@ int main() {
 
 
     scene->addObjectToScene(mainCharacter);
-    scene->addObjectToScene(&pokecenter);
+    //scene->addObjectToScene(&pokecenter);
     scene->addObjectToScene(&pikachu);
     scene->addObjectToScene(&squirle);
 
@@ -435,24 +436,26 @@ int main() {
         scene->addGroundToScene(&(*it));
     }
 
+    GuiShader *guiShader = new GuiShader();
+    Loader *guiLoader = new Loader(guiShader->programId);
+
+    std::vector<GuiTexture *> guis;
+    GuiTexture *guiTexture2 = new GuiTexture(guiLoader->loadTexture("models/textures/TreeT.tga"), glm::vec2(0.3f, 0.5f), glm::vec2(0.25f, 0.25f));
+
+    std::vector<GLfloat> vertex_buffer = {-1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f, -1.0f};
+    std::vector<GLfloat> texcoord_buffer = { 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f};
+    RawModel *guiRawModel = guiLoader->load(vertex_buffer, texcoord_buffer);
+
+    guis.push_back(guiTexture2);
+
+    GuiRenderer *guiRenderer = new GuiRenderer(guiRawModel, guiShader);
+
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
 
         scene->animate(delta);
         scene->render();
-//        personCam->move();
-//        mainCharacter->animate();
-//        squirle.animate();
-//
-//        for (std::list<Mesh>::iterator it = meshes.begin(); it != meshes.end(); it++) {
-//            masterRenderer.processMesh(&(*it));
-//        }
-//
-//        for (std::vector<nsGround::Ground>::iterator it = grounds.begin(); it != grounds.end(); it++) {
-//            masterRenderer.processGround(&(*it));
-//        }
-//
-//        masterRenderer.render(projection, personCam->getViewMatrix(), light);
+        guiRenderer->render(guis);
 
         // Display result
         glfwSwapBuffers(window);
@@ -464,6 +467,7 @@ int main() {
 
     // Clean up
     masterRenderer.clean();
+    guiRenderer->clean();
     glfwTerminate();
 
     return EXIT_SUCCESS;
