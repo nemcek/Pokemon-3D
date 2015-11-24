@@ -47,6 +47,8 @@ int movableCharacterIndex = 0;
 float lastFrameTime;
 float delta;
 
+GuiTexture *healthBarFill;
+
 void InitializeGeometry(GLuint program_id) {
     // Generate a vertex array object
     GLuint vao;
@@ -213,11 +215,33 @@ glm::vec3 toScreenCoord( double x, double y ) {
     return coord;
 }
 
+int health = 100;
+float oneHealthPortion = -1;
 void OnKeyPress(GLFWwindow* window, int key, int scancode, int action, int mods) {
     inputManager->onKeyPress(window, key, scancode, action, mods);
 
     if (key == GLFW_KEY_C && action == GLFW_PRESS) {
         personCam->setFollowTarget(movableCharacters[++movableCharacterIndex % movableCharacters.size()]);
+    }
+
+    if ((key == GLFW_KEY_T || key == GLFW_KEY_Y) && action == GLFW_PRESS) {
+        if (oneHealthPortion == -1) {
+            oneHealthPortion = healthBarFill->scale.x / health;
+        }
+
+        float damage = key == GLFW_KEY_T ? oneHealthPortion : oneHealthPortion * 2;
+
+        float xScale = healthBarFill->scale.x;
+        float xPos = healthBarFill->position.x;
+
+        // prevents from going to negative health
+        if (xScale <= 0 || xScale - damage <= 0) {
+            healthBarFill->scale = glm::vec2(0.0f, healthBarFill->scale.y);
+            return;
+        }
+
+        healthBarFill->scale = glm::vec2(xScale - damage, healthBarFill->scale.y);
+        healthBarFill->position = glm::vec2(xPos - damage, healthBarFill->position.y);
     }
 }
 
@@ -440,13 +464,15 @@ int main() {
     Loader *guiLoader = new Loader(guiShader->programId);
 
     std::vector<GuiTexture *> guis;
-    GuiTexture *guiTexture2 = new GuiTexture(guiLoader->loadTexture("models/textures/TreeT.tga"), glm::vec2(0.3f, 0.5f), glm::vec2(0.25f, 0.25f));
+    healthBarFill = new GuiTexture(guiLoader->loadTexture("models/textures/HealthbarFill.tga"), glm::vec2(0.65f, -0.75f), glm::vec2(0.25f, 0.025f));
+    GuiTexture *healthBar = new() GuiTexture(guiLoader->loadTexture("models/textures/Healthbar.tga"), glm::vec2(0.59f, -0.75f), glm::vec2(0.36f, 0.6));
 
     std::vector<GLfloat> vertex_buffer = {-1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f, -1.0f};
     std::vector<GLfloat> texcoord_buffer = { 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f};
     RawModel *guiRawModel = guiLoader->load(vertex_buffer, texcoord_buffer);
 
-    guis.push_back(guiTexture2);
+    guis.push_back(healthBarFill);
+    guis.push_back(healthBar);
 
     GuiRenderer *guiRenderer = new GuiRenderer(guiRawModel, guiShader);
 
