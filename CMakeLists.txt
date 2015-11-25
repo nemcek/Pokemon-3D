@@ -69,7 +69,7 @@ file(GLOB pokemon_shaders_programs "src/shaders/*.glsl")
 
 # Include header directories
 include_directories (
-        src/
+        src
         ${GLFW_INCLUDE_DIRS}
         ${GLEW_INCLUDE_DIRS}
         ${GLM_INCLUDE_DIRS}
@@ -98,7 +98,7 @@ add_library(libpokemon3d STATIC
         ${pokemon_managers}
         ${pokemon_gui})
 
-target_link_libraries(libpokemon3d ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} ${GLFW_LIBRARIES})
+target_link_libraries(libpokemon3d ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES})
 
 
 #
@@ -118,7 +118,7 @@ set ( POKEMON3D_SRC
         ${pokemon_wrappers}
         ${pokemon_extensions}
         ${pokemon_managers}
-        ${pokemon_gui} )
+        ${pokemon_gui})
 generate_shaders( POKEMON3D_SHADERS
         src/shaders/frag_ground.glsl
         src/shaders/vert_ground.glsl
@@ -148,6 +148,7 @@ install ( TARGETS Pokemon3D DESTINATION . )
 #
 
 install(DIRECTORY models DESTINATION .)
+install(FILES ${pokemon_shaders_programs} DESTINATION src/shaders)
 
 # Install dlls to destination when on Windows
 if ( MINGW )
