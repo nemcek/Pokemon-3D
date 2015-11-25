@@ -32,7 +32,7 @@ void GroundRenderer::render(Mesh *mesh, glm::mat4 projection, glm::mat4 view) {
 
     glBindVertexArray(mesh->texturedModel->rawModel->vao);
     glDrawElements(GL_TRIANGLES, mesh->texturedModel->rawModel->mesh_indices_count, GL_UNSIGNED_INT, 0);
-    glBindVertexArray(NULL);
+    glBindVertexArray(0);
 
 }
 
@@ -44,7 +44,7 @@ void GroundRenderer::prepareGround(const nsGround::Ground *model, glm::mat4 proj
 }
 
 void GroundRenderer::unbindMesh() {
-    glBindVertexArray(NULL);
+    glBindVertexArray(0);
 }
 
 void GroundRenderer::prepareInstance(nsGround::Ground *ground ) {
