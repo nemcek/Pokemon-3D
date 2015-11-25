@@ -71,7 +71,7 @@ void GuiRenderer::loadTexture(GuiTexture *guiTexture) {
 }
 
 void GuiRenderer::unbind() {
-    glBindVertexArray(NULL);
+    glBindVertexArray(0);
 }
 
 void GuiRenderer::clean() {

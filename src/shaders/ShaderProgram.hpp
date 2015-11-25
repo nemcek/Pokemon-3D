@@ -5,6 +5,7 @@
 #ifndef POKEMON3D_SHADERPROGRAM_H
 #define POKEMON3D_SHADERPROGRAM_H
 
+#include <vector>
 #include <iostream>
 #include <fstream>
 #include <GL/glew.h>

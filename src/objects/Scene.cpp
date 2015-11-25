@@ -4,10 +4,10 @@
 
 #include "src/objects/Scene.hpp"
 
-Scene::Scene(nsMaterRenderer::MasterRenderer *masterRenderer, Light *light,
+Scene::Scene(nsMaterRenderer::MasterRenderer *masterRenderer, std::vector<Light *> lights,
              glm::mat4 projection, nsThirdPersonCamera::ThirdPersonCamera *camera) {
     this->masterRenderer = masterRenderer;
-    this->light = light;
+    this->lights = lights;
     this->projection = projection;
     this->camera = camera;
 }
@@ -38,7 +38,7 @@ void Scene::render() {
         masterRenderer->processGround(groundLoop);
     }
 
-    masterRenderer->render(this->projection, this->camera->getViewMatrix(), this->light);
+    masterRenderer->render(this->projection, this->camera->getViewMatrix(), this->lights);
 }
 
 void Scene::processWrapper(MeshWrapper *wrapper) {

@@ -24,6 +24,8 @@ namespace nsGround {
         float z;
         TerrainTexturePack *texturePack;
         TerrainTexture *blendMap;
+        float reflectivity = 0.5f;
+        float shineDamper = 500.0f;
 
         Ground(GLint program_id, int gridX, int gridZ, const std::string &image_file, TerrainTexturePack *texturePack,
                     TerrainTexture *blendMap);

@@ -368,15 +368,15 @@ int main() {
     personCam = new nsThirdPersonCamera::ThirdPersonCamera(mainCharacter, window, inputManager);
     movableCharacters.push_back(mainCharacter);
 
-    Terrain pokecenter = Terrain(
-            program_id,
-            loader,
-            "models/objects/Pokecenter.obj",
-            "models/textures/Pokecenter.tga",
-            glm::vec3(30.0f, 0.0f, -50.0f),
-            0.0f, 180.0f, 0.0f, 20.0f, 1.0f, 50.0f
-    );
-    meshes.push_back(pokecenter);
+//    Terrain pokecenter = Terrain(
+//            program_id,
+//            loader,
+//            "models/objects/Pokecenter.obj",
+//            "models/textures/Pokecenter.tga",
+//            glm::vec3(30.0f, 0.0f, -50.0f),
+//            0.0f, 180.0f, 0.0f, 20.0f, 1.0f, 50.0f
+//    );
+//    meshes.push_back(pokecenter);
 
     OtherCharacter squirle = OtherCharacter(
             program_id,
@@ -428,7 +428,17 @@ int main() {
     lastFrameTime = getCurrentTime();
     glm::mat4 projection = glm::perspective(fov, GLfloat(SCREEN_WIDTH) / GLfloat(SCREEN_HEIGHT), 0.1f, 500.0f);
 
-    Light *light = new Light(glm::vec3(-50.0f, 150.0f, 10.0f), glm::vec3(1.0f));
+    std::vector<Light *> lights;
+    Light *light1 = new Light(glm::vec3(-50.0f, 150.0f, 10.0f), glm::vec3(1.0f));
+    Light *light2 = new Light(glm::vec3(50.0f, 10.0f, 100.0f), glm::vec3(10.0f, 0.0f, 0.0f));
+    Light *light3 = new Light(glm::vec3(30.0f, 20.0f, 150.0f), glm::vec3(0.0f, 10.0f, 0.0f));
+    Light *light4 = new Light(glm::vec3(-20.0f, 200.0f, -150.0f), glm::vec3(0.0f, 0.0f, 10.0f));
+
+    lights.push_back(light1);
+    lights.push_back(light2);
+    lights.push_back(light3);
+    lights.push_back(light4);
+
     nsMeshRenderer::MeshRenderer *renderer = new nsMeshRenderer::MeshRenderer(&staticShader);
     GroundRenderer *groundRenderer = new GroundRenderer(&groundShader);
 
@@ -442,7 +452,7 @@ int main() {
 
     nsMaterRenderer::MasterRenderer masterRenderer = nsMaterRenderer::MasterRenderer(renderer, groundRenderer, guiRenderer);
 
-    Scene *scene = new Scene(&masterRenderer, light, projection, personCam);
+    Scene *scene = new Scene(&masterRenderer, lights, projection, personCam);
 
     scene->processWrapper(meshWrapper);
     scene->processWrapper(meshWrapper2);
@@ -450,7 +460,7 @@ int main() {
     scene->processGui(healthbar);
 
     scene->addObjectToScene(mainCharacter);
-    scene->addObjectToScene(&pokecenter);
+//    scene->addObjectToScene(&pokecenter);
     scene->addObjectToScene(&pikachu);
     scene->addObjectToScene(&squirle);
 

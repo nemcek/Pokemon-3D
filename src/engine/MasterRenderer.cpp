@@ -24,18 +24,18 @@ namespace nsMaterRenderer {
         glCullFace(GL_BACK);
     }
 
-    void MasterRenderer::render(glm::mat4 projection, glm::mat4 camera, Light *light) {
+    void MasterRenderer::render(glm::mat4 projection, glm::mat4 camera, std::vector<Light *> lights) {
         prepare();
         this->staticShader->start();
         this->staticShader->loadSkyColor(skyColor);
-        this->staticShader->loadLight(light);
+        this->staticShader->loadLights(lights);
         this->renderer->render(this->meshes, projection, camera);
         this->renderer->render(this->wrappers, projection, camera);
         this->staticShader->stop();
 
         this->groundShader->start();
         this->groundShader->loadSkyColor(skyColor);
-        this->groundShader->loadLight(light);
+        this->groundShader->loadLight(lights[0]);
         this->groundRenderer->render(this->grounds, projection, camera);
         this->groundShader->stop();
 

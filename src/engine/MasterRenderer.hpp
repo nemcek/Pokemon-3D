@@ -41,7 +41,7 @@ namespace nsMaterRenderer {
 
         MasterRenderer(nsMeshRenderer::MeshRenderer *renderer, GroundRenderer *groundRenderer, GuiRenderer *guiRenderer);
         void clean();
-        void render(glm::mat4 projection, glm::mat4 camera, Light *light);
+        void render(glm::mat4 projection, glm::mat4 camera, std::vector<Light *> lights);
         void processMesh(Mesh *mesh);
         void processGround(nsGround::Ground *ground);
         void processWrapper(MeshWrapper *wrapper);

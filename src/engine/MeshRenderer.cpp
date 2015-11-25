@@ -51,7 +51,7 @@ namespace nsMeshRenderer {
     }
 
     void MeshRenderer::unbindMesh() {
-        glBindVertexArray(NULL);
+        glBindVertexArray(0);
     }
 
     void MeshRenderer::loadMatrixAndDraw(glm::mat4 matrix, int count) {

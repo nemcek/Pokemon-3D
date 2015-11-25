@@ -18,11 +18,17 @@ void StaticShader::getAllUniformLocations() {
     this->texture = getUniformLocation("Texture");
     this->projection = getUniformLocation("ProjectionMatrix");
     this->view = getUniformLocation("ViewMatrix");
-    this->lightPosition = getUniformLocation("lightPosition");
-    this->lightColor = getUniformLocation("lightColor");
     this->reflectivity = getUniformLocation("reflectivity");
     this->shineDamper = getUniformLocation("shineDamper");
     this->skyColor = getUniformLocation("skyColor");
+
+    this->lightPosition = new int[number_of_lights];
+    this->lightColor = new int[number_of_lights];
+
+    for (int i = 0; i < number_of_lights; i++) {
+        this->lightPosition[i] = getUniformLocation("ligthPosition[" + std::to_string(i) + "]");
+        this->lightColor[i] = getUniformLocation("lightColor[" + std::to_string(i) + "]");
+    }
 }
 
 void StaticShader::loadModelMatrix(glm::mat4 matrix) {
@@ -41,9 +47,16 @@ void StaticShader::loadViewMatrix(glm::mat4 view) {
     loadMatrix(this->view, view);
 }
 
-void StaticShader::loadLight(Light *light) {
-    loadVector(this->lightPosition, light->position);
-    loadVector(this->lightColor, light->color);
+void StaticShader::loadLights(std::vector<Light *> lights) {
+    for (int i = 0; i < number_of_lights; i++) {
+        if (i < lights.size()) {
+            loadVector(this->lightPosition[i], lights[i]->position);
+            loadVector(this->lightColor[i], lights[i]->color);
+        } else {
+            loadVector(this->lightPosition[i], glm::vec3(0.0f));
+            loadVector(this->lightColor[i], glm::vec3(0.0f));
+        }
+    }
 }
 
 void StaticShader::loadShining(float reflectivity, float shineDamper) {

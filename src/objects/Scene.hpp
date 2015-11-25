@@ -17,7 +17,7 @@ class Scene {
 private:
     std::vector<nsGround::Ground *> grounds;
     nsMaterRenderer::MasterRenderer *masterRenderer;
-    Light *light;
+    std::vector<Light *> lights;
     glm::mat4 projection;
     nsThirdPersonCamera::ThirdPersonCamera *camera;
 public:
@@ -25,7 +25,7 @@ public:
     std::vector<MeshWrapper *> wrappers;
     std::vector<Gui *> guis;
 
-    Scene(nsMaterRenderer::MasterRenderer *masterRenderer, Light *light, glm::mat4 projection,
+    Scene(nsMaterRenderer::MasterRenderer *masterRenderer, std::vector<Light *> lights, glm::mat4 projection,
           nsThirdPersonCamera::ThirdPersonCamera *camera);
     void addObjectToScene(Mesh *mesh);
     void addGroundToScene(nsGround::Ground *ground);

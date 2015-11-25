@@ -12,12 +12,14 @@ class StaticShader : public nsShaderProgram::ShaderProgram {
 
 private:
 
+    const int number_of_lights = 4;
+
     GLint modelMatrix;
     GLint texture;
     GLint projection;
     GLint view;
-    GLint lightPosition;
-    GLint lightColor;
+    GLint *lightPosition;
+    GLint *lightColor;
     GLint reflectivity;
     GLint shineDamper;
     GLint skyColor;
@@ -30,7 +32,7 @@ public:
     void loadTextureUni(GLint texture_id);
     void loadProjectionMatrix(glm::mat4 projection);
     void loadViewMatrix(glm::mat4 view);
-    void loadLight(Light *light);
+    void loadLights(std::vector<Light *> lights);
     void loadShining(float reflectivity, float shineDamper);
     void loadSkyColor(glm::vec3 skyColor);
 };

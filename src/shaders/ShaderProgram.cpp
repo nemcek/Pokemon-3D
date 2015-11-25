@@ -94,7 +94,7 @@ namespace nsShaderProgram {
         std::string shader_code((std::istreambuf_iterator<char>(shader_stream)), std::istreambuf_iterator<char>());
 
         // Compile shader
-        std::cout << "Compiling Vertex Shader ..." << std::endl;
+        std::cout << "Compiling Shader ..." << shader_file << std::endl;
         auto shader_code_ptr = shader_code.c_str();
         glShaderSource(shader_id, 1, &shader_code_ptr, NULL);
         glCompileShader(shader_id);
