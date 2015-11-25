@@ -35,7 +35,7 @@ namespace nsMaterRenderer {
 
         this->groundShader->start();
         this->groundShader->loadSkyColor(skyColor);
-        this->groundShader->loadLight(lights[0]);
+        this->groundShader->loadLights(lights);
         this->groundRenderer->render(this->grounds, projection, camera);
         this->groundShader->stop();
 

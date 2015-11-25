@@ -83,4 +83,6 @@ void GroundRenderer::bindTextures(nsGround::Ground *ground) {
     glUniform1i(shader->blendMap, 4);
     glActiveTexture(GL_TEXTURE4 + 0);
     glBindTexture(GL_TEXTURE_2D, ground->blendMap->textureId);
+
+    shader->loadShining(ground->reflectivity, ground->shineDamper);
 }

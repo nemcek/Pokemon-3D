@@ -18,14 +18,22 @@ void GroundShader::getAllUniformLocations() {
     this->texture = getUniformLocation("Texture");
     this->projection = getUniformLocation("ProjectionMatrix");
     this->view = getUniformLocation("ViewMatrix");
-    this->lightPosition = getUniformLocation("lightPosition");
-    this->lightColor = getUniformLocation("lightColor");
+    this->reflectivity = getUniformLocation("reflectivity");
+    this->shineDamper = getUniformLocation("shineDamper");
     this->skyColor = getUniformLocation("skyColor");
     this->backgroundTexture = getUniformLocation("BackgroundTexture");
     this->rTexture = getUniformLocation("RTexture");
     this->gTexture = getUniformLocation("GTexture");
     this->bTexture = getUniformLocation("BTexture");
     this->blendMap = getUniformLocation("BlendMap");
+
+    this->lightPosition = new int[number_of_lights];
+    this->lightColor = new int[number_of_lights];
+    std::cout<<"jere";
+    for (int i = 0; i < number_of_lights; i++) {
+        this->lightPosition[i] = getUniformLocation("lightPosition[" + std::to_string(i) + "]");
+        this->lightColor[i] = getUniformLocation("lightColor[" + std::to_string(i) + "]");
+    }
 }
 
 void GroundShader::loadModelMatrix(glm::mat4 matrix) {
@@ -44,9 +52,16 @@ void GroundShader::loadViewMatrix(glm::mat4 view) {
     loadMatrix(this->view, view);
 }
 
-void GroundShader::loadLight(Light *light) {
-    loadVector(this->lightPosition, light->position);
-    loadVector(this->lightColor, light->color);
+void GroundShader::loadLights(std::vector<Light *> lights) {
+    for (int i = 0; i < number_of_lights; i++) {
+        if (i < lights.size()) {
+            loadVector(this->lightPosition[i], lights[i]->position);
+            loadVector(this->lightColor[i], lights[i]->color);
+        } else {
+            loadVector(this->lightPosition[i], glm::vec3(0.0f));
+            loadVector(this->lightColor[i], glm::vec3(0.0f));
+        }
+    }
 }
 
 void GroundShader::loadSkyColor(glm::vec3 skyColor) {
@@ -59,4 +74,9 @@ void GroundShader::connectTextureUnits() {
     loadInt(this->gTexture, 2);
     loadInt(this->bTexture, 3);
     loadInt(this->blendMap, 4);
+}
+
+void GroundShader::loadShining(float reflectivity, float shineDamper) {
+    loadFloat(this->reflectivity, reflectivity);
+    loadFloat(this->shineDamper, shineDamper);
 }

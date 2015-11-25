@@ -429,10 +429,10 @@ int main() {
     glm::mat4 projection = glm::perspective(fov, GLfloat(SCREEN_WIDTH) / GLfloat(SCREEN_HEIGHT), 0.1f, 500.0f);
 
     std::vector<Light *> lights;
-    Light *light1 = new Light(glm::vec3(-50.0f, 150.0f, 10.0f), glm::vec3(1.0f));
-    Light *light2 = new Light(glm::vec3(50.0f, 10.0f, 100.0f), glm::vec3(10.0f, 0.0f, 0.0f));
-    Light *light3 = new Light(glm::vec3(30.0f, 20.0f, 150.0f), glm::vec3(0.0f, 10.0f, 0.0f));
-    Light *light4 = new Light(glm::vec3(-20.0f, 200.0f, -150.0f), glm::vec3(0.0f, 0.0f, 10.0f));
+    Light *light1 = new Light(glm::vec3(150.0f, 50.0f, 150.0f), glm::vec3(1.0f));
+    Light *light2 = new Light(glm::vec3(150.0f, 50.0f, -150.0f), glm::vec3(10.0f, 0.0f, 0.0f));
+    Light *light3 = new Light(glm::vec3(-150.0f, 50.0f, 150.0f), glm::vec3(0.0f, 10.0f, 0.0f));
+    Light *light4 = new Light(glm::vec3(-150.0f, 50.0f, -150.0f), glm::vec3(0.0f, 0.0f, 10.0f));
 
     lights.push_back(light1);
     lights.push_back(light2);
