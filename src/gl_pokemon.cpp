@@ -309,7 +309,6 @@ GLint loadTexture(const std::string &file) {
 }
 
 int main() {
-
     // Initialize GLFW
     if (!glfwInit()) {
         std::cerr << "Failed to initialize GLFW!" << std::endl;
@@ -459,26 +458,14 @@ int main() {
         scene->addGroundToScene(&(*it));
     }
 
-
-
-//    std::vector<GuiTexture *> guis;
-//    healthBarFill = new GuiTexture(guiLoader->loadTexture("models/textures/HealthbarFill.tga"), glm::vec2(0.65f, -0.75f), glm::vec2(0.25f, 0.025f));
-//    GuiTexture *healthBar = new() GuiTexture(guiLoader->loadTexture("models/textures/Healthbar.tga"), glm::vec2(0.59f, -0.75f), glm::vec2(0.36f, 0.6));
-
-//    std::vector<GLfloat> vertex_buffer = {-1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f, -1.0f};
-//    std::vector<GLfloat> texcoord_buffer = { 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f};
-//    RawModel *guiRawModel = guiLoader->load(vertex_buffer, texcoord_buffer);
-//
-//    guis.push_back(healthBarFill);
-//    guis.push_back(healthBar);
-
-
     while (!glfwWindowShouldClose(window)) {
+//        std::cout << "I'm fucking here!" << std::endl;
+
         glfwPollEvents();
 
         scene->animate(delta);
         scene->render();
-        guiRenderer->render(guis);
+        //guiRenderer->render(guis);
 
         // Display result
         glfwSwapBuffers(window);
