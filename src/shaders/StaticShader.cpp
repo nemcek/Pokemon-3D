@@ -24,9 +24,9 @@ void StaticShader::getAllUniformLocations() {
 
     this->lightPosition = new int[number_of_lights];
     this->lightColor = new int[number_of_lights];
-
+    std::cout<<"jere";
     for (int i = 0; i < number_of_lights; i++) {
-        this->lightPosition[i] = getUniformLocation("ligthPosition[" + std::to_string(i) + "]");
+        this->lightPosition[i] = getUniformLocation("lightPosition[" + std::to_string(i) + "]");
         this->lightColor[i] = getUniformLocation("lightColor[" + std::to_string(i) + "]");
     }
 }
