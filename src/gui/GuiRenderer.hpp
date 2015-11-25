@@ -11,21 +11,26 @@
 #include "src/gui/GuiTexture.hpp"
 #include "src/gui/GuiShader.hpp"
 #include "src/extensions/Transformations.hpp"
+#include "src/gui/Gui.hpp"
+#include "src/loaders/Loader.hpp"
 
 class GuiRenderer {
 
 private:
     RawModel *rawModel;
-    GuiShader *guiShader;
 
     void loadVAO(RawModel *model);
     void loadMatrix(glm::mat4 matrix);
     void loadTexture(GuiTexture *guiTexture);
     void unbind();
+    void render(Gui *gui);
 
 public:
-    GuiRenderer(RawModel *rawModel, GuiShader *shader);
+    GuiShader *guiShader;
+
+    GuiRenderer(GuiShader *shader, Loader *loader);
     void render(std::vector<GuiTexture *> guis);
+    void render(std::vector<Gui *> guis);
     void clean();
 };
 

@@ -6,11 +6,13 @@
 
 namespace nsMaterRenderer {
 
-    MasterRenderer::MasterRenderer(nsMeshRenderer::MeshRenderer *renderer, GroundRenderer *groundRenderer)
+    MasterRenderer::MasterRenderer(nsMeshRenderer::MeshRenderer *renderer, GroundRenderer *groundRenderer, GuiRenderer *guiRenderer)
         : staticShader(renderer->shader),
           renderer(renderer),
           groundShader(groundRenderer->shader),
-          groundRenderer(groundRenderer){
+          groundRenderer(groundRenderer),
+          guiRenderer(guiRenderer),
+          guiShader(guiRenderer->guiShader){
 
         // Enable Z-buffer
         glEnable(GL_DEPTH_TEST);
@@ -36,6 +38,10 @@ namespace nsMaterRenderer {
         this->groundShader->loadLight(light);
         this->groundRenderer->render(this->grounds, projection, camera);
         this->groundShader->stop();
+
+        this->guiShader->start();
+        this->guiRenderer->render(this->guis);
+        this->guiShader->stop();
 
         this->meshes.clear();
         this->grounds.clear();
@@ -65,4 +71,7 @@ namespace nsMaterRenderer {
         this->wrappers.push_back(*wrapper);
     }
 
+    void MasterRenderer::processGui(Gui *gui) {
+        this->guis.push_back(gui);
+    }
 }

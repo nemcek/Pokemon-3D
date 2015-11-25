@@ -14,6 +14,7 @@
 #include "src/engine/GroundRenderer.hpp"
 #include "src/objects/Light.hpp"
 #include "src/wrappers/MeshWrapper.hpp"
+#include "src/gui/GuiRenderer.hpp"
 
 namespace nsMaterRenderer {
 
@@ -23,22 +24,28 @@ namespace nsMaterRenderer {
 
         StaticShader *staticShader;
         GroundShader *groundShader;
+        GuiShader *guiShader;
+
         nsMeshRenderer::MeshRenderer *renderer;
         GroundRenderer *groundRenderer;
+        GuiRenderer *guiRenderer;
+
         std::map<TexturedModel, std::list<Mesh>> meshesMap;
         std::vector<Mesh> meshes;
         std::vector<nsGround::Ground> grounds;
         std::vector<MeshWrapper> wrappers;
+        std::vector<Gui *> guis;
 
         void prepare();
     public:
 
-        MasterRenderer(nsMeshRenderer::MeshRenderer *renderer, GroundRenderer *groundRenderer);
+        MasterRenderer(nsMeshRenderer::MeshRenderer *renderer, GroundRenderer *groundRenderer, GuiRenderer *guiRenderer);
         void clean();
         void render(glm::mat4 projection, glm::mat4 camera, Light *light);
         void processMesh(Mesh *mesh);
         void processGround(nsGround::Ground *ground);
         void processWrapper(MeshWrapper *wrapper);
+        void processGui(Gui *gui);
     };
 
 }

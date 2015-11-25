@@ -86,7 +86,6 @@ set ( LIBRARIES
 
 # Pokemon3D library
 add_library(libpokemon3d STATIC
-        ${pokemon_main}
         ${pokemon_camera}
         ${pokemon_loaders}
         ${pokemon_objects}
@@ -108,7 +107,7 @@ target_link_libraries(libpokemon3d ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} ${GLFW_
 
 # gl_pokemon
 set ( POKEMON3D_SRC
-        ${pokemon_main}
+        src/gl_pokemon.cpp
         ${pokemon_camera}
         ${pokemon_loaders}
         ${pokemon_objects}

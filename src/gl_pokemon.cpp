@@ -30,6 +30,7 @@
 #include "src/objects/OtherCharacter.hpp"
 #include "src/objects/Scene.hpp"
 #include "src/gui/GuiRenderer.hpp"
+#include "src/gui/Healthbar.hpp"
 
 int SCREEN_WIDTH = 1600;
 int SCREEN_HEIGHT = 900;
@@ -47,7 +48,7 @@ int movableCharacterIndex = 0;
 float lastFrameTime;
 float delta;
 
-GuiTexture *healthBarFill;
+Healthbar *healthbar;
 
 void InitializeGeometry(GLuint program_id) {
     // Generate a vertex array object
@@ -224,24 +225,12 @@ void OnKeyPress(GLFWwindow* window, int key, int scancode, int action, int mods)
         personCam->setFollowTarget(movableCharacters[++movableCharacterIndex % movableCharacters.size()]);
     }
 
-    if ((key == GLFW_KEY_T || key == GLFW_KEY_Y) && action == GLFW_PRESS) {
-        if (oneHealthPortion == -1) {
-            oneHealthPortion = healthBarFill->scale.x / health;
-        }
+    if (key == GLFW_KEY_T && action == GLFW_PRESS) {
+        healthbar->takeDamage(1);
+    }
 
-        float damage = key == GLFW_KEY_T ? oneHealthPortion : oneHealthPortion * 2;
-
-        float xScale = healthBarFill->scale.x;
-        float xPos = healthBarFill->position.x;
-
-        // prevents from going to negative health
-        if (xScale <= 0 || xScale - damage <= 0) {
-            healthBarFill->scale = glm::vec2(0.0f, healthBarFill->scale.y);
-            return;
-        }
-
-        healthBarFill->scale = glm::vec2(xScale - damage, healthBarFill->scale.y);
-        healthBarFill->position = glm::vec2(xPos - damage, healthBarFill->position.y);
+    if (key == GLFW_KEY_Y && action == GLFW_PRESS) {
+        healthbar->takeDamage(2);
     }
 }
 
@@ -380,15 +369,15 @@ int main() {
     personCam = new nsThirdPersonCamera::ThirdPersonCamera(mainCharacter, window, inputManager);
     movableCharacters.push_back(mainCharacter);
 
-//    Terrain pokecenter = Terrain(
-//            program_id,
-//            loader,
-//            "models/objects/Pokecenter.obj",
-//            "models/textures/Pokecenter.tga",
-//            glm::vec3(30.0f, 0.0f, -50.0f),
-//            0.0f, 180.0f, 0.0f, 20.0f, 1.0f, 50.0f
-//    );
-//    meshes.push_back(pokecenter);
+    Terrain pokecenter = Terrain(
+            program_id,
+            loader,
+            "models/objects/Pokecenter.obj",
+            "models/textures/Pokecenter.tga",
+            glm::vec3(30.0f, 0.0f, -50.0f),
+            0.0f, 180.0f, 0.0f, 20.0f, 1.0f, 50.0f
+    );
+    meshes.push_back(pokecenter);
 
     OtherCharacter squirle = OtherCharacter(
             program_id,
@@ -443,16 +432,26 @@ int main() {
     Light *light = new Light(glm::vec3(-50.0f, 150.0f, 10.0f), glm::vec3(1.0f));
     nsMeshRenderer::MeshRenderer *renderer = new nsMeshRenderer::MeshRenderer(&staticShader);
     GroundRenderer *groundRenderer = new GroundRenderer(&groundShader);
-    nsMaterRenderer::MasterRenderer masterRenderer = nsMaterRenderer::MasterRenderer(renderer, groundRenderer);
+
+    GuiShader *guiShader = new GuiShader();
+    Loader *guiLoader = new Loader(guiShader->programId);
+
+    healthbar = new Healthbar("models/textures/HealthbarFill.tga", "models/textures/Healthbar.tga", guiLoader, 100);
+    std::vector<Gui *> guis;
+
+    GuiRenderer *guiRenderer = new GuiRenderer(guiShader, guiLoader);
+
+    nsMaterRenderer::MasterRenderer masterRenderer = nsMaterRenderer::MasterRenderer(renderer, groundRenderer, guiRenderer);
 
     Scene *scene = new Scene(&masterRenderer, light, projection, personCam);
 
     scene->processWrapper(meshWrapper);
     scene->processWrapper(meshWrapper2);
 
+    scene->processGui(healthbar);
 
     scene->addObjectToScene(mainCharacter);
-    //scene->addObjectToScene(&pokecenter);
+    scene->addObjectToScene(&pokecenter);
     scene->addObjectToScene(&pikachu);
     scene->addObjectToScene(&squirle);
 
@@ -460,21 +459,19 @@ int main() {
         scene->addGroundToScene(&(*it));
     }
 
-    GuiShader *guiShader = new GuiShader();
-    Loader *guiLoader = new Loader(guiShader->programId);
 
-    std::vector<GuiTexture *> guis;
-    healthBarFill = new GuiTexture(guiLoader->loadTexture("models/textures/HealthbarFill.tga"), glm::vec2(0.65f, -0.75f), glm::vec2(0.25f, 0.025f));
-    GuiTexture *healthBar = new() GuiTexture(guiLoader->loadTexture("models/textures/Healthbar.tga"), glm::vec2(0.59f, -0.75f), glm::vec2(0.36f, 0.6));
 
-    std::vector<GLfloat> vertex_buffer = {-1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f, -1.0f};
-    std::vector<GLfloat> texcoord_buffer = { 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f};
-    RawModel *guiRawModel = guiLoader->load(vertex_buffer, texcoord_buffer);
+//    std::vector<GuiTexture *> guis;
+//    healthBarFill = new GuiTexture(guiLoader->loadTexture("models/textures/HealthbarFill.tga"), glm::vec2(0.65f, -0.75f), glm::vec2(0.25f, 0.025f));
+//    GuiTexture *healthBar = new() GuiTexture(guiLoader->loadTexture("models/textures/Healthbar.tga"), glm::vec2(0.59f, -0.75f), glm::vec2(0.36f, 0.6));
 
-    guis.push_back(healthBarFill);
-    guis.push_back(healthBar);
+//    std::vector<GLfloat> vertex_buffer = {-1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f, -1.0f};
+//    std::vector<GLfloat> texcoord_buffer = { 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f};
+//    RawModel *guiRawModel = guiLoader->load(vertex_buffer, texcoord_buffer);
+//
+//    guis.push_back(healthBarFill);
+//    guis.push_back(healthBar);
 
-    GuiRenderer *guiRenderer = new GuiRenderer(guiRawModel, guiShader);
 
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();

@@ -10,6 +10,7 @@
 #include "src/engine/MasterRenderer.hpp"
 #include "src/camera/ThirdPersonCamera.h"
 #include "src/wrappers/MeshWrapper.hpp"
+#include "src/gui/Gui.hpp"
 
 class Scene {
 
@@ -22,6 +23,7 @@ private:
 public:
     std::vector<Mesh *> objects;
     std::vector<MeshWrapper *> wrappers;
+    std::vector<Gui *> guis;
 
     Scene(nsMaterRenderer::MasterRenderer *masterRenderer, Light *light, glm::mat4 projection,
           nsThirdPersonCamera::ThirdPersonCamera *camera);
@@ -30,6 +32,7 @@ public:
     void animate(float delta);
     void render();
     void processWrapper(MeshWrapper *wrapper);
+    void processGui(Gui *gui);
 
 };
 

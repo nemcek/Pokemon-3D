@@ -45,3 +45,8 @@ void Scene::processWrapper(MeshWrapper *wrapper) {
     this->wrappers.push_back(wrapper);
     this->masterRenderer->processWrapper(wrapper);
 }
+
+void Scene::processGui(Gui *gui) {
+    this->guis.push_back(gui);
+    this->masterRenderer->processGui(gui);
+}
