@@ -24,10 +24,12 @@ void StaticShader::getAllUniformLocations() {
 
     this->lightPosition = new int[number_of_lights];
     this->lightColor = new int[number_of_lights];
-    std::cout<<"jere";
+    this->attenuation = new int[number_of_lights];
+
     for (int i = 0; i < number_of_lights; i++) {
         this->lightPosition[i] = getUniformLocation("lightPosition[" + std::to_string(i) + "]");
         this->lightColor[i] = getUniformLocation("lightColor[" + std::to_string(i) + "]");
+        this->attenuation[i] = getUniformLocation("attenuation[" + std::to_string(i) + "]");
     }
 }
 
@@ -52,9 +54,11 @@ void StaticShader::loadLights(std::vector<Light *> lights) {
         if (i < lights.size()) {
             loadVector(this->lightPosition[i], lights[i]->position);
             loadVector(this->lightColor[i], lights[i]->color);
+            loadVector(this->attenuation[i], lights[i]->attenuation);
         } else {
             loadVector(this->lightPosition[i], glm::vec3(0.0f));
             loadVector(this->lightColor[i], glm::vec3(0.0f));
+            loadVector(this->attenuation[i], glm::vec3(1.0f, 0.0f, 0.0f));
         }
     }
 }

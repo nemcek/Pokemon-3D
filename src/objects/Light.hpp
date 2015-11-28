@@ -14,8 +14,10 @@ private:
 public:
     glm::vec3 position;
     glm::vec3 color;
+    glm::vec3 attenuation;
 
     Light(glm::vec3 position, glm::vec3 color);
+    Light(glm::vec3 position, glm::vec3 color, glm::vec3 attenuation);
 };
 
 #endif //POKEMON3D_LIGHT_H

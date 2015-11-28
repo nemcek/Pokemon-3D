@@ -20,6 +20,7 @@ private:
     GLint view;
     GLint *lightPosition;
     GLint *lightColor;
+    GLint *attenuation;
     GLint reflectivity;
     GLint shineDamper;
     GLint skyColor;

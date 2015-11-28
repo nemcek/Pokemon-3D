@@ -31,6 +31,7 @@
 #include "src/objects/Scene.hpp"
 #include "src/gui/GuiRenderer.hpp"
 #include "src/gui/Healthbar.hpp"
+#include "src/objects/StreetLamp.hpp"
 
 int SCREEN_WIDTH = 1600;
 int SCREEN_HEIGHT = 900;
@@ -368,15 +369,15 @@ int main() {
     personCam = new nsThirdPersonCamera::ThirdPersonCamera(mainCharacter, window, inputManager);
     movableCharacters.push_back(mainCharacter);
 
-//    Terrain pokecenter = Terrain(
-//            program_id,
-//            loader,
-//            "models/objects/Pokecenter.obj",
-//            "models/textures/Pokecenter.tga",
-//            glm::vec3(30.0f, 0.0f, -50.0f),
-//            0.0f, 180.0f, 0.0f, 20.0f, 1.0f, 50.0f
-//    );
-//    meshes.push_back(pokecenter);
+    Terrain pokecenter = Terrain(
+            program_id,
+            loader,
+            "models/objects/Pokecenter.obj",
+            "models/textures/Pokecenter.tga",
+            glm::vec3(30.0f, 0.0f, -50.0f),
+            0.0f, 180.0f, 0.0f, 20.0f, 1.0f, 50.0f
+    );
+    meshes.push_back(pokecenter);
 
     OtherCharacter squirle = OtherCharacter(
             program_id,
@@ -398,7 +399,6 @@ int main() {
             0.0f, 0.0f, 0.0f, 0.15f
     );
     meshes.push_back(pikachu);
-
 
     TerrainTexture *backgroundTexture = new TerrainTexture(loadTexture("models/textures/Ground_grass3.tga"));
     TerrainTexture *rTexture = new TerrainTexture(loadTexture("models/textures/Ground.tga"));
@@ -429,15 +429,15 @@ int main() {
     glm::mat4 projection = glm::perspective(fov, GLfloat(SCREEN_WIDTH) / GLfloat(SCREEN_HEIGHT), 0.1f, 500.0f);
 
     std::vector<Light *> lights;
-    Light *light1 = new Light(glm::vec3(150.0f, 50.0f, 150.0f), glm::vec3(1.0f));
-    Light *light2 = new Light(glm::vec3(150.0f, 50.0f, -150.0f), glm::vec3(10.0f, 0.0f, 0.0f));
-    Light *light3 = new Light(glm::vec3(-150.0f, 50.0f, 150.0f), glm::vec3(0.0f, 10.0f, 0.0f));
-    Light *light4 = new Light(glm::vec3(-150.0f, 50.0f, -150.0f), glm::vec3(0.0f, 0.0f, 10.0f));
+    Light *light1 = new Light(glm::vec3(150.0f, 50.0f, 150.0f), glm::vec3(0.4f));
+    StreetLamp *lamp1 = new StreetLamp(program_id, loader, glm::vec3(50.0f, 0.0f, 0.0f));
+    StreetLamp *lamp2 = new StreetLamp(program_id, loader, glm::vec3(-100.0f, 0.0f, 50.0f));
+    StreetLamp *lamp3 = new StreetLamp(program_id, loader, glm::vec3(-50.0f, 0.0f, -100.0f));
 
     lights.push_back(light1);
-    lights.push_back(light2);
-    lights.push_back(light3);
-    lights.push_back(light4);
+    lights.push_back(lamp1->light);
+    lights.push_back(lamp2->light);
+    lights.push_back(lamp3->light);
 
     nsMeshRenderer::MeshRenderer *renderer = new nsMeshRenderer::MeshRenderer(&staticShader);
     GroundRenderer *groundRenderer = new GroundRenderer(&groundShader);
@@ -460,22 +460,23 @@ int main() {
     scene->processGui(healthbar);
 
     scene->addObjectToScene(mainCharacter);
-//    scene->addObjectToScene(&pokecenter);
+    scene->addObjectToScene(&pokecenter);
     scene->addObjectToScene(&pikachu);
     scene->addObjectToScene(&squirle);
+    scene->addObjectToScene(lamp1);
+    scene->addObjectToScene(lamp2);
+    scene->addObjectToScene(lamp3);
 
     for (std::vector<nsGround::Ground>::iterator it = grounds.begin(); it != grounds.end(); it++) {
         scene->addGroundToScene(&(*it));
     }
 
     while (!glfwWindowShouldClose(window)) {
-//        std::cout << "I'm fucking here!" << std::endl;
 
         glfwPollEvents();
 
         scene->animate(delta);
         scene->render();
-        //guiRenderer->render(guis);
 
         // Display result
         glfwSwapBuffers(window);

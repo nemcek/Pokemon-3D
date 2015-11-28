@@ -2,6 +2,7 @@
 // A texture is expected as program attribute
 uniform sampler2D Texture;
 uniform vec3 lightColor[4];
+uniform vec3 attenuation[4];
 uniform float reflectivity;
 uniform float shineDamper;
 uniform vec3 skyColor;
@@ -25,11 +26,19 @@ void main() {
   vec3 totalSpecular = vec3(0.0);
 
   for (int i = 0; i < 4; i++) {
+
+    // distance from light
+    float distance = length(toLightVector[i]);
+    float attenuationFactor = attenuation[i].x + (attenuation[i].y * distance) + (attenuation[i].z * distance * distance);
+
+    // normalized vector pointing to light
     vec3 unitLight = normalize(toLightVector[i]);
 
+    // dot product and brightness of light calculation
     float dotProd = dot(unitNormal, unitLight);
     float brightness = max(dotProd, 0.0);
 
+    // direction of light (from light)
     vec3 lightDirection = -unitLight;
     vec3 reflectedLightDirection = reflect(lightDirection, unitNormal);
 
@@ -37,8 +46,9 @@ void main() {
     specularFactor = max(specularFactor, 0.0);
     float dampedFactor = pow(specularFactor, shineDamper);
 
-    totalDiffuse = totalDiffuse +  brightness * lightColor[i];
-    totalSpecular = totalSpecular + dampedFactor * reflectivity * lightColor[i];
+    // sum
+    totalDiffuse = totalDiffuse +  (brightness * lightColor[i]) / attenuationFactor;
+    totalSpecular = totalSpecular + (dampedFactor * reflectivity * lightColor[i]) / attenuationFactor;
   }
 
   totalDiffuse = max(totalDiffuse, 0.2);
