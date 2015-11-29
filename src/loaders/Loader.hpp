@@ -19,7 +19,7 @@ private:
 
     void setVertexPositions(RawModel *rawModel, std::vector<GLfloat> vertex_buffer);
     void setVertexPositions(RawModel *rawModel, std::vector<GLfloat> vertex_buffer, int size);
-    void setTextureCoords(RawModel *rawModel, std::vector<GLfloat> texcoord_buffer);
+    void setTextureCoords(RawModel *rawModel, std::vector<GLfloat> texcoord_buffer, int size);
     void setIndices(RawModel *rawModel, std::vector<GLuint> index_data);
     void setNormals(RawModel *rawModel, std::vector<GLfloat> normals_data);
     RawModel* initLoading();
@@ -29,8 +29,9 @@ public:
     Loader(GLuint programId);
     RawModel* load(std::vector<GLfloat> vertex_buffer, std::vector<GLfloat> texcoord_buffer, std::vector<GLuint> index_data,
                   std::vector<GLfloat> normals_data);
-    RawModel* load(std::vector<GLfloat> vertex_buffer, std::vector<GLfloat> texcoord_buffer);
+    RawModel* load(std::vector<GLfloat> vertex_buffer, std::vector<GLfloat> texcoord_buffer, int size);
     GLuint loadTexture(const std::string &image_file);
+    GLuint loadCubeMap(std::vector<std::string> files);
 };
 
 #endif //POKEMON3D_LOADER_HPP

@@ -6,13 +6,16 @@
 
 namespace nsMaterRenderer {
 
-    MasterRenderer::MasterRenderer(nsMeshRenderer::MeshRenderer *renderer, GroundRenderer *groundRenderer, GuiRenderer *guiRenderer)
+    MasterRenderer::MasterRenderer(nsMeshRenderer::MeshRenderer *renderer, GroundRenderer *groundRenderer, GuiRenderer *guiRenderer,
+                                    SkyboxRenderer *skyboxRenderer)
         : staticShader(renderer->shader),
           renderer(renderer),
           groundShader(groundRenderer->shader),
           groundRenderer(groundRenderer),
           guiRenderer(guiRenderer),
-          guiShader(guiRenderer->guiShader){
+          guiShader(guiRenderer->guiShader),
+          skyboxRenderer(skyboxRenderer),
+          skyboxShader(skyboxRenderer->shader){
 
         // Enable Z-buffer
         glEnable(GL_DEPTH_TEST);
@@ -38,6 +41,8 @@ namespace nsMaterRenderer {
         this->groundShader->loadLights(lights);
         this->groundRenderer->render(this->grounds, projection, camera);
         this->groundShader->stop();
+
+        this->skyboxRenderer->render(camera, projection, fogColor);
 
         this->guiShader->start();
         this->guiRenderer->render(this->guis);

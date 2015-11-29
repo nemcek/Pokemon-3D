@@ -7,7 +7,7 @@
 GuiRenderer::GuiRenderer(GuiShader *shader, Loader *loader) {
     std::vector<GLfloat> vertex_buffer = {-1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f, -1.0f};
     std::vector<GLfloat> texcoord_buffer = { 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f};
-    RawModel *guiRawModel = loader->load(vertex_buffer, texcoord_buffer);
+    RawModel *guiRawModel = loader->load(vertex_buffer, texcoord_buffer, 2);
 
     this->rawModel = guiRawModel;
     this->guiShader = shader;

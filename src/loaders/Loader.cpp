@@ -33,7 +33,7 @@ RawModel* Loader::load(std::vector<GLfloat> vertex_buffer, std::vector<GLfloat> 
     RawModel *rawModel = initLoading();
 
     setVertexPositions(rawModel, vertex_buffer);
-    setTextureCoords(rawModel, texcoord_buffer);
+    setTextureCoords(rawModel, texcoord_buffer, 2);
     setIndices(rawModel, index_data);
     setNormals(rawModel, normals_data);
 
@@ -42,12 +42,12 @@ RawModel* Loader::load(std::vector<GLfloat> vertex_buffer, std::vector<GLfloat> 
     return rawModel;
 }
 
-RawModel* Loader::load(std::vector<GLfloat> vertex_buffer, std::vector<GLfloat> texcoord_buffer) {
+RawModel* Loader::load(std::vector<GLfloat> vertex_buffer, std::vector<GLfloat> texcoord_buffer, int size) {
     RawModel *rawModel = initLoading();
 
-    setVertexPositions(rawModel, vertex_buffer, 2);
-    //setTextureCoords(rawModel, texcoord_buffer);
-    rawModel->mesh_vertex_count = vertex_buffer.size() / 2;
+    setVertexPositions(rawModel, vertex_buffer, size);
+    setTextureCoords(rawModel, texcoord_buffer, size);
+    rawModel->mesh_vertex_count = vertex_buffer.size() / size;
     clean();
 
     return rawModel;
@@ -70,7 +70,7 @@ void Loader::setVertexPositions(RawModel *rawModel, std::vector<GLfloat> vertex_
 
 }
 
-void Loader::setTextureCoords(RawModel *rawModel, std::vector<GLfloat> texcoord_buffer) {
+void Loader::setTextureCoords(RawModel *rawModel, std::vector<GLfloat> texcoord_buffer, int size) {
     // Generate and upload a buffer with texture coordinates to GPU
     glGenBuffers(1, &rawModel->tbo);
     glBindBuffer(GL_ARRAY_BUFFER, rawModel->tbo);
@@ -80,7 +80,7 @@ void Loader::setTextureCoords(RawModel *rawModel, std::vector<GLfloat> texcoord_
     if (texcoord_buffer.size() > 0) {
         GLint texcoord_attrib = glGetAttribLocation(this->programId, "TexCoord");
         glEnableVertexAttribArray(texcoord_attrib);
-        glVertexAttribPointer(texcoord_attrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+        glVertexAttribPointer(texcoord_attrib, size, GL_FLOAT, GL_FALSE, 0, 0);
     } else {
         std::cout << "Warning: OBJ file has no texture coordinates!" << std::endl;
     }
@@ -128,4 +128,28 @@ GLuint Loader::loadTexture(const std::string &image_file) {
     glTexImage2D(GL_TEXTURE_2D, 0, imageType, tgafile.imageWidth, tgafile.imageHeight, 0, imageType, GL_UNSIGNED_BYTE, buffer.data());
 
     return texture_id;
+}
+
+GLuint Loader::loadCubeMap(std::vector<std::string> files) {
+    GLuint textureId;
+    glGenTextures(1, &textureId);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, textureId);
+
+    for (int i = 0; i < files.size(); i++) {
+        FileLoader::TGAFILE_t tgafile;
+        FileLoader::LoadTGAFile(files[i].c_str(), &tgafile);
+
+        std::vector<char> buffer(tgafile.imageData, tgafile.imageData + tgafile.imageWidth * tgafile.imageHeight * (tgafile.bitCount / 8));
+        int imageType = (tgafile.bitCount / 8) == 3 ? GL_RGB : GL_RGBA;
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, imageType, tgafile.imageWidth, tgafile.imageHeight, 0, imageType, GL_UNSIGNED_BYTE, buffer.data());
+    }
+
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    return textureId;
 }

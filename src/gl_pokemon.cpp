@@ -32,6 +32,7 @@
 #include "src/gui/GuiRenderer.hpp"
 #include "src/gui/Healthbar.hpp"
 #include "src/objects/StreetLamp.hpp"
+#include "src/skybox/SkyboxRenderer.hpp"
 
 int SCREEN_WIDTH = 1600;
 int SCREEN_HEIGHT = 900;
@@ -426,7 +427,7 @@ int main() {
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL); // Hide mouse cursor
 
     lastFrameTime = getCurrentTime();
-    glm::mat4 projection = glm::perspective(fov, GLfloat(SCREEN_WIDTH) / GLfloat(SCREEN_HEIGHT), 0.1f, 500.0f);
+    glm::mat4 projection = glm::perspective(fov, GLfloat(SCREEN_WIDTH) / GLfloat(SCREEN_HEIGHT), 0.1f, 750.0f);
 
     std::vector<Light *> lights;
     Light *light1 = new Light(glm::vec3(150.0f, 50.0f, 150.0f), glm::vec3(0.4f));
@@ -450,7 +451,10 @@ int main() {
 
     GuiRenderer *guiRenderer = new GuiRenderer(guiShader, guiLoader);
 
-    nsMaterRenderer::MasterRenderer masterRenderer = nsMaterRenderer::MasterRenderer(renderer, groundRenderer, guiRenderer);
+    SkyboxShader *skyboxShader = new SkyboxShader(&delta);
+    SkyboxRenderer *skyboxRenderer = new SkyboxRenderer(loader, skyboxShader);
+
+    nsMaterRenderer::MasterRenderer masterRenderer = nsMaterRenderer::MasterRenderer(renderer, groundRenderer, guiRenderer, skyboxRenderer);
 
     Scene *scene = new Scene(&masterRenderer, lights, projection, personCam);
 

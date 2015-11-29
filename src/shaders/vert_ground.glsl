@@ -17,8 +17,8 @@ uniform mat4 ViewMatrix;
 uniform mat4 ModelMatrix;
 uniform vec3 lightPosition[4];
 
-const float density = 0.005;
-const float gradient = 1.5;
+const float density = 0.0035;
+const float gradient = 5;
 
 void main() {
   // Copy the input to the fragment shader

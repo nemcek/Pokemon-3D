@@ -15,20 +15,24 @@
 #include "src/objects/Light.hpp"
 #include "src/wrappers/MeshWrapper.hpp"
 #include "src/gui/GuiRenderer.hpp"
+#include "src/skybox/SkyboxRenderer.hpp"
 
 namespace nsMaterRenderer {
 
     class MasterRenderer {
     private:
-        glm::vec3 skyColor = glm::vec3(0.5f, 0.5f, 0.5f);
+        glm::vec3 skyColor = glm::vec3(0.5444f, 0.62f, 0.69f);
+        glm::vec3 fogColor = glm::vec3(0.5444f, 0.62f, 0.69f);
 
         StaticShader *staticShader;
         GroundShader *groundShader;
         GuiShader *guiShader;
+        SkyboxShader *skyboxShader;
 
         nsMeshRenderer::MeshRenderer *renderer;
         GroundRenderer *groundRenderer;
         GuiRenderer *guiRenderer;
+        SkyboxRenderer *skyboxRenderer;
 
         std::map<TexturedModel, std::list<Mesh>> meshesMap;
         std::vector<Mesh> meshes;
@@ -39,7 +43,7 @@ namespace nsMaterRenderer {
         void prepare();
     public:
 
-        MasterRenderer(nsMeshRenderer::MeshRenderer *renderer, GroundRenderer *groundRenderer, GuiRenderer *guiRenderer);
+        MasterRenderer(nsMeshRenderer::MeshRenderer *renderer, GroundRenderer *groundRenderer, GuiRenderer *guiRenderer, SkyboxRenderer *skyboxRenderer);
         void clean();
         void render(glm::mat4 projection, glm::mat4 camera, std::vector<Light *> lights);
         void processMesh(Mesh *mesh);

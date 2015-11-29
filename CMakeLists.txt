@@ -65,6 +65,7 @@ file(GLOB pokemon_wrappers "src/wrappers/*.cpp")
 file(GLOB pokemon_extensions "src/extensions/*.cpp")
 file(GLOB pokemon_managers "src/managers/*.cpp")
 file(GLOB pokemon_gui "src/gui/*.cpp")
+file(GLOB pokemon_skybox "src/skybox/*.cpp")
 file(GLOB pokemon_shaders_programs "src/shaders/*.glsl")
 
 # Include header directories
@@ -96,7 +97,8 @@ add_library(libpokemon3d STATIC
         ${pokemon_wrappers}
         ${pokemon_extensions}
         ${pokemon_managers}
-        ${pokemon_gui})
+        ${pokemon_gui}
+        ${pokemon_skybox})
 
 target_link_libraries(libpokemon3d ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES})
 
@@ -118,7 +120,8 @@ set ( POKEMON3D_SRC
         ${pokemon_wrappers}
         ${pokemon_extensions}
         ${pokemon_managers}
-        ${pokemon_gui})
+        ${pokemon_gui}
+        ${pokemon_skybox})
 generate_shaders( POKEMON3D_SHADERS
         src/shaders/frag_ground.glsl
         src/shaders/vert_ground.glsl
@@ -127,7 +130,9 @@ generate_shaders( POKEMON3D_SHADERS
         src/shaders/frag_texture.glsl
         src/shaders/vert_texture.glsl
         src/shaders/vert_gui.glsl
-        src/shaders/frag_gui.glsl)
+        src/shaders/frag_gui.glsl
+        src/shaders/vert_skybox.glsl
+        src/shaders/frag_skybox.glsl)
 
 add_executable ( Pokemon3D ${POKEMON3D_SRC} ${POKEMON3D_SHADERS})
 
