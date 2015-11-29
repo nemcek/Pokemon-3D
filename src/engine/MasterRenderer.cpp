@@ -42,7 +42,7 @@ namespace nsMaterRenderer {
         this->groundRenderer->render(this->grounds, projection, camera);
         this->groundShader->stop();
 
-        this->skyboxRenderer->render(camera, projection, fogColor);
+        this->skyboxRenderer->render(this->skybox, camera, projection, fogColor);
 
         this->guiShader->start();
         this->guiRenderer->render(this->guis);
@@ -78,5 +78,9 @@ namespace nsMaterRenderer {
 
     void MasterRenderer::processGui(Gui *gui) {
         this->guis.push_back(gui);
+    }
+
+    void MasterRenderer::processSkybox(Skybox *skybox) {
+        this->skybox = skybox;
     }
 }

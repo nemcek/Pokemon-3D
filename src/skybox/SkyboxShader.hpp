@@ -13,24 +13,18 @@
 class SkyboxShader : public nsShaderProgram::ShaderProgram {
 
 private:
-    const float rotationSpeed = 0.3f;
-
-    float rotation = 0.0f;
-    float *delta;
-
     GLint projectionMatrix;
     GLint viewMatrix;
     GLint fogColor;
 
+    glm::vec3 rotationVec = glm::vec3(0.0f, 1.0f, 0.0f);
 public:
-    GLint cube;
-
-    SkyboxShader(float *delta);
+    SkyboxShader();
     void loadProjectionMatrix(glm::mat4 matrix);
-    void loadViewMatrix(glm::mat4 matrix);
+    void loadViewMatrix(glm::mat4 matrix, float rotation);
     void getAllUniformLocations() override;
     void loadFogColor(glm::vec3 color);
-
+    glm::mat4 rotate(glm::mat4 matrix, float rotation);
 };
 
 #endif //POKEMON3D_SKYBOXSHADER_HPP

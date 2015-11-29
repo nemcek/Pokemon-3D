@@ -39,6 +39,7 @@ namespace nsMaterRenderer {
         std::vector<nsGround::Ground> grounds;
         std::vector<MeshWrapper> wrappers;
         std::vector<Gui *> guis;
+        Skybox *skybox;
 
         void prepare();
     public:
@@ -50,6 +51,7 @@ namespace nsMaterRenderer {
         void processGround(nsGround::Ground *ground);
         void processWrapper(MeshWrapper *wrapper);
         void processGui(Gui *gui);
+        void processSkybox(Skybox *skybox);
     };
 
 }

@@ -25,6 +25,8 @@ void Scene::animate(float delta) {
         objectLoop->animate(this, delta);
     }
 
+    this->skybox->animate(delta);
+
     camera->move();
 }
 
@@ -49,4 +51,9 @@ void Scene::processWrapper(MeshWrapper *wrapper) {
 void Scene::processGui(Gui *gui) {
     this->guis.push_back(gui);
     this->masterRenderer->processGui(gui);
+}
+
+void Scene::processSkybox(Skybox *skybox) {
+    this->skybox = skybox;
+    this->masterRenderer->processSkybox(skybox);
 }

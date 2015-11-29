@@ -11,6 +11,7 @@
 #include "src/camera/ThirdPersonCamera.h"
 #include "src/wrappers/MeshWrapper.hpp"
 #include "src/gui/Gui.hpp"
+#include "src/skybox/Skybox.hpp"
 
 class Scene {
 
@@ -20,6 +21,8 @@ private:
     std::vector<Light *> lights;
     glm::mat4 projection;
     nsThirdPersonCamera::ThirdPersonCamera *camera;
+    Skybox *skybox;
+
 public:
     std::vector<Mesh *> objects;
     std::vector<MeshWrapper *> wrappers;
@@ -33,7 +36,7 @@ public:
     void render();
     void processWrapper(MeshWrapper *wrapper);
     void processGui(Gui *gui);
-
+    void processSkybox(Skybox *skybox);
 };
 
 #endif //POKEMON3D_SCENE_HPP

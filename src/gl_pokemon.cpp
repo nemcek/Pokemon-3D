@@ -430,7 +430,7 @@ int main() {
     glm::mat4 projection = glm::perspective(fov, GLfloat(SCREEN_WIDTH) / GLfloat(SCREEN_HEIGHT), 0.1f, 750.0f);
 
     std::vector<Light *> lights;
-    Light *light1 = new Light(glm::vec3(150.0f, 50.0f, 150.0f), glm::vec3(0.4f));
+    Light *light1 = new Light(glm::vec3(150.0f, 50.0f, 150.0f), glm::vec3(0.7f));
     StreetLamp *lamp1 = new StreetLamp(program_id, loader, glm::vec3(50.0f, 0.0f, 0.0f));
     StreetLamp *lamp2 = new StreetLamp(program_id, loader, glm::vec3(-100.0f, 0.0f, 50.0f));
     StreetLamp *lamp3 = new StreetLamp(program_id, loader, glm::vec3(-50.0f, 0.0f, -100.0f));
@@ -451,8 +451,10 @@ int main() {
 
     GuiRenderer *guiRenderer = new GuiRenderer(guiShader, guiLoader);
 
-    SkyboxShader *skyboxShader = new SkyboxShader(&delta);
-    SkyboxRenderer *skyboxRenderer = new SkyboxRenderer(loader, skyboxShader);
+    SkyboxShader *skyboxShader = new SkyboxShader();
+    SkyboxRenderer *skyboxRenderer = new SkyboxRenderer(skyboxShader);
+
+    Skybox *skybox = new Skybox(loader);
 
     nsMaterRenderer::MasterRenderer masterRenderer = nsMaterRenderer::MasterRenderer(renderer, groundRenderer, guiRenderer, skyboxRenderer);
 
@@ -470,6 +472,8 @@ int main() {
     scene->addObjectToScene(lamp1);
     scene->addObjectToScene(lamp2);
     scene->addObjectToScene(lamp3);
+
+    scene->processSkybox(skybox);
 
     for (std::vector<nsGround::Ground>::iterator it = grounds.begin(); it != grounds.end(); it++) {
         scene->addGroundToScene(&(*it));
