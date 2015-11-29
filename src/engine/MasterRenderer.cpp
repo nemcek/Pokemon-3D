@@ -62,6 +62,8 @@ namespace nsMaterRenderer {
     void MasterRenderer::clean() {
         this->staticShader->clean();
         this->groundShader->clean();
+        this->guiShader->clean();
+        this->skyboxShader->clean();
     }
 
     void MasterRenderer::processMesh(Mesh *mesh) {
@@ -73,7 +75,7 @@ namespace nsMaterRenderer {
     }
 
     void MasterRenderer::processWrapper(MeshWrapper *wrapper) {
-        this->wrappers.push_back(*wrapper);
+        this->wrappers.push_back(wrapper);
     }
 
     void MasterRenderer::processGui(Gui *gui) {

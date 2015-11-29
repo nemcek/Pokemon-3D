@@ -7,10 +7,11 @@
 
 #include "src/objects/MainCharacter.h"
 #include "src/managers/InputManager.hpp"
+#include "src/camera/Camera.hpp"
 
 namespace nsThirdPersonCamera {
 
-    class ThirdPersonCamera {
+    class ThirdPersonCamera : public Camera {
 
     private:
 
@@ -32,8 +33,8 @@ namespace nsThirdPersonCamera {
 
     public:
         ThirdPersonCamera(MovableCharacter *movableCharacter, GLFWwindow * window, InputManager *inputManaget);
-        void move();
-        glm::mat4 getViewMatrix();
+        void move() override;
+        glm::mat4 getViewMatrix() override;
         void setFollowTarget(MovableCharacter *movableCharacter);
 
     };

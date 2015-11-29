@@ -28,7 +28,7 @@ namespace nsMeshRenderer {
         MeshRenderer(StaticShader *shader);
         void render(std::vector<Mesh> meshes, glm::mat4 projection, glm::mat4 view);
         void render(Mesh *mesh, glm::mat4 projection, glm::mat4 view);
-        void render(std::vector<MeshWrapper> wrappers, glm::mat4 projection, glm::mat4 matrix);
+        void render(std::vector<MeshWrapper *> wrappers, glm::mat4 projection, glm::mat4 matrix);
 
     };
 }

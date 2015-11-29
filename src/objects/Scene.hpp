@@ -5,6 +5,8 @@
 #ifndef POKEMON3D_SCENE_HPP
 #define POKEMON3D_SCENE_HPP
 
+#include <list>
+
 #include "src/objects/Mesh.h"
 #include "src/objects/Ground.hpp"
 #include "src/engine/MasterRenderer.hpp"
@@ -12,6 +14,7 @@
 #include "src/wrappers/MeshWrapper.hpp"
 #include "src/gui/Gui.hpp"
 #include "src/skybox/Skybox.hpp"
+#include "src/camera/Camera.hpp"
 
 class Scene {
 
@@ -20,23 +23,32 @@ private:
     nsMaterRenderer::MasterRenderer *masterRenderer;
     std::vector<Light *> lights;
     glm::mat4 projection;
-    nsThirdPersonCamera::ThirdPersonCamera *camera;
+    Camera *camera;
     Skybox *skybox;
 
 public:
     std::vector<Mesh *> objects;
+    std::vector<MeshPtr> objects2;
     std::vector<MeshWrapper *> wrappers;
     std::vector<Gui *> guis;
 
+    Scene();
     Scene(nsMaterRenderer::MasterRenderer *masterRenderer, std::vector<Light *> lights, glm::mat4 projection,
-          nsThirdPersonCamera::ThirdPersonCamera *camera);
-    void addObjectToScene(Mesh *mesh);
-    void addGroundToScene(nsGround::Ground *ground);
+          Camera *camera);
+    void loadObject(Mesh *mesh);
+    void loadObject(MeshPtr meshPtr);
+    void loadGround(nsGround::Ground *ground);
     void animate(float delta);
     void render();
-    void processWrapper(MeshWrapper *wrapper);
-    void processGui(Gui *gui);
-    void processSkybox(Skybox *skybox);
+    void clean();
+    void loadWrapper(MeshWrapper *wrapper);
+    void loadGui(Gui *gui);
+    void loadSkybox(Skybox *skybox);
+    void loadMasterRenderer(nsMaterRenderer::MasterRenderer *masterRenderer);
+    void loadLights(std::vector<Light *> lights);
+    void loadLight(Light *light);
+    void loadCamera(Camera *camera);
+    void loadProjection(glm::mat4 projection);
 };
 
 #endif //POKEMON3D_SCENE_HPP

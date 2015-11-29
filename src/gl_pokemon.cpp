@@ -33,6 +33,7 @@
 #include "src/gui/Healthbar.hpp"
 #include "src/objects/StreetLamp.hpp"
 #include "src/skybox/SkyboxRenderer.hpp"
+#include "src/managers/SceneManager.hpp"
 
 int SCREEN_WIDTH = 1600;
 int SCREEN_HEIGHT = 900;
@@ -222,18 +223,18 @@ int health = 100;
 float oneHealthPortion = -1;
 void OnKeyPress(GLFWwindow* window, int key, int scancode, int action, int mods) {
     inputManager->onKeyPress(window, key, scancode, action, mods);
-
-    if (key == GLFW_KEY_C && action == GLFW_PRESS) {
-        personCam->setFollowTarget(movableCharacters[++movableCharacterIndex % movableCharacters.size()]);
-    }
-
-    if (key == GLFW_KEY_T && action == GLFW_PRESS) {
-        healthbar->takeDamage(1);
-    }
-
-    if (key == GLFW_KEY_Y && action == GLFW_PRESS) {
-        healthbar->takeDamage(2);
-    }
+//
+//    if (key == GLFW_KEY_C && action == GLFW_PRESS) {
+//        personCam->setFollowTarget(movableCharacters[++movableCharacterIndex % movableCharacters.size()]);
+//    }
+//
+//    if (key == GLFW_KEY_T && action == GLFW_PRESS) {
+//        healthbar->takeDamage(1);
+//    }
+//
+//    if (key == GLFW_KEY_Y && action == GLFW_PRESS) {
+//        healthbar->takeDamage(2);
+//    }
 }
 
 // Mouse move event handler
@@ -325,7 +326,7 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Try to create a window
-    auto window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Pokemon 3D", glfwGetPrimaryMonitor(), NULL);
+    GLFWwindow *window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Pokemon 3D", glfwGetPrimaryMonitor(), NULL);
     if (window == NULL) {
         std::cerr << "Failed to open GLFW window, your graphics card is probably only capable of OpenGL 2.1" << std::endl;
         glfwTerminate();
@@ -350,141 +351,150 @@ int main() {
 
     inputManager = new InputManager(SCREEN_WIDTH, SCREEN_HEIGHT);
     createLoadingScreen("models/textures/LoadingScreen.tga", window);
-
-    // Load shaders
-    StaticShader staticShader = StaticShader();
-    GroundShader groundShader = GroundShader();
-    Loader *loader = new Loader(staticShader.programId);
-    GLuint program_id = staticShader.programId;
-
-    MainCharacter *mainCharacter = new MainCharacter(
-            program_id,
-            loader,
-            "models/objects/Trainer.obj",
-            "models/textures/Trainer.tga",
-            glm::vec3(0.0f),
-            0.0f, 180.0f, 0.0f, 0.1f, 0.2f, 50.0f,
-            inputManager
-    );
-    meshes.push_back(*mainCharacter);
-    personCam = new nsThirdPersonCamera::ThirdPersonCamera(mainCharacter, window, inputManager);
-    movableCharacters.push_back(mainCharacter);
-
-    Terrain pokecenter = Terrain(
-            program_id,
-            loader,
-            "models/objects/Pokecenter.obj",
-            "models/textures/Pokecenter.tga",
-            glm::vec3(30.0f, 0.0f, -50.0f),
-            0.0f, 180.0f, 0.0f, 20.0f, 1.0f, 50.0f
-    );
-    meshes.push_back(pokecenter);
-
-    OtherCharacter squirle = OtherCharacter(
-            program_id,
-            loader,
-            "models/objects/Squirtle.obj",
-            "models/textures/Squirtle.tga",
-            glm::vec3(-20.0f, 0.0f, -24.0f),
-            0.0f, 0.0f, 0.0f, 0.15f
-    );
-    meshes.push_back(squirle);
-    movableCharacters.push_back(&squirle);
-
-    Terrain pikachu = Terrain(
-            program_id,
-            loader,
-            "models/objects/Pikachu.obj",
-            "models/textures/Pikachu.tga",
-            glm::vec3(5.0f, 0.0f, -100.0f),
-            0.0f, 0.0f, 0.0f, 0.15f
-    );
-    meshes.push_back(pikachu);
-
-    TerrainTexture *backgroundTexture = new TerrainTexture(loadTexture("models/textures/Ground_grass3.tga"));
-    TerrainTexture *rTexture = new TerrainTexture(loadTexture("models/textures/Ground.tga"));
-    TerrainTexture *gTexture = new TerrainTexture(loadTexture("models/textures/GrassFlowers.tga"));
-    TerrainTexture *bTexture = new TerrainTexture(loadTexture("models/textures/Path.tga"));
-    TerrainTexture *blendMap = new TerrainTexture(loadTexture("models/textures/BlendMap.tga"));
-
-    TerrainTexturePack *texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
-    MeshWrapper *meshWrapper = new MeshWrapper(program_id, loader, "models/objects/Tree2.obj", "models/textures/Tree2.tga", 300,
-                                    glm::vec3(50.0f, 75.0f, 1.0f));
-    MeshWrapper *meshWrapper2 = new MeshWrapper(program_id, loader, "models/objects/Tree.obj", "models/textures/Tree.tga", 300,
-                                    glm::vec3(4.0f, 2.0f, 100.f));
-
-    std::vector<nsGround::Ground> grounds;
-    grounds.push_back(nsGround::Ground(program_id, 0, 0, "models/textures/Ground_grass3.tga", texturePack, blendMap));
-    grounds.push_back(nsGround::Ground(program_id, 1, 0, "models/textures/Ground_grass3.tga", texturePack, blendMap));
-    grounds.push_back(nsGround::Ground(program_id, 0, 1, "models/textures/Ground_grass3.tga", texturePack, blendMap));
-    grounds.push_back(nsGround::Ground(program_id, 1, 1, "models/textures/Ground_grass3.tga", texturePack, blendMap));
-
+    SceneManager *sceneManager = new SceneManager(window, inputManager);
+//    SceneManager *sceneManager = new SceneManager(window);
+//    // Load shaders
+//    StaticShader staticShader = StaticShader();
+//    GroundShader groundShader = GroundShader();
+//    Loader *loader = new Loader(staticShader.programId);
+//    GLuint program_id = staticShader.programId;
+//
+//    MainCharacter *mainCharacter = new MainCharacter(
+//            program_id,
+//            loader,
+//            "models/objects/Trainer.obj",
+//            "models/textures/Trainer.tga",
+//            glm::vec3(0.0f),
+//            0.0f, 180.0f, 0.0f, 0.1f, 0.2f, 50.0f,
+//            inputManager
+//    );
+////    meshes.push_back(*mainCharacter);
+//    personCam = new nsThirdPersonCamera::ThirdPersonCamera(mainCharacter, window, inputManager);
+////    movableCharacters.push_back(mainCharacter);
+//
+//    Terrain pokecenter = Terrain(
+//            program_id,
+//            loader,
+//            "models/objects/Pokecenter.obj",
+//            "models/textures/Pokecenter.tga",
+//            glm::vec3(30.0f, 0.0f, -50.0f),
+//            0.0f, 180.0f, 0.0f, 20.0f, 1.0f, 50.0f
+//    );
+////    meshes.push_back(pokecenter);
+//
+//    OtherCharacter squirle = OtherCharacter(
+//            program_id,
+//            loader,
+//            "models/objects/Squirtle.obj",
+//            "models/textures/Squirtle.tga",
+//            glm::vec3(-20.0f, 0.0f, -24.0f),
+//            0.0f, 0.0f, 0.0f, 0.15f
+//    );
+////    meshes.push_back(squirle);
+////    movableCharacters.push_back(&squirle);
+//
+//    Terrain pikachu = Terrain(
+//            program_id,
+//            loader,
+//            "models/objects/Pikachu.obj",
+//            "models/textures/Pikachu.tga",
+//            glm::vec3(5.0f, 0.0f, -100.0f),
+//            0.0f, 0.0f, 0.0f, 0.15f
+//    );
+////    meshes.push_back(pikachu);
+//
+//    TerrainTexture *backgroundTexture = new TerrainTexture(loader->loadTexture("models/textures/Ground_grass3.tga"));
+//    TerrainTexture *rTexture = new TerrainTexture(loader->loadTexture("models/textures/Ground.tga"));
+//    TerrainTexture *gTexture = new TerrainTexture(loader->loadTexture("models/textures/GrassFlowers.tga"));
+//    TerrainTexture *bTexture = new TerrainTexture(loader->loadTexture("models/textures/Path.tga"));
+//    TerrainTexture *blendMap = new TerrainTexture(loader->loadTexture("models/textures/BlendMap.tga"));
+//
+//    TerrainTexturePack *texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
+//    MeshWrapper *meshWrapper = new MeshWrapper(program_id, loader, "models/objects/Tree2.obj", "models/textures/Tree2.tga", 300,
+//                                    glm::vec3(50.0f, 75.0f, 1.0f));
+//    MeshWrapper *meshWrapper2 = new MeshWrapper(program_id, loader, "models/objects/Tree.obj", "models/textures/Tree.tga", 300,
+//                                    glm::vec3(4.0f, 2.0f, 100.f));
+//
+//    std::vector<nsGround::Ground> grounds;
+//    grounds.push_back(nsGround::Ground(program_id, 0, 0, "models/textures/Ground_grass3.tga", texturePack, blendMap));
+//    grounds.push_back(nsGround::Ground(program_id, 1, 0, "models/textures/Ground_grass3.tga", texturePack, blendMap));
+//    grounds.push_back(nsGround::Ground(program_id, 0, 1, "models/textures/Ground_grass3.tga", texturePack, blendMap));
+//    grounds.push_back(nsGround::Ground(program_id, 1, 1, "models/textures/Ground_grass3.tga", texturePack, blendMap));
+//
     // Add keyboard and mouse handlers
     glfwSetKeyCallback(window, OnKeyPress);
     glfwSetCursorPosCallback(window, OnMouseMove);
     glfwSetScrollCallback(window, OnMouseScroll);
     glfwSetMouseButtonCallback(window, OnMouseButtonClick);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL); // Hide mouse cursor
-
-    lastFrameTime = getCurrentTime();
-    glm::mat4 projection = glm::perspective(fov, GLfloat(SCREEN_WIDTH) / GLfloat(SCREEN_HEIGHT), 0.1f, 750.0f);
-
-    std::vector<Light *> lights;
-    Light *light1 = new Light(glm::vec3(150.0f, 50.0f, 150.0f), glm::vec3(0.7f));
-    StreetLamp *lamp1 = new StreetLamp(program_id, loader, glm::vec3(50.0f, 0.0f, 0.0f));
-    StreetLamp *lamp2 = new StreetLamp(program_id, loader, glm::vec3(-100.0f, 0.0f, 50.0f));
-    StreetLamp *lamp3 = new StreetLamp(program_id, loader, glm::vec3(-50.0f, 0.0f, -100.0f));
-
-    lights.push_back(light1);
-    lights.push_back(lamp1->light);
-    lights.push_back(lamp2->light);
-    lights.push_back(lamp3->light);
-
-    nsMeshRenderer::MeshRenderer *renderer = new nsMeshRenderer::MeshRenderer(&staticShader);
-    GroundRenderer *groundRenderer = new GroundRenderer(&groundShader);
-
-    GuiShader *guiShader = new GuiShader();
-    Loader *guiLoader = new Loader(guiShader->programId);
-
-    healthbar = new Healthbar("models/textures/HealthbarFill.tga", "models/textures/Healthbar.tga", guiLoader, 100);
-    std::vector<Gui *> guis;
-
-    GuiRenderer *guiRenderer = new GuiRenderer(guiShader, guiLoader);
-
-    SkyboxShader *skyboxShader = new SkyboxShader();
-    SkyboxRenderer *skyboxRenderer = new SkyboxRenderer(skyboxShader);
-
-    Skybox *skybox = new Skybox(loader);
-
-    nsMaterRenderer::MasterRenderer masterRenderer = nsMaterRenderer::MasterRenderer(renderer, groundRenderer, guiRenderer, skyboxRenderer);
-
-    Scene *scene = new Scene(&masterRenderer, lights, projection, personCam);
-
-    scene->processWrapper(meshWrapper);
-    scene->processWrapper(meshWrapper2);
-
-    scene->processGui(healthbar);
-
-    scene->addObjectToScene(mainCharacter);
-    scene->addObjectToScene(&pokecenter);
-    scene->addObjectToScene(&pikachu);
-    scene->addObjectToScene(&squirle);
-    scene->addObjectToScene(lamp1);
-    scene->addObjectToScene(lamp2);
-    scene->addObjectToScene(lamp3);
-
-    scene->processSkybox(skybox);
-
-    for (std::vector<nsGround::Ground>::iterator it = grounds.begin(); it != grounds.end(); it++) {
-        scene->addGroundToScene(&(*it));
-    }
+//
+//    lastFrameTime = getCurrentTime();
+//    glm::mat4 projection = glm::perspective(fov, GLfloat(SCREEN_WIDTH) / GLfloat(SCREEN_HEIGHT), 0.1f, 750.0f);
+//
+//    std::vector<Light *> lights;
+//    Light *light1 = new Light(glm::vec3(150.0f, 50.0f, 150.0f), glm::vec3(0.7f));
+//    StreetLamp *lamp1 = new StreetLamp(program_id, loader, glm::vec3(50.0f, 0.0f, 0.0f));
+//    StreetLamp *lamp2 = new StreetLamp(program_id, loader, glm::vec3(-100.0f, 0.0f, 50.0f));
+//    StreetLamp *lamp3 = new StreetLamp(program_id, loader, glm::vec3(-50.0f, 0.0f, -100.0f));
+//
+//    lights.push_back(light1);
+//    lights.push_back(lamp1->light);
+//    lights.push_back(lamp2->light);
+//    lights.push_back(lamp3->light);
+//
+//    nsMeshRenderer::MeshRenderer *renderer = new nsMeshRenderer::MeshRenderer(&staticShader);
+//    GroundRenderer *groundRenderer = new GroundRenderer(&groundShader);
+//
+//    GuiShader *guiShader = new GuiShader();
+//    Loader *guiLoader = new Loader(guiShader->programId);
+//
+//    healthbar = new Healthbar("models/textures/HealthbarFill.tga", "models/textures/Healthbar.tga", guiLoader, 100);
+//    std::vector<Gui *> guis;
+//
+//    GuiRenderer *guiRenderer = new GuiRenderer(guiShader, guiLoader);
+//
+//    SkyboxShader *skyboxShader = new SkyboxShader();
+//    SkyboxRenderer *skyboxRenderer = new SkyboxRenderer(skyboxShader);
+//
+//    Skybox *skybox = new Skybox(loader);
+//
+//    nsMaterRenderer::MasterRenderer *masterRenderer = new nsMaterRenderer::MasterRenderer(renderer, groundRenderer, guiRenderer, skyboxRenderer);
+//
+////    Scene *scene = new Scene(&masterRenderer, lights, projection, personCam);
+//
+//    Scene *scene = new Scene();
+//    scene->loadCamera(personCam);
+//    scene->loadProjection(projection);
+//    scene->loadLights(lights);
+//    scene->loadMasterRenderer(masterRenderer);
+//
+//    scene->loadWrapper(meshWrapper);
+//    scene->loadWrapper(meshWrapper2);
+//
+//    scene->loadGui(healthbar);
+//
+//    scene->loadObject(mainCharacter);
+//    scene->loadObject(&pokecenter);
+//    scene->loadObject(&pikachu);
+//    scene->loadObject(&squirle);
+//    scene->loadObject(lamp1);
+//    scene->loadObject(lamp2);
+//    scene->loadObject(lamp3);
+//
+//    scene->loadSkybox(skybox);
+//
+//    for (std::vector<nsGround::Ground>::iterator it = grounds.begin(); it != grounds.end(); it++) {
+//        scene->loadGround(&(*it));
+//    }
 
     while (!glfwWindowShouldClose(window)) {
 
         glfwPollEvents();
 
-        scene->animate(delta);
-        scene->render();
+//        scene->animate(delta);
+//        scene->render();
+        sceneManager->animate(delta);
+        sceneManager->render();
 
         // Display result
         glfwSwapBuffers(window);
@@ -495,8 +505,8 @@ int main() {
     }
 
     // Clean up
-    masterRenderer.clean();
-    guiRenderer->clean();
+    sceneManager->clean();
+//    scene->clean();
     glfwTerminate();
 
     return EXIT_SUCCESS;

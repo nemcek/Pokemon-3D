@@ -25,9 +25,9 @@ namespace nsMeshRenderer {
         unbindMesh();
     }
 
-    void MeshRenderer::render(std::vector<MeshWrapper> wrappers, glm::mat4 projection, glm::mat4 view) {
-        for (std::vector<MeshWrapper>::iterator it = wrappers.begin(); it != wrappers.end(); it++) {
-            this->render(&(*it), projection, view);
+    void MeshRenderer::render(std::vector<MeshWrapper *> wrappers, glm::mat4 projection, glm::mat4 view) {
+        for (std::vector<MeshWrapper *>::iterator it = wrappers.begin(); it != wrappers.end(); it++) {
+            this->render(*it, projection, view);
         }
     }
 

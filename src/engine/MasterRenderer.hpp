@@ -37,7 +37,7 @@ namespace nsMaterRenderer {
         std::map<TexturedModel, std::list<Mesh>> meshesMap;
         std::vector<Mesh> meshes;
         std::vector<nsGround::Ground> grounds;
-        std::vector<MeshWrapper> wrappers;
+        std::vector<MeshWrapper *> wrappers;
         std::vector<Gui *> guis;
         Skybox *skybox;
 

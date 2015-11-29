@@ -2,7 +2,9 @@
 #include <loaders/tiny_obj_loader.h>
 #include "src/objects/Mesh.h"
 
-Mesh::Mesh(GLuint program_id, const std::string &image_file) {
+Mesh::Mesh(GLuint program_id, const std::string &image_file)
+        : image_name(image_file),
+          object_name(""){
     this->program_id = program_id;
     this->texturedModel = new TexturedModel();
     this->texturedModel->rawModel = new RawModel();
@@ -17,7 +19,9 @@ Mesh::Mesh(GLuint program_id, const std::string &image_file) {
     this->radius = calculateRadius();
 }
 
-Mesh::Mesh(GLuint program_id, Loader *loader, const std::string &obj_file ,const std::string &image_file) {
+Mesh::Mesh(GLuint program_id, Loader *loader, const std::string &obj_file ,const std::string &image_file)
+        : image_name(image_file),
+          object_name(obj_file) {
     this->program_id = program_id;
     this->texturedModel = new TexturedModel();
     this->loader = loader;
@@ -33,11 +37,12 @@ Mesh::Mesh(GLuint program_id, Loader *loader, const std::string &obj_file ,const
     this->rotZ = 0.0f;
     this->scale = 1.0f;
     this->radius = calculateRadius();
-
 }
 
 Mesh::Mesh(GLuint program_id, Loader *loader, const std::string & obj_file, const std::string &image_file, glm::vec3 position, float rotX, float rotY, float rotZ,
-           float scale)  {
+           float scale)
+        : image_name(image_file),
+          object_name(obj_file) {
     this->program_id = program_id;
 
     this->texturedModel = new TexturedModel();
@@ -53,11 +58,12 @@ Mesh::Mesh(GLuint program_id, Loader *loader, const std::string & obj_file, cons
     this->rotZ = rotZ;
     this->scale = scale;
     this->radius = calculateRadius();
-
 }
 
 Mesh::Mesh(GLuint program_id, Loader *loader, const std::string & obj_file, const std::string &image_file, glm::vec3 position, float rotX, float rotY, float rotZ,
-           float scale, float reflectivity, float shineDamper)  {
+           float scale, float reflectivity, float shineDamper)
+        : image_name(image_file),
+          object_name(obj_file) {
     this->program_id = program_id;
 
     this->texturedModel = new TexturedModel();

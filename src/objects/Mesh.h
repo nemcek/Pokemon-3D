@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <memory>
 
 #include <GL/glew.h>
 #include <glm/mat4x4.hpp>
@@ -35,6 +36,8 @@ private:
     float calculateRadius();
     center_t calculateCenter();
     Loader *loader;
+    const std::string &image_name;
+    const std::string &object_name;
 
 protected:
 
@@ -66,5 +69,7 @@ public:
     tinyobj::center_point_t center_point;
     glm::vec3 position;
 };
+
+typedef std::shared_ptr<Mesh> MeshPtr;
 
 #endif
