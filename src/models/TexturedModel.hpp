@@ -5,6 +5,8 @@
 #ifndef POKEMON3D_TEXTUREDMODEL_H
 #define POKEMON3D_TEXTUREDMODEL_H
 
+#include <memory>
+
 #include "src/textures/Texture.hpp"
 #include "src/models/RawModel.hpp"
 #include <glm/glm.hpp>
@@ -16,12 +18,15 @@ private:
 
 public:
     glm::mat4 matrix;
-    RawModel *rawModel;
-    nsTexture::Texture *texture;
+    static RawModelPtr rawModel;
+//    RawModel *rawModel;
+    static TexturePtr texture;
+//    nsTexture::Texture *texture;
 
     TexturedModel();
 
 };
 
+typedef std::shared_ptr<TexturedModel> TexturedModelPtr;
 
 #endif //POKEMON3D_TEXTUREDMODEL_H

@@ -21,4 +21,6 @@ public:
     void animate(Scene *scene, float delta) override;
 };
 
+typedef std::shared_ptr<Terrain> TerrainPtr;
+
 #endif //PPGSO_ENVIROMENT_H

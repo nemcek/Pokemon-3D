@@ -10,8 +10,8 @@ Loader::Loader(GLuint programId) {
     this->programId = programId;
 }
 
-RawModel* Loader::initLoading() {
-    RawModel *rawModel = new RawModel();
+RawModelPtr Loader::initLoading() {
+    auto rawModel = RawModelPtr(new RawModel());
 
     // Activate the program
     glUseProgram(this->programId);
@@ -28,9 +28,9 @@ void Loader::clean() {
     glBindVertexArray(NULL);
 }
 
-RawModel* Loader::load(std::vector<GLfloat> vertex_buffer, std::vector<GLfloat> texcoord_buffer, std::vector<GLuint> index_data,
+RawModelPtr Loader::load(std::vector<GLfloat> vertex_buffer, std::vector<GLfloat> texcoord_buffer, std::vector<GLuint> index_data,
                       std::vector<GLfloat> normals_data) {
-    RawModel *rawModel = initLoading();
+    auto rawModel = initLoading();
 
     setVertexPositions(rawModel, vertex_buffer);
     setTextureCoords(rawModel, texcoord_buffer, 2);
@@ -42,8 +42,8 @@ RawModel* Loader::load(std::vector<GLfloat> vertex_buffer, std::vector<GLfloat> 
     return rawModel;
 }
 
-RawModel* Loader::load(std::vector<GLfloat> vertex_buffer, std::vector<GLfloat> texcoord_buffer, int size) {
-    RawModel *rawModel = initLoading();
+RawModelPtr Loader::load(std::vector<GLfloat> vertex_buffer, std::vector<GLfloat> texcoord_buffer, int size) {
+    auto rawModel = initLoading();
 
     setVertexPositions(rawModel, vertex_buffer, size);
     setTextureCoords(rawModel, texcoord_buffer, size);
@@ -53,11 +53,11 @@ RawModel* Loader::load(std::vector<GLfloat> vertex_buffer, std::vector<GLfloat> 
     return rawModel;
 }
 
-void Loader::setVertexPositions(RawModel *rawModel, std::vector<GLfloat> vertex_buffer) {
+void Loader::setVertexPositions(RawModelPtr rawModel, std::vector<GLfloat> vertex_buffer) {
     setVertexPositions(rawModel, vertex_buffer, 3);
 }
 
-void Loader::setVertexPositions(RawModel *rawModel, std::vector<GLfloat> vertex_buffer, int size) {
+void Loader::setVertexPositions(RawModelPtr rawModel, std::vector<GLfloat> vertex_buffer, int size) {
     // Generate and upload a buffer with vertex positions to GPU
     glGenBuffers(1, &rawModel->vbo);
     glBindBuffer(GL_ARRAY_BUFFER, rawModel->vbo);
@@ -70,7 +70,7 @@ void Loader::setVertexPositions(RawModel *rawModel, std::vector<GLfloat> vertex_
 
 }
 
-void Loader::setTextureCoords(RawModel *rawModel, std::vector<GLfloat> texcoord_buffer, int size) {
+void Loader::setTextureCoords(RawModelPtr rawModel, std::vector<GLfloat> texcoord_buffer, int size) {
     // Generate and upload a buffer with texture coordinates to GPU
     glGenBuffers(1, &rawModel->tbo);
     glBindBuffer(GL_ARRAY_BUFFER, rawModel->tbo);
@@ -86,14 +86,14 @@ void Loader::setTextureCoords(RawModel *rawModel, std::vector<GLfloat> texcoord_
     }
 }
 
-void Loader::setIndices(RawModel *rawModel, std::vector<GLuint> index_data) {
+void Loader::setIndices(RawModelPtr rawModel, std::vector<GLuint> index_data) {
     // Generate and upload a buffer with indices to GPU
     glGenBuffers(1, &rawModel->ibo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rawModel->ibo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, index_data.size() * sizeof(GLuint), index_data.data(), GL_STATIC_DRAW);
 }
 
-void Loader::setNormals(RawModel *rawModel, std::vector<GLfloat> normals_data) {
+void Loader::setNormals(RawModelPtr rawModel, std::vector<GLfloat> normals_data) {
     glGenBuffers(1, &rawModel->nbo);
     glBindBuffer(GL_ARRAY_BUFFER, rawModel->nbo);
     glBufferData(GL_ARRAY_BUFFER, normals_data.size() * sizeof(GLfloat), normals_data.data(), GL_STATIC_DRAW );

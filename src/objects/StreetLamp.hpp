@@ -12,9 +12,12 @@
 class StreetLamp : public Terrain {
 
 public:
-    Light *light;
+    static LightPtr light;
+//    Light *light;
     StreetLamp(Loader *loader, glm::vec3 position);
 
 };
+
+typedef std::shared_ptr<StreetLamp> StreetLampPtr;
 
 #endif //POKEMON3D_STREETLAMP_HPP

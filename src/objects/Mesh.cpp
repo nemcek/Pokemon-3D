@@ -5,8 +5,8 @@
 Mesh::Mesh(const std::string &image_file)
         : image_name(image_file),
           object_name(""){
-    this->texturedModel = new TexturedModel();
-    this->texturedModel->rawModel = new RawModel();
+    this->texturedModel = TexturedModelPtr(new TexturedModel());
+    this->texturedModel->rawModel = RawModelPtr(new RawModel());
 
     this->initTexture(image_file);
 
@@ -21,7 +21,7 @@ Mesh::Mesh(const std::string &image_file)
 Mesh::Mesh(Loader *loader, const std::string &obj_file ,const std::string &image_file)
         : image_name(image_file),
           object_name(obj_file) {
-    this->texturedModel = new TexturedModel();
+    this->texturedModel = TexturedModelPtr(new TexturedModel());
     this->loader = loader;
 
     //this->texturedModel->rawModel = new RawModel();
@@ -42,7 +42,7 @@ Mesh::Mesh(Loader *loader, const std::string & obj_file, const std::string &imag
         : image_name(image_file),
           object_name(obj_file) {
 
-    this->texturedModel = new TexturedModel();
+    this->texturedModel = TexturedModelPtr(new TexturedModel());
     this->loader = loader;
 
     //this->texturedModel->rawModel = new RawModel();
@@ -62,7 +62,7 @@ Mesh::Mesh(Loader *loader, const std::string & obj_file, const std::string &imag
         : image_name(image_file),
           object_name(obj_file) {
 
-    this->texturedModel = new TexturedModel();
+    this->texturedModel = TexturedModelPtr(new TexturedModel());
     this->loader = loader;
 
     //this->texturedModel->rawModel = new RawModel();
@@ -108,7 +108,7 @@ void Mesh::initTexture(const std::string &image_file) {
     glGenTextures(1, &texture_id);
     glBindTexture(GL_TEXTURE_2D, texture_id);
 
-    this->texturedModel->texture = new nsTexture::Texture(texture_id);
+    this->texturedModel->texture = new Texture(texture_id);
 
     // Set mipmaps
     glGenerateMipmap(GL_TEXTURE_2D);
@@ -187,3 +187,7 @@ void Mesh::setRotation(glm::vec3 rotation) {
 void Mesh::setScale(float scale) {
     this->scale = scale;
 }
+
+// shared resources
+TexturedModelPtr Mesh::texturedModel;
+LoaderPtr Mesh::loader;

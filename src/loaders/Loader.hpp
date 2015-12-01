@@ -5,6 +5,8 @@
 #ifndef POKEMON3D_LOADER_HPP
 #define POKEMON3D_LOADER_HPP
 
+#include <memory>
+
 #include <vector>
 #include <stdio.h>
 #include <GL/glew.h>
@@ -17,21 +19,23 @@ private:
 
     GLuint programId;
 
-    void setVertexPositions(RawModel *rawModel, std::vector<GLfloat> vertex_buffer);
-    void setVertexPositions(RawModel *rawModel, std::vector<GLfloat> vertex_buffer, int size);
-    void setTextureCoords(RawModel *rawModel, std::vector<GLfloat> texcoord_buffer, int size);
-    void setIndices(RawModel *rawModel, std::vector<GLuint> index_data);
-    void setNormals(RawModel *rawModel, std::vector<GLfloat> normals_data);
-    RawModel* initLoading();
+    void setVertexPositions(RawModelPtr rawModel, std::vector<GLfloat> vertex_buffer);
+    void setVertexPositions(RawModelPtr rawModel, std::vector<GLfloat> vertex_buffer, int size);
+    void setTextureCoords(RawModelPtr rawModel, std::vector<GLfloat> texcoord_buffer, int size);
+    void setIndices(RawModelPtr rawModel, std::vector<GLuint> index_data);
+    void setNormals(RawModelPtr rawModel, std::vector<GLfloat> normals_data);
+    RawModelPtr initLoading();
     void clean();
 
 public:
     Loader(GLuint programId);
-    RawModel* load(std::vector<GLfloat> vertex_buffer, std::vector<GLfloat> texcoord_buffer, std::vector<GLuint> index_data,
+    RawModelPtr load(std::vector<GLfloat> vertex_buffer, std::vector<GLfloat> texcoord_buffer, std::vector<GLuint> index_data,
                   std::vector<GLfloat> normals_data);
-    RawModel* load(std::vector<GLfloat> vertex_buffer, std::vector<GLfloat> texcoord_buffer, int size);
+    RawModelPtr load(std::vector<GLfloat> vertex_buffer, std::vector<GLfloat> texcoord_buffer, int size);
     GLuint loadTexture(const std::string &image_file);
     GLuint loadCubeMap(std::vector<std::string> files);
 };
+
+typedef std::shared_ptr<Loader> LoaderPtr;
 
 #endif //POKEMON3D_LOADER_HPP

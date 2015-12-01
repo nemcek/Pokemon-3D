@@ -8,3 +8,6 @@
 TexturedModel::TexturedModel() {
 }
 
+// shared resources
+RawModelPtr TexturedModel::rawModel;
+TexturePtr TexturedModel::texture;

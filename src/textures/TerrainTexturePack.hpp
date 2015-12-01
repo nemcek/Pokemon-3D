@@ -12,13 +12,20 @@ class TerrainTexturePack {
 private:
 
 public:
-    TerrainTexture *backgroundTexture;
-    TerrainTexture *rTexture;
-    TerrainTexture *gTexture;
-    TerrainTexture *bTexture;
+    static TerrainTexturePtr backgroundTexture;
+    static TerrainTexturePtr rTexture;
+    static TerrainTexturePtr gTexture;
+    static TerrainTexturePtr bTexture;
+
+//    TerrainTexture *backgroundTexture;
+//    TerrainTexture *rTexture;
+//    TerrainTexture *gTexture;
+//    TerrainTexture *bTexture;
 
     TerrainTexturePack(TerrainTexture *backgroundTexture, TerrainTexture *rTexture, TerrainTexture *gTexture,
                        TerrainTexture *bTexture);
 };
+
+typedef std::shared_ptr<TerrainTexturePack> TerrainTexturePack;
 
 #endif //POKEMON3D_TERRAINTEXTUREPACK_HPP

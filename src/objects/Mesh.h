@@ -35,7 +35,8 @@ class Mesh {
 private:
     float calculateRadius();
     center_t calculateCenter();
-    Loader *loader;
+    static LoaderPtr loader;
+//    Loader *loader;
     const std::string &image_name;
     const std::string &object_name;
 
@@ -53,7 +54,8 @@ public:
     float scale;
     float radius;
     glm::vec3 position;
-    TexturedModel *texturedModel;
+    static TexturedModelPtr texturedModel;
+//    TexturedModel *texturedModel;
 
     Mesh(const std::string &);
     Mesh(Loader *loader, const std::string &, const std::string &);

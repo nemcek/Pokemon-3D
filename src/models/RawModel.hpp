@@ -5,6 +5,8 @@
 #ifndef POKEMON3D_RAWMODEL_HPP
 #define POKEMON3D_RAWMODEL_HPP
 
+#include <memory>
+
 #include <GL/glew.h>
 
 class RawModel {
@@ -20,5 +22,7 @@ public:
     RawModel();
 
 };
+
+typedef std::shared_ptr<RawModel> RawModelPtr;
 
 #endif //POKEMON3D_RAWMODEL_HPP
