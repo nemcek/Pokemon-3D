@@ -6,6 +6,8 @@
 #define POKEMON3D_SCENEMANAGER_HPP
 
 #include "src/objects/Scene.hpp"
+#include "src/scenes/MainScene.hpp"
+#include "src/scenes/BattleScene.hpp"
 #include "src/objects/Terrain.h"
 #include "src/objects/OtherCharacter.hpp"
 #include "src/objects/StreetLamp.hpp"
@@ -14,19 +16,20 @@
 #include "src/objects/Ground.hpp"
 #include "src/objects/Light.hpp"
 #include "src/textures/TerrainTexturePack.hpp"
+#include "src/repository/PokemonRepository.hpp"
 
 class SceneManager {
 
 private:
 
-    std::vector<Mesh *> meshes;
+    std::vector<Terrain *> terrains;
     std::vector<nsGround::Ground *> grounds;
     StaticShader *staticShader;
     GroundShader *groundShader;
     Camera *camera;
     std::vector<TerrainTexture *> terrainTextures;
     TerrainTexturePack *terrainTexturePack;
-    std::vector<MeshWrapper *> wrappers;
+    std::vector<MeshWrapper *> trees;
     glm::mat4 projection;
     std::vector<StreetLamp *> lamps;
     nsMeshRenderer::MeshRenderer *meshRenderer;
@@ -40,19 +43,34 @@ private:
     SkyboxRenderer *skyboxRenderer;
     Skybox *skybox;
     nsMaterRenderer::MasterRenderer *masterRenderer;
-    Scene *currentScene;
+    MainCharacter *mainCharacter;
+    InputManager *inputManager;
 
-    float fov = 45.0f;
+    Scene *currentScene;
+    Scene *previousScene;
+    PokemonRepository *pokemonRepository;
+
     int screen_width;
     int screen_height;
 
-    Scene* initStartingScene(GLFWwindow *window, InputManager *inpuManager);
-
+    void initStartingScene();
+    void initPokemons(InputManager *inputManager);
+    void initGrounds(GLuint programId);
+    void initWrappers();
+    void initMainCharacter(InputManager *inputManager);
+    void initCamera(GLFWwindow *window, InputManager *inputManager);
+    void initSkybox(Loader *loader);
+    void initTerrain(Loader *loader);
+    void initShaders();
+    void initLoaders();
+    void initRenderers();
+    void init(GLFWwindow *window, InputManager *inputManager);
 public:
     SceneManager(GLFWwindow *window, InputManager *inputManager);
     void render();
     void animate(float delta);
     void clean();
+    void changeScene(SceneType sceneType);
 };
 
 #endif //POKEMON3D_SCENEMANAGER_HPP

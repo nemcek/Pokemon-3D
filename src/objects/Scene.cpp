@@ -20,10 +20,6 @@ void Scene::loadObject(Mesh *mesh) {
     this->objects.push_back(mesh);
 }
 
-void Scene::loadObject(MeshPtr meshPtr) {
-    this->objects2.push_back(meshPtr);
-}
-
 void Scene::loadGround(nsGround::Ground *ground) {
     this->grounds.push_back(ground);
 }
@@ -38,6 +34,10 @@ void Scene::animate(float delta) {
     camera->move();
 }
 
+void Scene::update() {
+    return;
+}
+
 void Scene::render() {
 
     for (auto meshLoop : this->objects) {
@@ -48,8 +48,12 @@ void Scene::render() {
         masterRenderer->processGround(groundLoop);
     }
 
-    for (auto mestPtrLoop : this->objects2) {
-        masterRenderer->processMesh(mestPtrLoop.get());
+    for (auto wrapperLoop : this->wrappers) {
+        masterRenderer->processWrapper(wrapperLoop);
+    }
+
+    for (auto guiLoop : this->guis) {
+        masterRenderer->processGui(guiLoop);
     }
 
     masterRenderer->render(this->projection, this->camera->getViewMatrix(), this->lights);
@@ -92,4 +96,10 @@ void Scene::loadCamera(Camera *camera) {
 
 void Scene::loadProjection(glm::mat4 projection) {
     this->projection = projection;
+}
+
+void Scene::loadGrounds(std::vector<nsGround::Ground *> grounds) {
+    for (auto groundLoop : grounds) {
+        loadGround(groundLoop);
+    }
 }

@@ -46,8 +46,9 @@ std::list<Mesh> meshes;
 InputManager *inputManager = NULL;
 
 std::vector<MovableCharacter *> movableCharacters;
+SceneManager *sceneManager;
 int movableCharacterIndex = 0;
-
+bool poll = true;
 float lastFrameTime;
 float delta;
 
@@ -223,6 +224,11 @@ int health = 100;
 float oneHealthPortion = -1;
 void OnKeyPress(GLFWwindow* window, int key, int scancode, int action, int mods) {
     inputManager->onKeyPress(window, key, scancode, action, mods);
+
+    if (key == GLFW_KEY_B && action == GLFW_PRESS) {
+        sceneManager->changeScene(SceneType::BATTLE_SCEEN);
+        poll = false;
+    }
 //
 //    if (key == GLFW_KEY_C && action == GLFW_PRESS) {
 //        personCam->setFollowTarget(movableCharacters[++movableCharacterIndex % movableCharacters.size()]);
@@ -312,6 +318,8 @@ GLint loadTexture(const std::string &file) {
 }
 
 int main() {
+    srand(time(NULL));
+
     // Initialize GLFW
     if (!glfwInit()) {
         std::cerr << "Failed to initialize GLFW!" << std::endl;
@@ -351,7 +359,7 @@ int main() {
 
     inputManager = new InputManager(SCREEN_WIDTH, SCREEN_HEIGHT);
     createLoadingScreen("models/textures/LoadingScreen.tga", window);
-    SceneManager *sceneManager = new SceneManager(window, inputManager);
+    sceneManager = new SceneManager(window, inputManager);
 //    SceneManager *sceneManager = new SceneManager(window);
 //    // Load shaders
 //    StaticShader staticShader = StaticShader();
@@ -491,11 +499,8 @@ int main() {
 
         glfwPollEvents();
 
-//        scene->animate(delta);
-//        scene->render();
         sceneManager->animate(delta);
         sceneManager->render();
-
         // Display result
         glfwSwapBuffers(window);
 
@@ -506,7 +511,6 @@ int main() {
 
     // Clean up
     sceneManager->clean();
-//    scene->clean();
     glfwTerminate();
 
     return EXIT_SUCCESS;

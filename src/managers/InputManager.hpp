@@ -29,6 +29,7 @@ public:
     bool isSPressed();
     bool isAPressed();
     bool isDPressed();
+    bool isTPressed();
     bool isRightMouseButtonPressed();
     bool isLeftMouseButtonPressed();
     void mouseButtonCallback( GLFWwindow * window, int button, int action, int mods );

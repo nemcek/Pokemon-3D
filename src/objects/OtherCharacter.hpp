@@ -18,9 +18,9 @@ private:
 
 public:
 
-    OtherCharacter(GLint, Loader *loader, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY,
+    OtherCharacter(Loader *loader, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY,
                     float rotZ, float scale);
-    OtherCharacter(GLint, Loader *loader, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY,
+    OtherCharacter(Loader *loader, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY,
                     float rotZ, float scale, float reflectivity, float shineDamper);
 
     void animate(Scene *scene, float delta) override;

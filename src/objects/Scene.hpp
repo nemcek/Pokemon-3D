@@ -16,21 +16,28 @@
 #include "src/skybox/Skybox.hpp"
 #include "src/camera/Camera.hpp"
 
+enum SceneType {
+    MAIN_SCEEN,
+    BATTLE_SCEEN
+};
+
 class Scene {
 
 private:
     std::vector<nsGround::Ground *> grounds;
     nsMaterRenderer::MasterRenderer *masterRenderer;
     std::vector<Light *> lights;
-    glm::mat4 projection;
     Camera *camera;
     Skybox *skybox;
 
+protected:
+    glm::mat4 projection;
+
 public:
     std::vector<Mesh *> objects;
-    std::vector<MeshPtr> objects2;
     std::vector<MeshWrapper *> wrappers;
     std::vector<Gui *> guis;
+    SceneType sceneType;
 
     Scene();
     Scene(nsMaterRenderer::MasterRenderer *masterRenderer, std::vector<Light *> lights, glm::mat4 projection,
@@ -38,6 +45,7 @@ public:
     void loadObject(Mesh *mesh);
     void loadObject(MeshPtr meshPtr);
     void loadGround(nsGround::Ground *ground);
+    virtual void update();
     void animate(float delta);
     void render();
     void clean();
@@ -49,6 +57,7 @@ public:
     void loadLight(Light *light);
     void loadCamera(Camera *camera);
     void loadProjection(glm::mat4 projection);
+    void loadGrounds(std::vector<nsGround::Ground *> grounds);
 };
 
 #endif //POKEMON3D_SCENE_HPP

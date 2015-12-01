@@ -28,6 +28,10 @@ bool InputManager::isDPressed() {
     return keys[GLFW_KEY_D];
 }
 
+bool InputManager::isTPressed() {
+    return keys[GLFW_KEY_T];
+}
+
 void InputManager::wheelCallBack(GLFWwindow *, double, double yoffset) {
     this->currentWheerlOffset -= yoffset;
 }

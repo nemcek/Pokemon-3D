@@ -20,7 +20,7 @@ namespace nsMeshRenderer {
         loadTexturedModel(mesh->texturedModel, projection, view);
 
         loadVAO(mesh->texturedModel);
-        loadMatrixAndDraw(mesh->texturedModel->matrix, mesh->texturedModel->rawModel->mesh_indices_count);
+        loadMatrixAndDraw(mesh->createTransformationMatrix(), mesh->texturedModel->rawModel->mesh_indices_count);
 
         unbindMesh();
     }

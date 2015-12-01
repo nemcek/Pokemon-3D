@@ -8,7 +8,8 @@ namespace nsGround {
 
     Ground::Ground(GLint program_id, int gridX, int gridZ, const std::string &image_file, TerrainTexturePack *texturePack,
                     TerrainTexture *blendMap) {
-        this->mesh = new Mesh(program_id, image_file);
+        this->mesh = new Mesh(image_file);
+        this->programId = program_id;
 
         this->x = gridX * size;
         this->z = gridZ * size;
@@ -60,7 +61,7 @@ namespace nsGround {
         }
 
         // Activate the program
-        glUseProgram(this->mesh->program_id);
+        glUseProgram(this->programId);
 
         // Generate a vertex array object
         glGenVertexArrays(1, &this->mesh->texturedModel->rawModel->vao);
@@ -72,7 +73,7 @@ namespace nsGround {
         glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), vertices.data(), GL_STATIC_DRAW);
 
         // Bind the buffer to "Position" attribute in program
-        GLint position_attrib = glGetAttribLocation(this->mesh->program_id, "Position");
+        GLint position_attrib = glGetAttribLocation(this->programId, "Position");
         glEnableVertexAttribArray(position_attrib);
         glVertexAttribPointer(position_attrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
@@ -81,7 +82,7 @@ namespace nsGround {
         glBindBuffer(GL_ARRAY_BUFFER, this->mesh->texturedModel->rawModel->tbo);
         glBufferData(GL_ARRAY_BUFFER, textureCoords.size() * sizeof(GLfloat), textureCoords.data(), GL_STATIC_DRAW);
 
-        GLint texcoord_attrib = glGetAttribLocation(this->mesh->program_id, "TexCoord");
+        GLint texcoord_attrib = glGetAttribLocation(this->programId, "TexCoord");
         glEnableVertexAttribArray(texcoord_attrib);
         glVertexAttribPointer(texcoord_attrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
@@ -98,7 +99,7 @@ namespace nsGround {
         glBindBuffer(GL_ARRAY_BUFFER, this->mesh->texturedModel->rawModel->nbo);
         glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(GLfloat), normals.data(), GL_STATIC_DRAW );
 
-        GLint normal_attrib = glGetAttribLocation(this->mesh->program_id, "Normal");
+        GLint normal_attrib = glGetAttribLocation(this->programId, "Normal");
         glEnableVertexAttribArray(normal_attrib);
         glVertexAttribPointer(normal_attrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
     }

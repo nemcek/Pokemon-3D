@@ -30,13 +30,13 @@ namespace nsThirdPersonCamera {
         float calculateVerticalDistance();
         void calculateCameraPosition(float horizntalDistance, float verticalDistance);
         void initPosition();
-
+        void initPosition(glm::vec3 position);
     public:
         ThirdPersonCamera(MovableCharacter *movableCharacter, GLFWwindow * window, InputManager *inputManaget);
         void move() override;
         glm::mat4 getViewMatrix() override;
-        void setFollowTarget(MovableCharacter *movableCharacter);
-
+        void setFollowTarget(MovableCharacter *movableCharacter) override;
+        void setPosition(glm::vec3 position) override;
     };
 
 }

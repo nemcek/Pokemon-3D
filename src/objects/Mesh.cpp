@@ -2,10 +2,9 @@
 #include <loaders/tiny_obj_loader.h>
 #include "src/objects/Mesh.h"
 
-Mesh::Mesh(GLuint program_id, const std::string &image_file)
+Mesh::Mesh(const std::string &image_file)
         : image_name(image_file),
           object_name(""){
-    this->program_id = program_id;
     this->texturedModel = new TexturedModel();
     this->texturedModel->rawModel = new RawModel();
 
@@ -19,10 +18,9 @@ Mesh::Mesh(GLuint program_id, const std::string &image_file)
     this->radius = calculateRadius();
 }
 
-Mesh::Mesh(GLuint program_id, Loader *loader, const std::string &obj_file ,const std::string &image_file)
+Mesh::Mesh(Loader *loader, const std::string &obj_file ,const std::string &image_file)
         : image_name(image_file),
           object_name(obj_file) {
-    this->program_id = program_id;
     this->texturedModel = new TexturedModel();
     this->loader = loader;
 
@@ -39,11 +37,10 @@ Mesh::Mesh(GLuint program_id, Loader *loader, const std::string &obj_file ,const
     this->radius = calculateRadius();
 }
 
-Mesh::Mesh(GLuint program_id, Loader *loader, const std::string & obj_file, const std::string &image_file, glm::vec3 position, float rotX, float rotY, float rotZ,
+Mesh::Mesh(Loader *loader, const std::string & obj_file, const std::string &image_file, glm::vec3 position, float rotX, float rotY, float rotZ,
            float scale)
         : image_name(image_file),
           object_name(obj_file) {
-    this->program_id = program_id;
 
     this->texturedModel = new TexturedModel();
     this->loader = loader;
@@ -60,11 +57,10 @@ Mesh::Mesh(GLuint program_id, Loader *loader, const std::string & obj_file, cons
     this->radius = calculateRadius();
 }
 
-Mesh::Mesh(GLuint program_id, Loader *loader, const std::string & obj_file, const std::string &image_file, glm::vec3 position, float rotX, float rotY, float rotZ,
+Mesh::Mesh(Loader *loader, const std::string & obj_file, const std::string &image_file, glm::vec3 position, float rotX, float rotY, float rotZ,
            float scale, float reflectivity, float shineDamper)
         : image_name(image_file),
           object_name(obj_file) {
-    this->program_id = program_id;
 
     this->texturedModel = new TexturedModel();
     this->loader = loader;
@@ -176,4 +172,18 @@ float Mesh::calculateRadius() {
     } else {
         return (this->center_point.X_max - c.x) * scale;
     }
+}
+
+void Mesh::setPosition(glm::vec3 position) {
+    this->position = position;
+}
+
+void Mesh::setRotation(glm::vec3 rotation) {
+    this->rotX = rotation.x;
+    this->rotY = rotation.y;
+    this->rotZ = rotation.z;
+}
+
+void Mesh::setScale(float scale) {
+    this->scale = scale;
 }

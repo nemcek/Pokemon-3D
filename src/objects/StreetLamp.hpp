@@ -13,7 +13,7 @@ class StreetLamp : public Terrain {
 
 public:
     Light *light;
-    StreetLamp(GLint program_id, Loader *loader, glm::vec3 position);
+    StreetLamp(Loader *loader, glm::vec3 position);
 
 };
 

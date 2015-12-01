@@ -46,28 +46,28 @@ protected:
 
 public:
 
-    GLuint program_id;
-
     glm::vec3 center;
     float rotY;
     float rotX;
     float rotZ;
     float scale;
     float radius;
+    glm::vec3 position;
     TexturedModel *texturedModel;
 
-    Mesh(GLuint, const std::string &);
-    Mesh(GLuint, Loader *loader, const std::string &, const std::string &);
-    Mesh(GLuint, Loader *loader, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY, float rotZ, float scale);
-    Mesh(GLuint, Loader *loader, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY, float rotZ, float scale, float reflectivity, float shineDamper);
+    Mesh(const std::string &);
+    Mesh(Loader *loader, const std::string &, const std::string &);
+    Mesh(Loader *loader, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY, float rotZ, float scale);
+    Mesh(Loader *loader, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY, float rotZ, float scale, float reflectivity, float shineDamper);
     virtual void render();
     virtual void animate(Scene *scene, float delta);
     glm::vec3 getCenter();
     glm::mat4 createTransformationMatrix();
-
+    void setPosition(glm::vec3 position);
+    void setRotation(glm::vec3 rotation);
+    void setScale(float scale);
 
     tinyobj::center_point_t center_point;
-    glm::vec3 position;
 };
 
 typedef std::shared_ptr<Mesh> MeshPtr;

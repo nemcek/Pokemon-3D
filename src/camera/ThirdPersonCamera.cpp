@@ -89,9 +89,17 @@ namespace nsThirdPersonCamera {
     }
 
     void ThirdPersonCamera::initPosition() {
+        initPosition(this->movableCharacter->position);
+    }
+
+    void ThirdPersonCamera::initPosition(glm::vec3 position) {
         this->pitch = 20.0f;
         this->angle = 0.0f;
         this->distance = 10.0f;
-        this->position = this->movableCharacter->position + glm::vec3(0.0f, this->pitch, this->distance);
+        this->position = position + glm::vec3(0.0f, this->pitch, this->distance);
+    }
+
+    void ThirdPersonCamera::setPosition(glm::vec3 position) {
+        initPosition(position);
     }
 }

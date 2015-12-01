@@ -5,15 +5,15 @@
 #include "src/objects/MovableCharacter.hpp"
 #include "Scene.hpp"
 
-MovableCharacter::MovableCharacter(GLint program_id, Loader *loader, const std::string &object_name, const std::string &file_name,
+MovableCharacter::MovableCharacter(Loader *loader, const std::string &object_name, const std::string &file_name,
                              glm::vec3 position, float rotX, float rotY, float rotZ, float scale)
-        : Mesh(program_id, loader, object_name, file_name, position, rotX, rotY, rotZ, scale) {
+        : Mesh(loader, object_name, file_name, position, rotX, rotY, rotZ, scale) {
 }
 
-MovableCharacter::MovableCharacter(GLint program_id, Loader *loader, const std::string &object_name, const std::string &file_name,
+MovableCharacter::MovableCharacter(Loader *loader, const std::string &object_name, const std::string &file_name,
                              glm::vec3 position, float rotX, float rotY, float rotZ, float scale,
                              float reflectivity, float shineDamper)
-        : Mesh(program_id, loader, object_name, file_name, position, rotX, rotY, rotZ, scale, reflectivity, shineDamper) {
+        : Mesh(loader, object_name, file_name, position, rotX, rotY, rotZ, scale, reflectivity, shineDamper) {
 }
 
 void MovableCharacter::increasePosition(float dX, float dY, float dZ) {

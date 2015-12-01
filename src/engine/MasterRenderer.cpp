@@ -50,6 +50,8 @@ namespace nsMaterRenderer {
 
         this->meshes.clear();
         this->grounds.clear();
+        this->wrappers.clear();
+        this->guis.clear();
     }
 
     void MasterRenderer::prepare() {
