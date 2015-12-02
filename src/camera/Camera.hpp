@@ -14,8 +14,10 @@ public:
     Camera();
     virtual glm::mat4 getViewMatrix() = 0;
     virtual void move() = 0;
-    virtual void setFollowTarget(MovableCharacter *movableCharacter) = 0;
+    virtual void setFollowTarget(MovableCharacterPtr movableCharacter) = 0;
     virtual void setPosition(glm::vec3 position) = 0;
 };
+
+typedef std::shared_ptr<Camera> CameraPtr;
 
 #endif //POKEMON3D_CAMERA_HPP

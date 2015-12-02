@@ -25,7 +25,7 @@ RawModelPtr Loader::initLoading() {
 
 void Loader::clean() {
     // Complete the vertex array object
-    glBindVertexArray(NULL);
+    glBindVertexArray(0);
 }
 
 RawModelPtr Loader::load(std::vector<GLfloat> vertex_buffer, std::vector<GLfloat> texcoord_buffer, std::vector<GLuint> index_data,

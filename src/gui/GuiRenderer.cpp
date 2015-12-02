@@ -4,16 +4,16 @@
 
 #include "src/gui/GuiRenderer.hpp"
 
-GuiRenderer::GuiRenderer(GuiShader *shader, Loader *loader) {
+GuiRenderer::GuiRenderer(GuiShaderPtr shader, LoaderPtr loader) {
     std::vector<GLfloat> vertex_buffer = {-1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f, -1.0f};
     std::vector<GLfloat> texcoord_buffer = { 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f};
-    RawModel *guiRawModel = loader->load(vertex_buffer, texcoord_buffer, 2);
+    auto guiRawModel = loader->load(vertex_buffer, texcoord_buffer, 2);
 
     this->rawModel = guiRawModel;
     this->guiShader = shader;
 }
 
-void GuiRenderer::render(std::vector<GuiTexture *> guis) {
+void GuiRenderer::render(std::vector<GuiTexturePtr> guis) {
     this->guiShader->start();
 
     glEnable(GL_BLEND);
@@ -21,7 +21,7 @@ void GuiRenderer::render(std::vector<GuiTexture *> guis) {
     glDisable(GL_DEPTH_TEST);
     loadVAO(this->rawModel);
 
-    for (std::vector<GuiTexture *>::iterator guiLoop = guis.begin(); guiLoop != guis.end(); guiLoop++) {
+    for (std::vector<GuiTexturePtr>::iterator guiLoop = guis.begin(); guiLoop != guis.end(); guiLoop++) {
         loadTexture(*guiLoop);
         loadMatrix(Transformations::createTransformationMatrix((*guiLoop)->position, (*guiLoop)->scale));
         glDrawArrays(GL_TRIANGLE_STRIP, 0, this->rawModel->mesh_vertex_count);
@@ -34,7 +34,7 @@ void GuiRenderer::render(std::vector<GuiTexture *> guis) {
     this->guiShader->stop();
 }
 
-void GuiRenderer::render(std::vector<Gui *> guis) {
+void GuiRenderer::render(std::vector<GuiPtr> guis) {
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -50,7 +50,7 @@ void GuiRenderer::render(std::vector<Gui *> guis) {
     unbind();
 }
 
-void GuiRenderer::render(Gui *gui) {
+void GuiRenderer::render(GuiPtr gui) {
     for (auto guiTextureLoop : gui->guiTextures) {
         loadTexture(guiTextureLoop);
         loadMatrix(Transformations::createTransformationMatrix((guiTextureLoop)->position, (guiTextureLoop)->scale));
@@ -58,7 +58,7 @@ void GuiRenderer::render(Gui *gui) {
     }
 }
 
-void GuiRenderer::loadVAO(RawModel *model) {
+void GuiRenderer::loadVAO(RawModelPtr model) {
     glBindVertexArray(model->vao);
 }
 
@@ -66,7 +66,7 @@ void GuiRenderer::loadMatrix(glm::mat4 matrix) {
     guiShader->loadModelMatrix(matrix);
 }
 
-void GuiRenderer::loadTexture(GuiTexture *guiTexture) {
+void GuiRenderer::loadTexture(GuiTexturePtr guiTexture) {
     guiShader->loadTextureUni(guiTexture->textureId);
 }
 

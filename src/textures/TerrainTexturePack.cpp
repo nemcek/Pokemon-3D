@@ -4,8 +4,8 @@
 
 #include "src/textures/TerrainTexturePack.hpp"
 
-TerrainTexturePack::TerrainTexturePack(TerrainTexture *backgroundTexture, TerrainTexture *rTexture, TerrainTexture *gTexture,
-                                       TerrainTexture *bTexture) {
+TerrainTexturePack::TerrainTexturePack(TerrainTexturePtr backgroundTexture, TerrainTexturePtr rTexture, TerrainTexturePtr gTexture,
+                                       TerrainTexturePtr bTexture) {
     this->backgroundTexture = TerrainTexturePtr(backgroundTexture);
     this->rTexture = TerrainTexturePtr(rTexture);
     this->gTexture = TerrainTexturePtr(gTexture);

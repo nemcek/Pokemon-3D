@@ -17,21 +17,25 @@
 class GuiRenderer {
 
 private:
-    RawModel *rawModel;
+    RawModelPtr rawModel;
+//    RawModel *rawModel;
 
-    void loadVAO(RawModel *model);
+    void loadVAO(RawModelPtr model);
     void loadMatrix(glm::mat4 matrix);
-    void loadTexture(GuiTexture *guiTexture);
+    void loadTexture(GuiTexturePtr guiTexture);
     void unbind();
-    void render(Gui *gui);
+    void render(GuiPtr gui);
 
 public:
-    GuiShader *guiShader;
+    GuiShaderPtr guiShader;
+//    GuiShader *guiShader;
 
-    GuiRenderer(GuiShader *shader, Loader *loader);
-    void render(std::vector<GuiTexture *> guis);
-    void render(std::vector<Gui *> guis);
+    GuiRenderer(GuiShaderPtr shader, LoaderPtr loader);
+    void render(std::vector<GuiTexturePtr> guis);
+    void render(std::vector<GuiPtr> guis);
     void clean();
 };
+
+typedef std::shared_ptr<GuiRenderer> GuiRendererPtr;
 
 #endif //POKEMON3D_GUIRENDERER_HPP

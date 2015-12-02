@@ -4,9 +4,10 @@
 
 #include "src/gui/Healthbar.hpp"
 
-Healthbar::Healthbar(const std::string &fillImage, const std::string &borderImage, Loader *loader, int maxHp) : Gui() {
-    this->fill = new GuiTexture(loader->loadTexture(fillImage), glm::vec2(0.65f, -0.75f), glm::vec2(0.25f, 0.025f));
-    this->border = new GuiTexture(loader->loadTexture(borderImage), glm::vec2(0.59f, -0.75f), glm::vec2(0.36f, 0.6));
+Healthbar::Healthbar(const std::string &fillImage, const std::string &borderImage, LoaderPtr loader, int maxHp) : Gui() {
+
+    this->fill = GuiTexturePtr(new GuiTexture(loader->loadTexture(fillImage), glm::vec2(0.65f, -0.75f), glm::vec2(0.25f, 0.025f)));
+    this->border = GuiTexturePtr(new GuiTexture(loader->loadTexture(borderImage), glm::vec2(0.59f, -0.75f), glm::vec2(0.36f, 0.6)));
     this->guiTextures.push_back(fill);
     this->guiTextures.push_back(border);
 

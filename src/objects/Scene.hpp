@@ -24,40 +24,43 @@ enum SceneType {
 class Scene {
 
 private:
-    std::vector<nsGround::Ground *> grounds;
-    nsMaterRenderer::MasterRenderer *masterRenderer;
-    std::vector<Light *> lights;
-    Camera *camera;
-    Skybox *skybox;
+    std::vector<GroundPtr> grounds;
+    MasterRendererPtr masterRenderer;
+    std::vector<LightPtr> lights;
+    CameraPtr camera;
+    SkyboxPtr skybox;
 
 protected:
     glm::mat4 projection;
 
 public:
-    std::vector<Mesh *> objects;
-    std::vector<MeshWrapper *> wrappers;
-    std::vector<Gui *> guis;
+//    std::vector<Mesh *> objects;
+    std::vector<MeshPtr> objects;
+    std::vector<MeshWrapperPtr> wrappers;
+    std::vector<GuiPtr> guis;
     SceneType sceneType;
 
     Scene();
-    Scene(nsMaterRenderer::MasterRenderer *masterRenderer, std::vector<Light *> lights, glm::mat4 projection,
-          Camera *camera);
-    void loadObject(Mesh *mesh);
+    Scene(MasterRendererPtr masterRenderer, std::vector<LightPtr> lights, glm::mat4 projection,
+          CameraPtr camera);
+//    void loadObject(Mesh *mesh);
     void loadObject(MeshPtr meshPtr);
-    void loadGround(nsGround::Ground *ground);
+    void loadGround(GroundPtr ground);
     virtual void update();
     void animate(float delta);
     void render();
     void clean();
-    void loadWrapper(MeshWrapper *wrapper);
-    void loadGui(Gui *gui);
-    void loadSkybox(Skybox *skybox);
-    void loadMasterRenderer(nsMaterRenderer::MasterRenderer *masterRenderer);
-    void loadLights(std::vector<Light *> lights);
-    void loadLight(Light *light);
-    void loadCamera(Camera *camera);
+    void loadWrapper(MeshWrapperPtr wrapper);
+    void loadGui(GuiPtr gui);
+    void loadSkybox(SkyboxPtr skybox);
+    void loadMasterRenderer(MasterRendererPtr masterRenderer);
+    void loadLights(std::vector<LightPtr> lights);
+    void loadLight(LightPtr light);
+    void loadCamera(CameraPtr camera);
     void loadProjection(glm::mat4 projection);
-    void loadGrounds(std::vector<nsGround::Ground *> grounds);
+    void loadGrounds(std::vector<GroundPtr> grounds);
 };
+
+typedef std::shared_ptr<Scene> ScenePtr;
 
 #endif //POKEMON3D_SCENE_HPP

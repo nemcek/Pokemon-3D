@@ -4,13 +4,13 @@
 
 #include "src/objects/OtherCharacter.hpp"
 
-OtherCharacter::OtherCharacter(Loader *loader, const std::string & obj_file, const std::string &image_file, glm::vec3 position, float rotX,
+OtherCharacter::OtherCharacter(LoaderPtr loader, const std::string & obj_file, const std::string &image_file, glm::vec3 position, float rotX,
                                float rotY, float rotZ, float scale)
                 : MovableCharacter(loader, obj_file, image_file, position, rotX, rotY, rotZ, scale) {
 
 }
 
-OtherCharacter::OtherCharacter(Loader *loader, const std::string &obj_file, const std::string &image_file, glm::vec3 position, float rotX,
+OtherCharacter::OtherCharacter(LoaderPtr loader, const std::string &obj_file, const std::string &image_file, glm::vec3 position, float rotX,
                                float rotY, float rotZ, float scale, float reflectivity,
                                float shineDamper)
                 : MovableCharacter(loader, obj_file, image_file, position, rotX, rotY, rotZ, scale, reflectivity,

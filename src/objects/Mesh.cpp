@@ -18,7 +18,7 @@ Mesh::Mesh(const std::string &image_file)
     this->radius = calculateRadius();
 }
 
-Mesh::Mesh(Loader *loader, const std::string &obj_file ,const std::string &image_file)
+Mesh::Mesh(LoaderPtr loader, const std::string &obj_file ,const std::string &image_file)
         : image_name(image_file),
           object_name(obj_file) {
     this->texturedModel = TexturedModelPtr(new TexturedModel());
@@ -37,7 +37,7 @@ Mesh::Mesh(Loader *loader, const std::string &obj_file ,const std::string &image
     this->radius = calculateRadius();
 }
 
-Mesh::Mesh(Loader *loader, const std::string & obj_file, const std::string &image_file, glm::vec3 position, float rotX, float rotY, float rotZ,
+Mesh::Mesh(LoaderPtr loader, const std::string & obj_file, const std::string &image_file, glm::vec3 position, float rotX, float rotY, float rotZ,
            float scale)
         : image_name(image_file),
           object_name(obj_file) {
@@ -57,7 +57,7 @@ Mesh::Mesh(Loader *loader, const std::string & obj_file, const std::string &imag
     this->radius = calculateRadius();
 }
 
-Mesh::Mesh(Loader *loader, const std::string & obj_file, const std::string &image_file, glm::vec3 position, float rotX, float rotY, float rotZ,
+Mesh::Mesh(LoaderPtr loader, const std::string & obj_file, const std::string &image_file, glm::vec3 position, float rotX, float rotY, float rotZ,
            float scale, float reflectivity, float shineDamper)
         : image_name(image_file),
           object_name(obj_file) {
@@ -108,7 +108,7 @@ void Mesh::initTexture(const std::string &image_file) {
     glGenTextures(1, &texture_id);
     glBindTexture(GL_TEXTURE_2D, texture_id);
 
-    this->texturedModel->texture = new Texture(texture_id);
+    this->texturedModel->texture = TexturePtr(new Texture(texture_id));
 
     // Set mipmaps
     glGenerateMipmap(GL_TEXTURE_2D);

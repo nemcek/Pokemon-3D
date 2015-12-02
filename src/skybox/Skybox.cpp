@@ -4,7 +4,7 @@
 
 #include "src/skybox/Skybox.hpp"
 
-Skybox::Skybox(Loader *loader) {
+Skybox::Skybox(LoaderPtr loader) {
     this->cube = loader->load(this->vertices, this->vertices, 3);
     this->textureId = loader->loadCubeMap(this->file_paths);
 }

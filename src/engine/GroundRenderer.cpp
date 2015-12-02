@@ -4,26 +4,26 @@
 
 #include "src/engine/GroundRenderer.hpp"
 
-GroundRenderer::GroundRenderer(GroundShader *shader) {
+GroundRenderer::GroundRenderer(GroundShaderPtr shader) {
     this->shader = shader;
     this->shader->connectTextureUnits();
 };
 
-void GroundRenderer::render(std::vector<nsGround::Ground> grounds, glm::mat4 projection, glm::mat4 view) {
-    for ( std::vector<nsGround::Ground>::iterator it = grounds.begin(); it != grounds.end(); it++ ) {
-        prepareGround(&(*it), projection, view);
-        bindTextures(&(*it));
+void GroundRenderer::render(std::vector<GroundPtr> grounds, glm::mat4 projection, glm::mat4 view) {
+    for ( std::vector<GroundPtr>::iterator it = grounds.begin(); it != grounds.end(); it++ ) {
+        prepareGround(*it, projection, view);
+        bindTextures(*it);
 
-        prepareInstance(&(*it));
+        prepareInstance(*it);
 
-        glBindVertexArray(it->mesh->texturedModel->rawModel->vao);
-        glDrawElements(GL_TRIANGLES, it->mesh->texturedModel->rawModel->mesh_indices_count, GL_UNSIGNED_INT, 0);
+        glBindVertexArray((*it)->mesh->texturedModel->rawModel->vao);
+        glDrawElements(GL_TRIANGLES, (*it)->mesh->texturedModel->rawModel->mesh_indices_count, GL_UNSIGNED_INT, 0);
 
         unbindMesh();
     }
 }
 
-void GroundRenderer::render(Mesh *mesh, glm::mat4 projection, glm::mat4 view) {
+void GroundRenderer::render(MeshPtr mesh, glm::mat4 projection, glm::mat4 view) {
     shader->loadProjectionMatrix(projection);
     shader->loadViewMatrix(view);
 
@@ -36,7 +36,7 @@ void GroundRenderer::render(Mesh *mesh, glm::mat4 projection, glm::mat4 view) {
 
 }
 
-void GroundRenderer::prepareGround(const nsGround::Ground *model, glm::mat4 projection, glm::mat4 view) {
+void GroundRenderer::prepareGround(GroundPtr model, glm::mat4 projection, glm::mat4 view) {
     shader->loadProjectionMatrix(projection);
     shader->loadViewMatrix(view);
 
@@ -47,11 +47,11 @@ void GroundRenderer::unbindMesh() {
     glBindVertexArray(0);
 }
 
-void GroundRenderer::prepareInstance(nsGround::Ground *ground ) {
+void GroundRenderer::prepareInstance(GroundPtr ground ) {
     loadModelMatrix(ground);
 }
 
-void GroundRenderer::loadModelMatrix(nsGround::Ground *ground) {
+void GroundRenderer::loadModelMatrix(GroundPtr ground) {
     ground->mesh->position = glm::vec3(ground->x, 0.0f, ground->z);
     ground->mesh->rotX = 0;
     ground->mesh->rotY = 0;
@@ -61,8 +61,8 @@ void GroundRenderer::loadModelMatrix(nsGround::Ground *ground) {
     shader->loadModelMatrix(ground->mesh->createTransformationMatrix());
 }
 
-void GroundRenderer::bindTextures(nsGround::Ground *ground) {
-    TerrainTexturePack *texturePack = ground->texturePack;
+void GroundRenderer::bindTextures(GroundPtr ground) {
+    auto texturePack = ground->texturePack;
 
     glUniform1i(shader->backgroundTexture, 0);
     glActiveTexture(GL_TEXTURE0 + 0);

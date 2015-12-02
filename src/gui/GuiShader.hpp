@@ -9,7 +9,7 @@
 
 #include "src/shaders/ShaderProgram.hpp"
 
-class GuiShader : public nsShaderProgram::ShaderProgram {
+class GuiShader : public ShaderProgram {
 
 private:
     GLint matrix;
@@ -22,5 +22,7 @@ public:
     void bindAttributes() override;
     void loadTextureUni(GLint texture_id);
 };
+
+typedef std::shared_ptr<GuiShader> GuiShaderPtr;
 
 #endif //POKEMON3D_GUISHADER_HPP

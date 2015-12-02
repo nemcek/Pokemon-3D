@@ -49,7 +49,7 @@ void StaticShader::loadViewMatrix(glm::mat4 view) {
     loadMatrix(this->view, view);
 }
 
-void StaticShader::loadLights(std::vector<Light *> lights) {
+void StaticShader::loadLights(std::vector<LightPtr> lights) {
     for (int i = 0; i < number_of_lights; i++) {
         if (i < lights.size()) {
             loadVector(this->lightPosition[i], lights[i]->position);

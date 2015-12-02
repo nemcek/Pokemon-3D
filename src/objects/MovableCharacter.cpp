@@ -5,12 +5,12 @@
 #include "src/objects/MovableCharacter.hpp"
 #include "Scene.hpp"
 
-MovableCharacter::MovableCharacter(Loader *loader, const std::string &object_name, const std::string &file_name,
+MovableCharacter::MovableCharacter(LoaderPtr loader, const std::string &object_name, const std::string &file_name,
                              glm::vec3 position, float rotX, float rotY, float rotZ, float scale)
         : Mesh(loader, object_name, file_name, position, rotX, rotY, rotZ, scale) {
 }
 
-MovableCharacter::MovableCharacter(Loader *loader, const std::string &object_name, const std::string &file_name,
+MovableCharacter::MovableCharacter(LoaderPtr loader, const std::string &object_name, const std::string &file_name,
                              glm::vec3 position, float rotX, float rotY, float rotZ, float scale,
                              float reflectivity, float shineDamper)
         : Mesh(loader, object_name, file_name, position, rotX, rotY, rotZ, scale, reflectivity, shineDamper) {
@@ -55,7 +55,7 @@ void MovableCharacter::move(Scene *scene, float delta) {
 
 bool MovableCharacter::collided(Scene *scene) {
     for (auto objectLoop : scene->objects) {
-        if (objectLoop == this)
+        if (objectLoop.get() == this)
             continue;
 
         if (collidedWith(objectLoop))
@@ -73,7 +73,7 @@ bool MovableCharacter::collided(Scene *scene) {
     return false;
 }
 
-bool MovableCharacter::collidedWith(Mesh *mesh) {
+bool MovableCharacter::collidedWith(MeshPtr mesh) {
 
     if (glm::distance(this->position, mesh->position) < this->radius + mesh->radius) {
         return true;

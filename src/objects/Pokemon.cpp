@@ -6,16 +6,16 @@
 #include "src/objects/Pokemon.hpp"
 #include "Scene.hpp"
 
-Pokemon::Pokemon(unsigned short id, Loader *loader, const std::string &object_name, const std::string &file_name,
+Pokemon::Pokemon(unsigned short id, LoaderPtr loader, const std::string &object_name, const std::string &file_name,
                              glm::vec3 position, float rotX, float rotY, float rotZ, float scale,
                              InputManager *inputManager, const std::string &attack_obj_file, const std::string &attack_image_name)
         : MainCharacter(loader, object_name, file_name, position, rotX, rotY, rotZ, scale, inputManager) {
 
     this->id = id;
-    this->attackObj = new Attack(loader, attack_obj_file, attack_image_name, glm::vec3(0.0f), 0.0f, 0.0f, 0.0f, 0.05);
+    this->attackObj = AttackPtr(new Attack(loader, attack_obj_file, attack_image_name, glm::vec3(0.0f), 0.0f, 0.0f, 0.0f, 0.05));
 }
 
-Pokemon::Pokemon(unsigned short id, Loader *loader, const std::string &object_name, const std::string &file_name,
+Pokemon::Pokemon(unsigned short id, LoaderPtr loader, const std::string &object_name, const std::string &file_name,
                              glm::vec3 position, float rotX, float rotY, float rotZ, float scale,
                              float reflectivity, float shineDamper, InputManager *inputManager,
                              const std::string &attack_obj_file, const std::string &attack_image_name)
@@ -23,7 +23,7 @@ Pokemon::Pokemon(unsigned short id, Loader *loader, const std::string &object_na
                            reflectivity, shineDamper, inputManager) {
 
     this->id = id;
-    this->attackObj = new Attack(loader, attack_obj_file, attack_image_name, glm::vec3(0.0f), 0.0f, 0.0f, 0.0f, 0.05);
+    this->attackObj = AttackPtr(new Attack(loader, attack_obj_file, attack_image_name, glm::vec3(0.0f), 0.0f, 0.0f, 0.0f, 0.05));
 }
 
 void Pokemon::animate(Scene *scene, float delta) {
@@ -52,7 +52,7 @@ std::vector<Attack *> Pokemon::generateAttacks(int count, Scene *scene) {
         localAttack.position.y = ((0.5f - 0.0f) * ((float) rand() / (float) RAND_MAX)) + 0.0f;
         localAttack.position.x = ((0.5f - 0.0f) * ((float) rand() / (float) RAND_MAX)) + 0.0f;
 
-        scene->objects.push_back(&localAttack);
+        //scene->objects.push_back(&localAttack);
     }
 
 //    return attacks;

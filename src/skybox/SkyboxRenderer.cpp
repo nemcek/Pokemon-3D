@@ -4,11 +4,11 @@
 
 #include "src/skybox/SkyboxRenderer.hpp"
 
-SkyboxRenderer::SkyboxRenderer(SkyboxShader *shader) {
+SkyboxRenderer::SkyboxRenderer(SkyboxShaderPtr shader) {
     this->shader = shader;
 }
 
-void SkyboxRenderer::render(Skybox *skybox, glm::mat4 viewMatrix, glm::mat4 projectionMatrix, glm::vec3 fogColor) {
+void SkyboxRenderer::render(SkyboxPtr skybox, glm::mat4 viewMatrix, glm::mat4 projectionMatrix, glm::vec3 fogColor) {
 
     shader->start();
     shader->loadProjectionMatrix(projectionMatrix);

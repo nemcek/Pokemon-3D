@@ -22,8 +22,8 @@ public:
 //    TerrainTexture *gTexture;
 //    TerrainTexture *bTexture;
 
-    TerrainTexturePack(TerrainTexture *backgroundTexture, TerrainTexture *rTexture, TerrainTexture *gTexture,
-                       TerrainTexture *bTexture);
+    TerrainTexturePack(TerrainTexturePtr backgroundTexture, TerrainTexturePtr rTexture, TerrainTexturePtr gTexture,
+                       TerrainTexturePtr bTexture);
 };
 
 typedef std::shared_ptr<TerrainTexturePack> TerrainTexturePackPtr;

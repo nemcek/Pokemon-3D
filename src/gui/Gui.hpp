@@ -16,10 +16,13 @@
 class Gui {
 
 public:
-    std::vector<GuiTexture *> guiTextures;
+    std::vector<GuiTexturePtr> guiTextures;
+//    std::vector<GuiTexture *> guiTextures;
 
     Gui();
 
 };
+
+typedef std::shared_ptr<Gui> GuiPtr;
 
 #endif //POKEMON3D_GUI_HPP

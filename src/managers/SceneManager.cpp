@@ -49,7 +49,7 @@ void SceneManager::init(GLFWwindow *window, InputManager *inputManager) {
 
     glfwGetWindowSize(window, &screen_width, &screen_height);
 
-    this->pokemonRepository = new PokemonRepository();
+    this->pokemonRepository = PokemonRepositoryPtr(new PokemonRepository());
     this->initPokemons(inputManager);
     this->initGrounds(this->staticShader->programId);
     this->initWrappers();
@@ -64,28 +64,28 @@ void SceneManager::initStartingScene() {
 }
 
 void SceneManager::initShaders() {
-    this->staticShader = new StaticShader();
-    this->groundShader = new GroundShader();
-    this->guiShader = new GuiShader();
-    this->skyboxShader = new SkyboxShader();
+    this->staticShader = StaticShaderPtr(new StaticShader());
+    this->groundShader = GroundShaderPtr(new GroundShader());
+    this->guiShader = GuiShaderPtr(new GuiShader());
+    this->skyboxShader = SkyboxShaderPtr(new SkyboxShader());
 }
 
 void SceneManager::initLoaders() {
-    this->loader = new Loader(staticShader->programId);
-    this->guiLoader = new Loader(guiShader->programId);
+    this->loader = LoaderPtr(new Loader(staticShader->programId));
+    this->guiLoader = LoaderPtr(new Loader(guiShader->programId));
 }
 
 void SceneManager::initRenderers() {
-    this->meshRenderer= new nsMeshRenderer::MeshRenderer(staticShader);
-    this->groundRenderer = new GroundRenderer(groundShader);
-    this->guiRenderer = new GuiRenderer(guiShader, guiLoader);
-    this->skyboxRenderer = new SkyboxRenderer(skyboxShader);
-    this->masterRenderer = new nsMaterRenderer::MasterRenderer(meshRenderer, groundRenderer, guiRenderer, skyboxRenderer);
+    this->meshRenderer = MeshRendererPtr(new MeshRenderer(staticShader));
+    this->groundRenderer = GroundRendererPtr(new GroundRenderer(groundShader));
+    this->guiRenderer = GuiRendererPtr(new GuiRenderer(guiShader, guiLoader));
+    this->skyboxRenderer = SkyboxRendererPtr(new SkyboxRenderer(skyboxShader));
+    this->masterRenderer = MasterRendererPtr(new MasterRenderer(meshRenderer, groundRenderer, guiRenderer, skyboxRenderer));
 }
 
 void SceneManager::initPokemons(InputManager *inputManager) {
 
-    Pokemon *squirtle = new Pokemon(
+    auto squirtle = PokemonPtr(new Pokemon(
             7,
             this->loader,
             "models/objects/Squirtle.obj",
@@ -95,10 +95,10 @@ void SceneManager::initPokemons(InputManager *inputManager) {
             inputManager,
             "models/objects/Squirtle.obj",
             "models/textures/Squirtle.tga"
-    );
+    ));
     this->pokemonRepository->add(squirtle);
 
-    Pokemon *pikachu = new Pokemon(
+    auto pikachu = PokemonPtr(new Pokemon(
             25,
             this->loader,
             "models/objects/Pikachu.obj",
@@ -108,30 +108,30 @@ void SceneManager::initPokemons(InputManager *inputManager) {
             inputManager,
             "models/objects/Pikachu.obj",
             "models/textures/Pikachu.tga"
-    );
+    ));
     this->pokemonRepository->add(pikachu);
 
 }
 
 void SceneManager::initGrounds(GLuint programId) {
-    TerrainTexture *backgroundTexture = new TerrainTexture(loader->loadTexture("models/textures/Ground_grass3.tga"));
-    TerrainTexture *rTexture = new TerrainTexture(loader->loadTexture("models/textures/Ground.tga"));
-    TerrainTexture *gTexture = new TerrainTexture(loader->loadTexture("models/textures/GrassFlowers.tga"));
-    TerrainTexture *bTexture = new TerrainTexture(loader->loadTexture("models/textures/Path.tga"));
-    TerrainTexture *blendMap = new TerrainTexture(loader->loadTexture("models/textures/BlendMap.tga"));
+    auto backgroundTexture = TerrainTexturePtr(new TerrainTexture(loader->loadTexture("models/textures/Ground_grass3.tga")));
+    auto rTexture = TerrainTexturePtr(new TerrainTexture(loader->loadTexture("models/textures/Ground.tga")));
+    auto gTexture = TerrainTexturePtr(new TerrainTexture(loader->loadTexture("models/textures/GrassFlowers.tga")));
+    auto bTexture = TerrainTexturePtr(new TerrainTexture(loader->loadTexture("models/textures/Path.tga")));
+    auto blendMap = TerrainTexturePtr(new TerrainTexture(loader->loadTexture("models/textures/BlendMap.tga")));
     this->terrainTextures.push_back(backgroundTexture);
     this->terrainTextures.push_back(rTexture);
     this->terrainTextures.push_back(gTexture);
     this->terrainTextures.push_back(bTexture);
     this->terrainTextures.push_back(blendMap);
 
-    TerrainTexturePack *texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
+    auto texturePack = TerrainTexturePackPtr(new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture));
     this->terrainTexturePack = texturePack;
 
-    nsGround::Ground *ground1 = new nsGround::Ground(programId, 0, 0, "models/textures/Ground_grass3.tga", texturePack, blendMap);
-    nsGround::Ground *ground2 = new nsGround::Ground(programId, 1, 0, "models/textures/Ground_grass3.tga", texturePack, blendMap);
-    nsGround::Ground *ground3 = new nsGround::Ground(programId, 0, 1, "models/textures/Ground_grass3.tga", texturePack, blendMap);
-    nsGround::Ground *ground4 = new nsGround::Ground(programId, 1, 1, "models/textures/Ground_grass3.tga", texturePack, blendMap);
+    auto ground1 = GroundPtr(new Ground(programId, 0, 0, "models/textures/Ground_grass3.tga", texturePack, blendMap));
+    auto ground2 = GroundPtr(new Ground(programId, 1, 0, "models/textures/Ground_grass3.tga", texturePack, blendMap));
+    auto ground3 = GroundPtr(new Ground(programId, 0, 1, "models/textures/Ground_grass3.tga", texturePack, blendMap));
+    auto ground4 = GroundPtr(new Ground(programId, 1, 1, "models/textures/Ground_grass3.tga", texturePack, blendMap));
     this->grounds.push_back(ground1);
     this->grounds.push_back(ground2);
     this->grounds.push_back(ground3);
@@ -139,34 +139,34 @@ void SceneManager::initGrounds(GLuint programId) {
 }
 
 void SceneManager::initWrappers() {
-    MeshWrapper *treesWrapper = new MeshWrapper(loader, "models/objects/Tree2.obj", "models/textures/Tree2.tga", 300,
-                                               glm::vec3(50.0f, 75.0f, 1.0f));
-    MeshWrapper *treesWrapper2 = new MeshWrapper(loader, "models/objects/Tree.obj", "models/textures/Tree.tga", 300,
-                                                glm::vec3(4.0f, 2.0f, 100.f));
+    auto treesWrapper = MeshWrapperPtr(new MeshWrapper(loader, "models/objects/Tree2.obj", "models/textures/Tree2.tga", 300,
+                                               glm::vec3(50.0f, 75.0f, 1.0f)));
+    auto treesWrapper2 = MeshWrapperPtr(new MeshWrapper(loader, "models/objects/Tree.obj", "models/textures/Tree.tga", 300,
+                                                glm::vec3(4.0f, 2.0f, 100.f)));
     this->trees.push_back(treesWrapper);
     this->trees.push_back(treesWrapper2);
 }
 
 void SceneManager::initMainCharacter(InputManager *inputManager) {
-    this->mainCharacter = new MainCharacter(
+    this->mainCharacter = MainCharacterPtr(new MainCharacter(
             loader,
             "models/objects/Trainer.obj",
             "models/textures/Trainer.tga",
             glm::vec3(0.0f),
             0.0f, 180.0f, 0.0f, 0.1f, 0.2f, 50.0f,
             inputManager
-    );
+    ));
 }
 
 void SceneManager::initCamera(GLFWwindow *window, InputManager *inputManager) {
-    this->camera = new nsThirdPersonCamera::ThirdPersonCamera(mainCharacter, window, inputManager);
+    this->camera = CameraPtr(new ThirdPersonCamera(mainCharacter, window, inputManager));
 }
 
-void SceneManager::initSkybox(Loader *loader) {
-    this->skybox = new Skybox(loader);
+void SceneManager::initSkybox(LoaderPtr loader) {
+    this->skybox = SkyboxPtr(new Skybox(loader));
 }
 
-void SceneManager::initTerrain(Loader *loader) {
+void SceneManager::initTerrain(LoaderPtr loader) {
 //    this->terrains.push_back(new Terrain(
 //            loader,
 //            "models/objects/Pokecenter.obj",

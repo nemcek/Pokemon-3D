@@ -10,7 +10,7 @@
 
 #include "src/shaders/ShaderProgram.hpp"
 
-class SkyboxShader : public nsShaderProgram::ShaderProgram {
+class SkyboxShader : public ShaderProgram {
 
 private:
     GLint projectionMatrix;
@@ -26,5 +26,7 @@ public:
     void loadFogColor(glm::vec3 color);
     glm::mat4 rotate(glm::mat4 matrix, float rotation);
 };
+
+typedef std::shared_ptr<SkyboxShader> SkyboxShaderPtr;
 
 #endif //POKEMON3D_SKYBOXSHADER_HPP

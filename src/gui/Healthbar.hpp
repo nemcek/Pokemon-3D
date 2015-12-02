@@ -15,12 +15,16 @@ private:
 
     float oneHealthProtion;
     int maxHp;
-    GuiTexture *fill;
-    GuiTexture *border;
+    GuiTexturePtr fill;
+    GuiTexturePtr border;
+//    GuiTexture *fill;
+//    GuiTexture *border;
 
 public:
-    Healthbar(const std::string &fillImage, const std::string &borderImage, Loader *loader, int maxHp);
+    Healthbar(const std::string &fillImage, const std::string &borderImage, LoaderPtr loader, int maxHp);
     void takeDamage(int damage);
 };
+
+typedef std::shared_ptr<Healthbar> HealthbarPtr;
 
 #endif //POKEMON3D_HEALTHBAR_HPP

@@ -14,7 +14,7 @@ private:
     float rotateSpeed = 40.0f;
 
 public:
-    Attack(Loader *loader, const std::string &object_name, const std::string &file_name,
+    Attack(LoaderPtr loader, const std::string &object_name, const std::string &file_name,
             glm::vec3 position, float rotX, float rotY, float rotZ, float scale);
 
     void move(Scene *scene, float delta);

@@ -58,9 +58,9 @@ public:
 //    TexturedModel *texturedModel;
 
     Mesh(const std::string &);
-    Mesh(Loader *loader, const std::string &, const std::string &);
-    Mesh(Loader *loader, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY, float rotZ, float scale);
-    Mesh(Loader *loader, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY, float rotZ, float scale, float reflectivity, float shineDamper);
+    Mesh(LoaderPtr loader, const std::string &, const std::string &);
+    Mesh(LoaderPtr loader, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY, float rotZ, float scale);
+    Mesh(LoaderPtr loader, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY, float rotZ, float scale, float reflectivity, float shineDamper);
     virtual void render();
     virtual void animate(Scene *scene, float delta);
     glm::vec3 getCenter();

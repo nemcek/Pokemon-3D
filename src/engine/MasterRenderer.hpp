@@ -17,43 +17,40 @@
 #include "src/gui/GuiRenderer.hpp"
 #include "src/skybox/SkyboxRenderer.hpp"
 
-namespace nsMaterRenderer {
+class MasterRenderer {
+private:
+    glm::vec3 skyColor = glm::vec3(0.5444f, 0.62f, 0.69f);
+    glm::vec3 fogColor = glm::vec3(0.5444f, 0.62f, 0.69f);
 
-    class MasterRenderer {
-    private:
-        glm::vec3 skyColor = glm::vec3(0.5444f, 0.62f, 0.69f);
-        glm::vec3 fogColor = glm::vec3(0.5444f, 0.62f, 0.69f);
+    StaticShaderPtr staticShader;
+    GroundShaderPtr groundShader;
+    GuiShaderPtr guiShader;
+    SkyboxShaderPtr skyboxShader;
 
-        StaticShader *staticShader;
-        GroundShader *groundShader;
-        GuiShader *guiShader;
-        SkyboxShader *skyboxShader;
+    MeshRendererPtr renderer;
+    GroundRendererPtr groundRenderer;
+    GuiRendererPtr guiRenderer;
+    SkyboxRendererPtr skyboxRenderer;
 
-        nsMeshRenderer::MeshRenderer *renderer;
-        GroundRenderer *groundRenderer;
-        GuiRenderer *guiRenderer;
-        SkyboxRenderer *skyboxRenderer;
+    std::vector<MeshPtr> meshes;
+    std::vector<GroundPtr> grounds;
+    std::vector<MeshWrapperPtr> wrappers;
+    std::vector<GuiPtr> guis;
+    SkyboxPtr skybox;
 
-        std::map<TexturedModel, std::list<Mesh>> meshesMap;
-        std::vector<Mesh> meshes;
-        std::vector<nsGround::Ground> grounds;
-        std::vector<MeshWrapper *> wrappers;
-        std::vector<Gui *> guis;
-        Skybox *skybox;
+    void prepare();
+public:
 
-        void prepare();
-    public:
+    MasterRenderer(MeshRendererPtr renderer, GroundRendererPtr groundRenderer, GuiRendererPtr guiRenderer, SkyboxRendererPtr skyboxRenderer);
+    void clean();
+    void render(glm::mat4 projection, glm::mat4 camera, std::vector<LightPtr> lights);
+    void processMesh(MeshPtr mesh);
+    void processGround(GroundPtr ground);
+    void processWrapper(MeshWrapperPtr wrapper);
+    void processGui(GuiPtr gui);
+    void processSkybox(SkyboxPtr skybox);
+};
 
-        MasterRenderer(nsMeshRenderer::MeshRenderer *renderer, GroundRenderer *groundRenderer, GuiRenderer *guiRenderer, SkyboxRenderer *skyboxRenderer);
-        void clean();
-        void render(glm::mat4 projection, glm::mat4 camera, std::vector<Light *> lights);
-        void processMesh(Mesh *mesh);
-        void processGround(nsGround::Ground *ground);
-        void processWrapper(MeshWrapper *wrapper);
-        void processGui(Gui *gui);
-        void processSkybox(Skybox *skybox);
-    };
-
-}
+typedef std::shared_ptr<MasterRenderer> MasterRendererPtr;
 
 #endif //POKEMON3D_MASTERRENDERER_H

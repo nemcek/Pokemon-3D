@@ -4,9 +4,9 @@
 
 #include "src/scenes/BattleScene.hpp"
 
-BattleScene::BattleScene(nsMaterRenderer::MasterRenderer *masterRenderer, Camera *camera, Loader *loader, InputManager *inputManager,
-                         Pokemon *playersPokemon, Pokemon *enemyPokemon, std::vector<nsGround::Ground *> grounds,
-                         Skybox *skybox) {
+BattleScene::BattleScene(MasterRendererPtr masterRenderer, CameraPtr camera, LoaderPtr loader, InputManager *inputManager,
+                         PokemonPtr playersPokemon, PokemonPtr enemyPokemon, std::vector<GroundPtr> grounds,
+                         SkyboxPtr skybox) {
 
     this->sceneType = SceneType::BATTLE_SCEEN;
     this->projection = glm::perspective(45.0f, GLfloat(1600) / GLfloat(900), 0.1f, 750.0f);
@@ -31,15 +31,15 @@ BattleScene::BattleScene(nsMaterRenderer::MasterRenderer *masterRenderer, Camera
 
 }
 
-void BattleScene::preparePokemon(Pokemon *pokemon, PokemonData *pokemonData) {
+void BattleScene::preparePokemon(PokemonPtr pokemon, PokemonData *pokemonData) {
     pokemon->setPosition(pokemonData->position);
     pokemon->setRotation(pokemonData->rotation);
     pokemon->setScale(pokemonData->scale);
 }
 
 void BattleScene::initLights() {
-    Light *light1 = new Light(glm::vec3(-20.0f, 50.0f, 50.0f), glm::vec3(0.7f));
-    Light *light2 = new Light(glm::vec3(30.0f, 50.0f, -40.0f), glm::vec3(0.7f));
+    auto light1 = LightPtr(new Light(glm::vec3(-20.0f, 50.0f, 50.0f), glm::vec3(0.7f)));
+    auto light2 = LightPtr(new Light(glm::vec3(30.0f, 50.0f, -40.0f), glm::vec3(0.7f)));
 
     this->loadLight(light1);
     this->loadLight(light2);

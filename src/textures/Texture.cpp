@@ -4,9 +4,6 @@
 
 #include "src/textures/Texture.hpp"
 
-namespace nsTexture {
-
-    Texture::Texture(int textureId) {
-        this->textureId = textureId;
-    }
+Texture::Texture(int textureId) {
+    this->textureId = textureId;
 }

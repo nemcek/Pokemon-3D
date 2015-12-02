@@ -14,7 +14,7 @@ class StreetLamp : public Terrain {
 public:
     LightPtr light;
 //    Light *light;
-    StreetLamp(Loader *loader, glm::vec3 position);
+    StreetLamp(LoaderPtr loader, glm::vec3 position);
 
 };
 

@@ -22,33 +22,33 @@ class SceneManager {
 
 private:
 
-    std::vector<Terrain *> terrains;
-    std::vector<nsGround::Ground *> grounds;
-    StaticShader *staticShader;
-    GroundShader *groundShader;
-    Camera *camera;
-    std::vector<TerrainTexture *> terrainTextures;
-    TerrainTexturePack *terrainTexturePack;
-    std::vector<MeshWrapper *> trees;
+    std::vector<TerrainPtr > terrains;
+    std::vector<GroundPtr> grounds;
+    StaticShaderPtr staticShader;
+    GroundShaderPtr groundShader;
+    CameraPtr camera;
+    std::vector<TerrainTexturePtr > terrainTextures;
+    TerrainTexturePackPtr terrainTexturePack;
+    std::vector<MeshWrapperPtr> trees;
     glm::mat4 projection;
-    std::vector<StreetLamp *> lamps;
-    nsMeshRenderer::MeshRenderer *meshRenderer;
-    GroundRenderer *groundRenderer;
-    Loader *guiLoader;
-    Loader *loader;
-    GuiShader *guiShader;
-    Healthbar *healthbar;
-    GuiRenderer *guiRenderer;
-    SkyboxShader *skyboxShader;
-    SkyboxRenderer *skyboxRenderer;
-    Skybox *skybox;
-    nsMaterRenderer::MasterRenderer *masterRenderer;
-    MainCharacter *mainCharacter;
+    std::vector<StreetLampPtr> lamps;
+    MeshRendererPtr meshRenderer;
+    GroundRendererPtr groundRenderer;
+    LoaderPtr guiLoader;
+    LoaderPtr loader;
+    GuiShaderPtr guiShader;
+    HealthbarPtr healthbar;
+    GuiRendererPtr guiRenderer;
+    SkyboxShaderPtr skyboxShader;
+    SkyboxRendererPtr skyboxRenderer;
+    SkyboxPtr skybox;
+    MasterRendererPtr masterRenderer;
+    MainCharacterPtr mainCharacter;
     InputManager *inputManager;
 
     Scene *currentScene;
     Scene *previousScene;
-    PokemonRepository *pokemonRepository;
+    PokemonRepositoryPtr pokemonRepository;
 
     int screen_width;
     int screen_height;
@@ -59,8 +59,8 @@ private:
     void initWrappers();
     void initMainCharacter(InputManager *inputManager);
     void initCamera(GLFWwindow *window, InputManager *inputManager);
-    void initSkybox(Loader *loader);
-    void initTerrain(Loader *loader);
+    void initSkybox(LoaderPtr loader);
+    void initTerrain(LoaderPtr loader);
     void initShaders();
     void initLoaders();
     void initRenderers();

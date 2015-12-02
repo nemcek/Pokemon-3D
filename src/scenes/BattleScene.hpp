@@ -28,15 +28,15 @@ private:
     };
 
     InputManager *inputManager;
-    Pokemon *playersPokemon;
-    Pokemon *enemyPokemon;
-    std::vector<Attack *> attacks;
+    PokemonPtr playersPokemon;
+    PokemonPtr enemyPokemon;
+    std::vector<AttackPtr> attacks;
 
-    void preparePokemon(Pokemon *pokemon, PokemonData *pokemonData);
+    void preparePokemon(PokemonPtr pokemon, PokemonData *pokemonData);
     void initLights();
 public:
-    BattleScene(nsMaterRenderer::MasterRenderer *masterRenderer, Camera *camera, Loader *loader, InputManager *inputManager,
-                Pokemon *playersPokemon, Pokemon *enemyPokemon, std::vector<nsGround::Ground *> grounds, Skybox *skybox);
+    BattleScene(MasterRendererPtr masterRenderer, CameraPtr camera, LoaderPtr loader, InputManager *inputManager,
+                PokemonPtr playersPokemon, PokemonPtr enemyPokemon, std::vector<GroundPtr> grounds, SkyboxPtr skybox);
     void update() override;
 };
 

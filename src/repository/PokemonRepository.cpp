@@ -8,7 +8,7 @@ PokemonRepository::PokemonRepository() {
 
 }
 
-Pokemon* PokemonRepository::findPokemon(unsigned short id) {
+PokemonPtr PokemonRepository::findPokemon(unsigned short id) {
     for (auto pokemonLoop : this->pokemons) {
         if (pokemonLoop->id == id)
             return pokemonLoop;
@@ -17,6 +17,6 @@ Pokemon* PokemonRepository::findPokemon(unsigned short id) {
     return nullptr;
 }
 
-void PokemonRepository::add(Pokemon *pokemon) {
+void PokemonRepository::add(PokemonPtr pokemon) {
     this->pokemons.push_back(pokemon);
 }

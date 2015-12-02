@@ -4,7 +4,7 @@
 
 #include "src/objects/MainCharacter.h"
 
-MainCharacter::MainCharacter(Loader *loader, const std::string &object_name, const std::string &file_name,
+MainCharacter::MainCharacter(LoaderPtr loader, const std::string &object_name, const std::string &file_name,
                              glm::vec3 position, float rotX, float rotY, float rotZ, float scale,
                              InputManager *inputManager)
         : MovableCharacter(loader, object_name, file_name, position, rotX, rotY, rotZ, scale) {
@@ -12,7 +12,7 @@ MainCharacter::MainCharacter(Loader *loader, const std::string &object_name, con
     this->inputManager;
 }
 
-MainCharacter::MainCharacter(Loader *loader, const std::string &object_name, const std::string &file_name,
+MainCharacter::MainCharacter(LoaderPtr loader, const std::string &object_name, const std::string &file_name,
                              glm::vec3 position, float rotX, float rotY, float rotZ, float scale,
                              float reflectivity, float shineDamper, InputManager *inputManager)
         : MovableCharacter(loader, object_name, file_name, position, rotX, rotY, rotZ, scale,

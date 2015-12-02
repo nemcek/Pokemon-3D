@@ -15,13 +15,16 @@ private:
     void createMatrixes(int count, glm::vec3 scale);
 public:
 
-    Mesh *mesh;
+    MeshPtr mesh;
+//    Mesh *mesh;
     std::vector<glm::mat4> matrixes;
 
-    MeshWrapper(Loader *loader, const std::string &obj_file, const std::string &image_file, int count, glm::vec3 scale);
-    MeshWrapper(Loader *loader, const std::string &obj_file, const std::string &image_file, int count, glm::vec3 scale,
+    MeshWrapper(LoaderPtr loader, const std::string &obj_file, const std::string &image_file, int count, glm::vec3 scale);
+    MeshWrapper(LoaderPtr loader, const std::string &obj_file, const std::string &image_file, int count, glm::vec3 scale,
                 float reflectivity, float shineDamper);
 
 };
+
+typedef std::shared_ptr<MeshWrapper> MeshWrapperPtr;
 
 #endif //POKEMON3D_MESHWRAPPER_H

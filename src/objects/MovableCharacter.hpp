@@ -11,7 +11,7 @@ class MovableCharacter : public Mesh {
 private:
 
     bool collided(Scene *scene);
-    bool collidedWith(Mesh *mesh);
+    bool collidedWith(MeshPtr mesh);
     bool collidedWith(glm::mat4 matrix, float radius);
 
 protected:
@@ -25,9 +25,9 @@ protected:
 
 public:
 
-    MovableCharacter(Loader *loader, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY,
+    MovableCharacter(LoaderPtr loader, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY,
                      float rotZ, float scale);
-    MovableCharacter(Loader *loader, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY,
+    MovableCharacter(LoaderPtr loader, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY,
                      float rotZ, float scale, float reflectivity, float shineDamper);
 
 };

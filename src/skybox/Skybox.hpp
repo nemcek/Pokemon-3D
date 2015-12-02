@@ -74,11 +74,14 @@ private:
 
 public:
     GLint textureId;
-    RawModel *cube;
+    RawModelPtr cube;
+//    RawModel *cube;
     float rotation = 0.0f;
 
-    Skybox(Loader *loader);
+    Skybox(LoaderPtr loader);
     void animate(float delta);
 };
+
+typedef std::shared_ptr<Skybox> SkyboxPtr;
 
 #endif //POKEMON3D_SKYBOX_HPP

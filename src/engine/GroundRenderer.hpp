@@ -12,19 +12,22 @@
 class GroundRenderer {
 
 private:
-    void prepareGround(const nsGround::Ground *model, glm::mat4 projection, glm::mat4 view);
+    void prepareGround(GroundPtr model, glm::mat4 projection, glm::mat4 view);
     void unbindMesh();
-    void prepareInstance(nsGround::Ground *ground);
-    void render(Mesh *mesh, glm::mat4 projection, glm::mat4 view);
-    void loadModelMatrix(nsGround::Ground *ground);
-    void bindTextures(nsGround::Ground *ground);
+    void prepareInstance(GroundPtr ground);
+    void render(MeshPtr mesh, glm::mat4 projection, glm::mat4 view);
+    void loadModelMatrix(GroundPtr ground);
+    void bindTextures(GroundPtr ground);
 
 public:
-    GroundShader *shader;
+    GroundShaderPtr shader;
+//    GroundShader *shader;
 
-    GroundRenderer(GroundShader *shader);
-    void render(std::vector<nsGround::Ground> grounds, glm::mat4 projection, glm::mat4 view);
+    GroundRenderer(GroundShaderPtr shader);
+    void render(std::vector<GroundPtr> grounds, glm::mat4 projection, glm::mat4 view);
 
 };
+
+typedef std::shared_ptr<GroundRenderer> GroundRendererPtr;
 
 #endif //POKEMON3D_GROUNDRENDERER_H

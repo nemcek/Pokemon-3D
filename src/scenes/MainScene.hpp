@@ -31,9 +31,9 @@ private:
     };
 
 public:
-    MainScene(nsMaterRenderer::MasterRenderer *masterRenderer, Camera *camera, Loader *loader,
-            PokemonRepository *pokemonRepository, std::vector<nsGround::Ground *> grounds, Skybox *skybox,
-            std::vector<MeshWrapper *> trees, MainCharacter *mainCharacter, std::vector<Terrain *> terrains);
+    MainScene(MasterRendererPtr masterRenderer, CameraPtr camera, LoaderPtr loader,
+            PokemonRepositoryPtr pokemonRepository, std::vector<GroundPtr> grounds, SkyboxPtr skybox,
+            std::vector<MeshWrapperPtr> trees, MainCharacterPtr mainCharacter, std::vector<TerrainPtr> terrains);
 };
 
 #endif //POKEMON3D_MAINSCENE_HPP

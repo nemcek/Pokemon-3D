@@ -18,10 +18,13 @@ class SkyboxRenderer {
 private:
 
 public:
-    SkyboxShader *shader;
+    SkyboxShaderPtr shader;
+//    SkyboxShader *shader;
 
-    SkyboxRenderer(SkyboxShader *shader);
-    void render(Skybox *skybox, glm::mat4 viewMatrix, glm::mat4 projectionMatrix, glm::vec3 fogColor);
+    SkyboxRenderer(SkyboxShaderPtr shader);
+    void render(SkyboxPtr skybox, glm::mat4 viewMatrix, glm::mat4 projectionMatrix, glm::vec3 fogColor);
 };
+
+typedef std::shared_ptr<SkyboxRenderer> SkyboxRendererPtr;
 
 #endif //POKEMON3D_SKYBOXRENDERER_HPP

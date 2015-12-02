@@ -11,12 +11,14 @@
 class PokemonRepository : public Repository {
 
 private:
-    std::vector<Pokemon *> pokemons;
+    std::vector<PokemonPtr> pokemons;
 
 public:
     PokemonRepository();
-    Pokemon *findPokemon(unsigned short id);
-    void add(Pokemon *pokemon);
+    PokemonPtr findPokemon(unsigned short id);
+    void add(PokemonPtr pokemon);
 };
+
+typedef std::shared_ptr<PokemonRepository> PokemonRepositoryPtr;
 
 #endif //POKEMON3D_POKEMONREPOSITORY_HPP

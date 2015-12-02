@@ -4,10 +4,10 @@
 
 #include "src/scenes/MainScene.hpp"
 
-MainScene::MainScene(nsMaterRenderer::MasterRenderer *masterRenderer, Camera *camera, Loader *loader,
-                     PokemonRepository *pokemonRepository, std::vector<nsGround::Ground *> grounds,
-                     Skybox *skybox, std::vector<MeshWrapper *> trees, MainCharacter *mainCharacter,
-                     std::vector<Terrain *> terrains) : Scene() {
+MainScene::MainScene(MasterRendererPtr masterRenderer, CameraPtr camera, LoaderPtr loader,
+                     PokemonRepositoryPtr pokemonRepository, std::vector<GroundPtr> grounds,
+                     SkyboxPtr skybox, std::vector<MeshWrapperPtr> trees, MainCharacterPtr mainCharacter,
+                     std::vector<TerrainPtr> terrains) : Scene() {
 
     this->sceneType = SceneType::MAIN_SCEEN;
     this->projection = glm::perspective(45.0f, GLfloat(1600) / GLfloat(900), 0.1f, 750.0f);
@@ -17,7 +17,7 @@ MainScene::MainScene(nsMaterRenderer::MasterRenderer *masterRenderer, Camera *ca
 
     // load pokemons with specified data
     for (auto pokemonDataLoop : this->pokemonData) {
-        Pokemon *pokemon = pokemonRepository->findPokemon(pokemonDataLoop.id);
+        auto pokemon = pokemonRepository->findPokemon(pokemonDataLoop.id);
 
         pokemon->setPosition(pokemonDataLoop.position);
         pokemon->setRotation(pokemonDataLoop.rotation);
@@ -36,10 +36,10 @@ MainScene::MainScene(nsMaterRenderer::MasterRenderer *masterRenderer, Camera *ca
         this->loadWrapper(treeLoop);
     }
 
-    Light *light1 = new Light(glm::vec3(150.0f, 50.0f, 150.0f), glm::vec3(0.7f));
-    StreetLamp *lamp1 = new StreetLamp(loader, glm::vec3(50.0f, 0.0f, 0.0f));
-    StreetLamp *lamp2 = new StreetLamp(loader, glm::vec3(-100.0f, 0.0f, 50.0f));
-    StreetLamp *lamp3 = new StreetLamp(loader, glm::vec3(-50.0f, 0.0f, -100.0f));
+    auto light1 = LightPtr(new Light(glm::vec3(150.0f, 50.0f, 150.0f), glm::vec3(0.7f)));
+    auto lamp1 = StreetLampPtr(new StreetLamp(loader, glm::vec3(50.0f, 0.0f, 0.0f)));
+    auto lamp2 = StreetLampPtr(new StreetLamp(loader, glm::vec3(-100.0f, 0.0f, 50.0f)));
+    auto lamp3 = StreetLampPtr(new StreetLamp(loader, glm::vec3(-50.0f, 0.0f, -100.0f)));
 
     this->loadLight(light1);
     this->loadLight(lamp1->light);

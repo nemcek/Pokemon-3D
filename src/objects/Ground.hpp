@@ -17,17 +17,17 @@ private:
     void generateGround();
 
 public:
-    Mesh *mesh;
+    MeshPtr mesh;
     float x;
     float z;
-    TerrainTexturePackPtr *texturePack;
-    TerrainTexturePtr *blendMap;
+    TerrainTexturePackPtr texturePack;
+    TerrainTexturePtr blendMap;
     float reflectivity = 0.1f;
     float shineDamper = 50.0f;
     GLuint programId;
 
-    Ground(GLint program_id, int gridX, int gridZ, const std::string &image_file, TerrainTexturePack *texturePack,
-                TerrainTexture *blendMap);
+    Ground(GLint program_id, int gridX, int gridZ, const std::string &image_file, TerrainTexturePackPtr texturePack,
+                TerrainTexturePtr blendMap);
 
 };
 

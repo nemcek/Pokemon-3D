@@ -11,25 +11,26 @@
 #include "src/shaders/StaticShader.hpp"
 #include "src/wrappers/MeshWrapper.hpp"
 
-namespace nsMeshRenderer {
+class MeshRenderer {
 
-    class MeshRenderer {
+private:
+    void loadTexturedModel(TexturedModelPtr model, glm::mat4 projection, glm::mat4 view);
+    void loadMatrixAndDraw(glm::mat4, int count);
+    void unbindMesh();
+    void render(MeshWrapperPtr wrapper, glm::mat4 projection, glm::mat4 view);
+    void loadVAO(TexturedModelPtr model);
 
-    private:
-        void loadTexturedModel(const TexturedModel *model, glm::mat4 projection, glm::mat4 view);
-        void loadMatrixAndDraw(glm::mat4, int count);
-        void unbindMesh();
-        void render(MeshWrapper *wrapper, glm::mat4 projection, glm::mat4 view);
-        void loadVAO(TexturedModel *model);
+public:
+    StaticShaderPtr shader;
+//        StaticShader *shader;
 
-    public:
-        StaticShader *shader;
+    MeshRenderer(StaticShaderPtr shader);
+    void render(std::vector<MeshPtr> meshes, glm::mat4 projection, glm::mat4 view);
+    void render(MeshPtr mesh, glm::mat4 projection, glm::mat4 view);
+    void render(std::vector<MeshWrapperPtr> wrappers, glm::mat4 projection, glm::mat4 matrix);
 
-        MeshRenderer(StaticShader *shader);
-        void render(std::vector<Mesh> meshes, glm::mat4 projection, glm::mat4 view);
-        void render(Mesh *mesh, glm::mat4 projection, glm::mat4 view);
-        void render(std::vector<MeshWrapper *> wrappers, glm::mat4 projection, glm::mat4 matrix);
+};
 
-    };
-}
+typedef std::shared_ptr<MeshRenderer> MeshRendererPtr;
+
 #endif //POKEMON3D_RENDERER_H
