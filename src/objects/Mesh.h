@@ -54,7 +54,7 @@ public:
     float scale;
     float radius;
     glm::vec3 position;
-    static TexturedModelPtr texturedModel;
+    TexturedModelPtr texturedModel;
 //    TexturedModel *texturedModel;
 
     Mesh(const std::string &);

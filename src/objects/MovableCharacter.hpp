@@ -32,4 +32,6 @@ public:
 
 };
 
+typedef std::shared_ptr<MovableCharacter> MovableCharacterPtr;
+
 #endif //POKEMON3D_MOVABLECHARACTER_HPP

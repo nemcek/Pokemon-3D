@@ -18,9 +18,9 @@ private:
 
 public:
     glm::mat4 matrix;
-    static RawModelPtr rawModel;
+    RawModelPtr rawModel;
 //    RawModel *rawModel;
-    static TexturePtr texture;
+    TexturePtr texture;
 //    nsTexture::Texture *texture;
 
     TexturedModel();

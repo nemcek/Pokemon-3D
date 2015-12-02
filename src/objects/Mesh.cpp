@@ -189,5 +189,5 @@ void Mesh::setScale(float scale) {
 }
 
 // shared resources
-TexturedModelPtr Mesh::texturedModel;
+//TexturedModelPtr Mesh::texturedModel;
 LoaderPtr Mesh::loader;

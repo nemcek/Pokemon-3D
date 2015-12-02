@@ -38,7 +38,7 @@ void Pokemon::checkInputs() {
 std::vector<Attack *> Pokemon::attack(Scene *scene) {
     int count = ((5 - 1) * (rand() / RAND_MAX)) + 1;
 
-    return generateAttacks(4, objects);
+    return generateAttacks(4, scene);
 }
 
 std::vector<Attack *> Pokemon::generateAttacks(int count, Scene *scene) {

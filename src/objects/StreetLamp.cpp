@@ -10,4 +10,4 @@ StreetLamp::StreetLamp(Loader *loader, glm::vec3 position)
     this->light = LightPtr(new Light(glm::vec3(position.x, position.y + 5.0f, position.z), glm::vec3(2.1f, 2.0f, 1.0f), glm::vec3(1.0f, 0.02f, 0.002f)));
 }
 
-LightPtr StreetLamp::light;
+//LightPtr StreetLamp::light;

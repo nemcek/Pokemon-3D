@@ -37,6 +37,7 @@ void SceneManager::changeScene(SceneType sceneType) {
                                  this->pokemonRepository->findPokemon(25), this->pokemonRepository->findPokemon(7),
                                  this->grounds, this->skybox);
     }
+
     this->previousScene = this->currentScene;
     this->currentScene = newScene;
 }

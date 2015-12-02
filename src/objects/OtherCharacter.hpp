@@ -26,4 +26,6 @@ public:
     void animate(Scene *scene, float delta) override;
 };
 
+typedef std::shared_ptr<OtherCharacter> OtherCharacterPtr;
+
 #endif //POKEMON3D_OTHERCHARACTER_HPP

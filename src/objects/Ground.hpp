@@ -20,8 +20,8 @@ public:
     Mesh *mesh;
     float x;
     float z;
-    TerrainTexturePack *texturePack;
-    TerrainTexture *blendMap;
+    TerrainTexturePackPtr *texturePack;
+    TerrainTexturePtr *blendMap;
     float reflectivity = 0.1f;
     float shineDamper = 50.0f;
     GLuint programId;

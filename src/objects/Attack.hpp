@@ -21,4 +21,6 @@ public:
     void animate(Scene *scene, float delta) override;
 };
 
+typedef std::shared_ptr<Attack> AttackPtr;
+
 #endif //POKEMON3D_ATTACK_HPP

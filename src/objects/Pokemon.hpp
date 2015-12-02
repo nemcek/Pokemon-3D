@@ -18,7 +18,8 @@ private:
     void checkInputs();
     std::vector<Attack *> generateAttacks(int count, Scene *scene);
 
-    Attack *attackObj;
+    AttackPtr attackObj;
+//    Attack *attackObj;
 public:
     unsigned short id;
     std::vector<Attack *> attacks;
@@ -32,5 +33,7 @@ public:
     void animate(Scene *scene, float delta) override;
     std::vector<Attack *> attack(Scene *scene);
 };
+
+typedef std::shared_ptr<Pokemon> PokemonPtr;
 
 #endif //POKEMON3D_POKEMON_HPP

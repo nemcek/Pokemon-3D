@@ -27,4 +27,6 @@ public:
     void animate(Scene *scene, float delta) override;
 };
 
+typedef std::shared_ptr<MainCharacter> MainCharacterPtr;
+
 #endif //POKEMON3D_MAINCHARACTER_H
