@@ -49,6 +49,8 @@ public:
     void processWrapper(MeshWrapperPtr wrapper);
     void processGui(GuiPtr gui);
     void processSkybox(SkyboxPtr skybox);
+    static void enableCulling();
+    static void disableCulling();
 };
 
 typedef std::shared_ptr<MasterRenderer> MasterRendererPtr;

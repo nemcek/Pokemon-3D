@@ -3,6 +3,7 @@
 //
 
 #include "src/engine/MeshRenderer.hpp"
+#include "MasterRenderer.hpp"
 
 
 MeshRenderer::MeshRenderer(StaticShaderPtr shader) {
@@ -16,6 +17,11 @@ void MeshRenderer::render(std::vector<MeshPtr> meshes, glm::mat4 projection, glm
 }
 
 void MeshRenderer::render(MeshPtr mesh, glm::mat4 projection, glm::mat4 view) {
+    if (mesh->texturedModel->texture->hasTransparency)
+        MasterRenderer::disableCulling();
+
+    shader->loadUseFakeLighting(mesh->texturedModel->texture->useFakeLighting);
+
     loadTexturedModel(mesh->texturedModel, projection, view);
 
     loadVAO(mesh->texturedModel);
@@ -31,6 +37,11 @@ void MeshRenderer::render(std::vector<MeshWrapperPtr> wrappers, glm::mat4 projec
 }
 
 void MeshRenderer::render(MeshWrapperPtr wrapper, glm::mat4 projection, glm::mat4 view) {
+    if (wrapper->mesh->texturedModel->texture->hasTransparency)
+        MasterRenderer::disableCulling();
+
+    shader->loadUseFakeLighting(wrapper->mesh->texturedModel->texture->useFakeLighting);
+
     loadTexturedModel(wrapper->mesh->texturedModel, projection, view);
     loadVAO(wrapper->mesh->texturedModel);
 
@@ -50,6 +61,7 @@ void MeshRenderer::loadTexturedModel(TexturedModelPtr model, glm::mat4 projectio
 }
 
 void MeshRenderer::unbindMesh() {
+//    MasterRenderer::enableCulling();
     glBindVertexArray(0);
 }
 

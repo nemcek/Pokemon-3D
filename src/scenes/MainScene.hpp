@@ -20,20 +20,25 @@ private:
             7,
             glm::vec3(0.0f),
             glm::vec3(-20.0f, 0.0f, -24.0f),
-            0.15f
+            0.15f,
+            100,
+            nullptr
         },
         PokemonData {
             25,
             glm::vec3(0.0f),
             glm::vec3(15.0f, 0.0f, 0.0f),
-            0.15f
+            0.15f,
+            100,
+            nullptr
         }
     };
 
 public:
     MainScene(MasterRendererPtr masterRenderer, CameraPtr camera, LoaderPtr loader,
             PokemonRepositoryPtr pokemonRepository, std::vector<GroundPtr> grounds, SkyboxPtr skybox,
-            std::vector<MeshWrapperPtr> trees, MainCharacterPtr mainCharacter, std::vector<TerrainPtr> terrains);
+            std::vector<MeshWrapperPtr> trees, MainCharacterPtr mainCharacter, std::vector<TerrainPtr> terrains,
+            InputManager *inputManager);
 };
 
 #endif //POKEMON3D_MAINSCENE_HPP

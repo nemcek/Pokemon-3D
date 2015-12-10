@@ -17,6 +17,7 @@
 #include "src/objects/Light.hpp"
 #include "src/textures/TerrainTexturePack.hpp"
 #include "src/repository/PokemonRepository.hpp"
+#include "src/wrappers/GrassWrapper.hpp"
 
 class SceneManager {
 
@@ -24,6 +25,7 @@ private:
 
     std::vector<TerrainPtr > terrains;
     std::vector<GroundPtr> grounds;
+    std::vector<GuiPtr> guis;
     StaticShaderPtr staticShader;
     GroundShaderPtr groundShader;
     CameraPtr camera;
@@ -37,7 +39,6 @@ private:
     LoaderPtr guiLoader;
     LoaderPtr loader;
     GuiShaderPtr guiShader;
-    HealthbarPtr healthbar;
     GuiRendererPtr guiRenderer;
     SkyboxShaderPtr skyboxShader;
     SkyboxRendererPtr skyboxRenderer;
@@ -45,10 +46,12 @@ private:
     MasterRendererPtr masterRenderer;
     MainCharacterPtr mainCharacter;
     InputManager *inputManager;
+    GrassWrapperPtr grassWrapper;
 
-    Scene *currentScene;
+    Scene *mainScene = nullptr;
     Scene *previousScene;
     PokemonRepositoryPtr pokemonRepository;
+    std::vector<PokemonPtr> pokemons;
 
     int screen_width;
     int screen_height;
@@ -71,6 +74,8 @@ public:
     void animate(float delta);
     void clean();
     void changeScene(SceneType sceneType);
+
+    Scene *currentScene;
 };
 
 #endif //POKEMON3D_SCENEMANAGER_HPP

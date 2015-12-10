@@ -17,7 +17,10 @@ void SceneManager::render() {
 
 void SceneManager::animate(float delta) {
     this->currentScene->update();
-    this->currentScene->animate(delta);
+    SceneType sceneType = this->currentScene->animate(delta);
+
+    if (sceneType != this->currentScene->sceneType)
+        changeScene(sceneType);
 }
 
 void SceneManager::clean() {
@@ -28,13 +31,30 @@ void SceneManager::changeScene(SceneType sceneType) {
     Scene *newScene;
 
     if (sceneType == SceneType::MAIN_SCEEN) {
-
-        newScene = new MainScene(this->masterRenderer, this->camera, this->loader,
-                                 this->pokemonRepository, this->grounds, this->skybox, this->trees, this->mainCharacter,
-                                 this->terrains);
+        if (mainScene == nullptr) {
+            newScene = new MainScene(this->masterRenderer, this->camera, this->loader,
+                                     this->pokemonRepository, this->grounds, this->skybox, this->trees,
+                                     this->mainCharacter,
+                                     this->terrains, this->inputManager);
+        } else {
+            newScene = mainScene;
+        }
     } else if (sceneType == SceneType::BATTLE_SCEEN) {
+
+        PokemonPtr playerPokemon = this->pokemonRepository->findPokemon(25);
+        PlayerPokemonPtr playerPokemonPtr = PlayerPokemonPtr(new PlayerPokemon(playerPokemon->id, loader, playerPokemon,
+        playerPokemon->position, playerPokemon->rotX, playerPokemon->rotY, playerPokemon->rotZ, playerPokemon->scale,
+        playerPokemon->texturedModel->texture->reflectivity, playerPokemon->texturedModel->texture->shineDamper, this->inputManager, "models/objects/Pikachu.obj",
+                                                                               "models/textures/Pikachu.tga"));
+
+
+        PokemonPtr enemyPokemon = this->pokemonRepository->findPokemon(7);
+        EnemyPokemonPtr enemyPokemonPtr = EnemyPokemonPtr(new EnemyPokemon(enemyPokemon->id, loader, enemyPokemon,
+                                                                            enemyPokemon->position, enemyPokemon->rotX, enemyPokemon->rotY, enemyPokemon->rotZ, enemyPokemon->scale,
+                                                                            enemyPokemon->texturedModel->texture->reflectivity, enemyPokemon->texturedModel->texture->shineDamper, this->inputManager, "models/objects/Squirtle.obj",
+                                                                               "models/textures/Squirtle.tga"));
         newScene = new BattleScene(this->masterRenderer, this->camera, this->loader, this->inputManager,
-                                 this->pokemonRepository->findPokemon(25), this->pokemonRepository->findPokemon(7),
+                                 playerPokemonPtr, enemyPokemonPtr,
                                  this->grounds, this->skybox);
     }
 
@@ -50,10 +70,10 @@ void SceneManager::init(GLFWwindow *window, InputManager *inputManager) {
     glfwGetWindowSize(window, &screen_width, &screen_height);
 
     this->pokemonRepository = PokemonRepositoryPtr(new PokemonRepository());
+    this->initMainCharacter(inputManager);
     this->initPokemons(inputManager);
     this->initGrounds(this->staticShader->programId);
     this->initWrappers();
-    this->initMainCharacter(inputManager);
     this->initCamera(window, inputManager);
     this->initTerrain(this->loader);
     this->initSkybox(this->loader);
@@ -92,11 +112,13 @@ void SceneManager::initPokemons(InputManager *inputManager) {
             "models/textures/Squirtle.tga",
             glm::vec3(-20.0f, 0.0f, -24.0f),
             0.0f, 0.0f, 0.0f, 0.15f,
-            inputManager,
+            this->inputManager,
             "models/objects/Squirtle.obj",
-            "models/textures/Squirtle.tga"
+            "models/textures/Squirtle.tga",
+            false
     ));
     this->pokemonRepository->add(squirtle);
+    this->pokemons.push_back(squirtle);
 
     auto pikachu = PokemonPtr(new Pokemon(
             25,
@@ -105,11 +127,13 @@ void SceneManager::initPokemons(InputManager *inputManager) {
             "models/textures/Pikachu.tga",
             glm::vec3(5.0f, 0.0f, -100.0f),
             0.0f, 0.0f, 0.0f, 0.15f,
-            inputManager,
+            this->inputManager,
             "models/objects/Pikachu.obj",
-            "models/textures/Pikachu.tga"
+            "models/textures/Pikachu.tga",
+            true
     ));
     this->pokemonRepository->add(pikachu);
+    this->pokemons.push_back(pikachu);
 
 }
 
@@ -143,6 +167,9 @@ void SceneManager::initWrappers() {
                                                glm::vec3(50.0f, 75.0f, 1.0f)));
     auto treesWrapper2 = MeshWrapperPtr(new MeshWrapper(loader, "models/objects/Tree.obj", "models/textures/Tree.tga", 300,
                                                 glm::vec3(4.0f, 2.0f, 100.f)));
+    this->grassWrapper = GrassWrapperPtr(new GrassWrapper(loader, "models/objects/Grass.obj", "models/textures/Grass.tga",
+    glm::vec3(0.0f), 0.0f, 0.0f, 0.0f, 1.0f));
+
     this->trees.push_back(treesWrapper);
     this->trees.push_back(treesWrapper2);
 }
@@ -167,11 +194,25 @@ void SceneManager::initSkybox(LoaderPtr loader) {
 }
 
 void SceneManager::initTerrain(LoaderPtr loader) {
-//    this->terrains.push_back(new Terrain(
-//            loader,
-//            "models/objects/Pokecenter.obj",
-//            "models/textures/Pokecenter.tga",
-//            glm::vec3(30.0f, 0.0f, -50.0f),
-//            0.0f, 180.0f, 0.0f, 20.0f, 1.0f, 50.0f
-//    ));
+    this->terrains.push_back(TerrainPtr(new Terrain(
+            loader,
+            "models/objects/Pokecenter.obj",
+            "models/textures/Pokecenter.tga",
+            glm::vec3(30.0f, 0.0f, -50.0f),
+            0.0f, 180.0f, 0.0f, 20.0f, 1.0f, 50.0f
+    )));
+
+    grassWrapper->generateGrass(glm::vec2(5.0f, 5.0f), glm::vec2(25.0f, 35.0f));
+
+    for (auto grassLoop : grassWrapper->grassParts) {
+        this->terrains.push_back(grassLoop);
+    }
+
+//    grassWrapper->grassParts.clear();
+//
+//    grassWrapper->generateGrass(glm::vec2(55.0f, 10.0f), glm::vec2(105.0f, 100.0f));
+//
+//    for (auto grassLoop : grassWrapper->grassParts) {
+//        this->terrains.push_back(grassLoop);
+//    }
 }

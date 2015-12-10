@@ -16,9 +16,10 @@ public:
     int textureId;
     float reflectivity = 0.5f;
     float shineDamper = 50.0f;
+    bool hasTransparency = false;
+    bool useFakeLighting = false;
 
     Texture(int textureId);
-
 };
 
 typedef std::shared_ptr<Texture> TexturePtr;

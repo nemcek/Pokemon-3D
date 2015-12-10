@@ -19,6 +19,8 @@
 #include "src/managers/InputManager.hpp"
 #include "glm/ext.hpp"
 #include "src/loaders/Loader.hpp"
+#include "src/extensions/Math.hpp"
+#include "src/enums/Enums.hpp"
 
 class Scene;
 
@@ -35,12 +37,9 @@ class Mesh {
 private:
     float calculateRadius();
     center_t calculateCenter();
-    static LoaderPtr loader;
-//    Loader *loader;
-    const std::string &image_name;
-    const std::string &object_name;
 
 protected:
+    LoaderPtr loader;
 
     virtual void initGeometry(const std::string &);
     virtual void initTexture(const std::string &);
@@ -55,14 +54,16 @@ public:
     float radius;
     glm::vec3 position;
     TexturedModelPtr texturedModel;
-//    TexturedModel *texturedModel;
+    bool needsDeletion = false;
 
     Mesh(const std::string &);
+    Mesh(TexturedModelPtr, glm::vec3 position, float rotX, float rotY, float rotZ, float scale);
+    Mesh(std::shared_ptr<Mesh> mesh, glm::vec3 position, float rotX, float rotY, float rotZ, float scale);
     Mesh(LoaderPtr loader, const std::string &, const std::string &);
     Mesh(LoaderPtr loader, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY, float rotZ, float scale);
     Mesh(LoaderPtr loader, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY, float rotZ, float scale, float reflectivity, float shineDamper);
     virtual void render();
-    virtual void animate(Scene *scene, float delta);
+    virtual SceneType animate(Scene &scene, float delta);
     glm::vec3 getCenter();
     glm::mat4 createTransformationMatrix();
     void setPosition(glm::vec3 position);

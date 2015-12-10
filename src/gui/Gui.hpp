@@ -20,7 +20,7 @@ public:
 //    std::vector<GuiTexture *> guiTextures;
 
     Gui();
-
+    virtual bool animate();
 };
 
 typedef std::shared_ptr<Gui> GuiPtr;

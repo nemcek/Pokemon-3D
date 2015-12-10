@@ -6,6 +6,7 @@
 #define PPGSO_ENVIROMENT_H
 
 #include "src/objects/Mesh.h"
+#include "src/enums/Enums.hpp"
 
 using namespace std;
 
@@ -17,8 +18,10 @@ public:
                 float rotX, float rotY, float rotZ, float scale);
     Terrain(LoaderPtr loader, const std::string & object_name, const std::string & file_name, glm::vec3 position,
             float rotX, float rotY, float rotZ, float scale, float reflectivity, float shineDamper);
+    Terrain(MeshPtr mesh, glm::vec3 position, float rotX, float rotY, float rotZ, float scale);
+    Terrain(MeshPtr mesh, glm::vec3 position, float rotX, float rotY, float rotZ, float scale, float reflectivity, float shineDamper);
 
-    void animate(Scene *scene, float delta) override;
+    SceneType animate(Scene &scene, float delta) override;
 };
 
 typedef std::shared_ptr<Terrain> TerrainPtr;

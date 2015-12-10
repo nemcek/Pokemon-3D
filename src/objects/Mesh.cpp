@@ -1,10 +1,9 @@
 #include <src/loaders/tiny_obj_loader.h>
 #include <loaders/tiny_obj_loader.h>
 #include "src/objects/Mesh.h"
+#include "Scene.hpp"
 
-Mesh::Mesh(const std::string &image_file)
-        : image_name(image_file),
-          object_name(""){
+Mesh::Mesh(const std::string &image_file) {
     this->texturedModel = TexturedModelPtr(new TexturedModel());
     this->texturedModel->rawModel = RawModelPtr(new RawModel());
 
@@ -18,9 +17,30 @@ Mesh::Mesh(const std::string &image_file)
     this->radius = calculateRadius();
 }
 
-Mesh::Mesh(LoaderPtr loader, const std::string &obj_file ,const std::string &image_file)
-        : image_name(image_file),
-          object_name(obj_file) {
+Mesh::Mesh(TexturedModelPtr texturedModel, glm::vec3 position, float rotX, float rotY, float rotZ, float scale) {
+    this->texturedModel = texturedModel;
+
+    this->position = position;
+    this->rotX = rotX;
+    this->rotX = rotX;
+    this->rotX = rotX;
+    this->scale = scale;
+    this->radius = calculateRadius();
+}
+
+Mesh::Mesh(std::shared_ptr<Mesh> mesh, glm::vec3 position, float rotX, float rotY, float rotZ, float scale) {
+    this->texturedModel = mesh->texturedModel;
+
+    this->position = position;
+    this->rotX = rotX;
+    this->rotY = rotY;
+    this->rotZ = rotZ;
+    this->scale = scale;
+    this->center_point = mesh->center_point;
+    this->radius = calculateRadius();
+}
+
+Mesh::Mesh(LoaderPtr loader, const std::string &obj_file ,const std::string &image_file) {
     this->texturedModel = TexturedModelPtr(new TexturedModel());
     this->loader = loader;
 
@@ -38,9 +58,7 @@ Mesh::Mesh(LoaderPtr loader, const std::string &obj_file ,const std::string &ima
 }
 
 Mesh::Mesh(LoaderPtr loader, const std::string & obj_file, const std::string &image_file, glm::vec3 position, float rotX, float rotY, float rotZ,
-           float scale)
-        : image_name(image_file),
-          object_name(obj_file) {
+           float scale) {
 
     this->texturedModel = TexturedModelPtr(new TexturedModel());
     this->loader = loader;
@@ -58,9 +76,7 @@ Mesh::Mesh(LoaderPtr loader, const std::string & obj_file, const std::string &im
 }
 
 Mesh::Mesh(LoaderPtr loader, const std::string & obj_file, const std::string &image_file, glm::vec3 position, float rotX, float rotY, float rotZ,
-           float scale, float reflectivity, float shineDamper)
-        : image_name(image_file),
-          object_name(obj_file) {
+           float scale, float reflectivity, float shineDamper) {
 
     this->texturedModel = TexturedModelPtr(new TexturedModel());
     this->loader = loader;
@@ -121,7 +137,8 @@ void Mesh::initTexture(const std::string &image_file) {
 
     std::vector<char> buffer(tgafile.imageData, tgafile.imageData + tgafile.imageWidth * tgafile.imageHeight * (tgafile.bitCount / 8));
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tgafile.imageWidth, tgafile.imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, buffer.data());
+    int imageType = (tgafile.bitCount / 8) == 3 ? GL_RGB : GL_RGBA;
+    glTexImage2D(GL_TEXTURE_2D, 0, imageType, tgafile.imageWidth, tgafile.imageHeight, 0, imageType, GL_UNSIGNED_BYTE, buffer.data());
 }
 
 void Mesh::render() {
@@ -162,7 +179,7 @@ glm::vec3 Mesh::getCenter() {
     return glm::vec3(this->texturedModel->matrix[3].x, this->center.y, this->texturedModel->matrix[3].z);
 }
 
-void Mesh::animate(Scene *scene, float delta) { return; }
+SceneType Mesh::animate(Scene &scene, float delta) { return scene.sceneType; }
 
 float Mesh::calculateRadius() {
     center_t c = calculateCenter();
@@ -187,7 +204,3 @@ void Mesh::setRotation(glm::vec3 rotation) {
 void Mesh::setScale(float scale) {
     this->scale = scale;
 }
-
-// shared resources
-//TexturedModelPtr Mesh::texturedModel;
-LoaderPtr Mesh::loader;

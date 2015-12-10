@@ -24,6 +24,7 @@ private:
     GLint reflectivity;
     GLint shineDamper;
     GLint skyColor;
+    GLint useFakeLighting;
 
 public:
     StaticShader();
@@ -36,6 +37,7 @@ public:
     void loadLights(std::vector<LightPtr> lights);
     void loadShining(float reflectivity, float shineDamper);
     void loadSkyColor(glm::vec3 skyColor);
+    void loadUseFakeLighting(bool useFakeLigting);
 };
 
 typedef std::shared_ptr<StaticShader> StaticShaderPtr;

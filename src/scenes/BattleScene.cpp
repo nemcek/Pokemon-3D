@@ -2,10 +2,11 @@
 // Created by Martin on 30. 11. 2015.
 //
 
+#include <gui/Healthbar.hpp>
 #include "src/scenes/BattleScene.hpp"
 
 BattleScene::BattleScene(MasterRendererPtr masterRenderer, CameraPtr camera, LoaderPtr loader, InputManager *inputManager,
-                         PokemonPtr playersPokemon, PokemonPtr enemyPokemon, std::vector<GroundPtr> grounds,
+                         PlayerPokemonPtr playersPokemon, EnemyPokemonPtr enemyPokemon, std::vector<GroundPtr> grounds,
                          SkyboxPtr skybox) {
 
     this->sceneType = SceneType::BATTLE_SCEEN;
@@ -18,7 +19,7 @@ BattleScene::BattleScene(MasterRendererPtr masterRenderer, CameraPtr camera, Loa
     preparePokemon(enemyPokemon, &this->enemyPokemonData);
     initLights();
 
-    camera->setPosition(this->cameraPosition);
+    camera->setFollowTarget(&cameraPosition, &cameraRotX, &cameraRotY, &cameraRotZ);
 
     this->loadCamera(camera);
     this->loadMasterRenderer(masterRenderer);
@@ -28,13 +29,19 @@ BattleScene::BattleScene(MasterRendererPtr masterRenderer, CameraPtr camera, Loa
     this->loadObject(enemyPokemon);
     this->loadSkybox(skybox);
     this->loadGrounds(grounds);
-
+    this->loadGui(HealthbarPtr(new Healthbar(playersPokemon,"models/textures/HealthbarFill.tga", "models/textures/Healthbar.tga"
+            , loader, HealthbarPosition::BOTTOM_RIGHT)));
+    this->loadGui(HealthbarPtr(new Healthbar(enemyPokemon,"models/textures/HealthbarFill.tga", "models/textures/Healthbar.tga"
+            , loader, HealthbarPosition::TOP_LEFT)));
 }
 
 void BattleScene::preparePokemon(PokemonPtr pokemon, PokemonData *pokemonData) {
     pokemon->setPosition(pokemonData->position);
+    pokemon->startingPos = pokemonData->position;
     pokemon->setRotation(pokemonData->rotation);
     pokemon->setScale(pokemonData->scale);
+    pokemon->maxHp = pokemonData->maxHp;
+    pokemon->currentHp = pokemonData->maxHp;
 }
 
 void BattleScene::initLights() {
@@ -46,12 +53,7 @@ void BattleScene::initLights() {
 }
 
 void BattleScene::update() {
-    if (this->inputManager->isTPressed()) {
-//        for (auto attackLoop : this->playersPokemon->attack()) {
-////        for (std::vector<Attack>::iterator it = attacks.begin(); it != attacks.end(); it++) {
-//            this->loadObject(attackLoop);
-////            this->attacks.push_back(attackLoop);
-//        }
-        this->playersPokemon->attack(this);
-    }
+//    if (this->inputManager->isTPressed()) {
+//        this->playersPokemon->attack(*this);
+//    }
 }

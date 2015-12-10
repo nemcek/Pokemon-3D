@@ -20,9 +20,8 @@ MasterRenderer::MasterRenderer(MeshRendererPtr renderer, GroundRendererPtr groun
     glDepthFunc(GL_LEQUAL);
 
     // Enable polygon culling
-    //glEnable(GL_CULL_FACE);
+//    enableCulling();
     glFrontFace(GL_CCW);
-    glCullFace(GL_BACK);
 }
 
 void MasterRenderer::render(glm::mat4 projection, glm::mat4 camera, std::vector<LightPtr> lights) {
@@ -84,4 +83,13 @@ void MasterRenderer::processGui(GuiPtr gui) {
 
 void MasterRenderer::processSkybox(SkyboxPtr skybox) {
     this->skybox = skybox;
+}
+
+void MasterRenderer::enableCulling() {
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+}
+
+void MasterRenderer::disableCulling() {
+    glDisable(GL_CULL_FACE);
 }

@@ -4,6 +4,7 @@
 
 #include "src/objects/MovableCharacter.hpp"
 #include "Scene.hpp"
+#include "Grass.hpp"
 
 MovableCharacter::MovableCharacter(LoaderPtr loader, const std::string &object_name, const std::string &file_name,
                              glm::vec3 position, float rotX, float rotY, float rotZ, float scale)
@@ -14,6 +15,18 @@ MovableCharacter::MovableCharacter(LoaderPtr loader, const std::string &object_n
                              glm::vec3 position, float rotX, float rotY, float rotZ, float scale,
                              float reflectivity, float shineDamper)
         : Mesh(loader, object_name, file_name, position, rotX, rotY, rotZ, scale, reflectivity, shineDamper) {
+}
+
+MovableCharacter::MovableCharacter(TexturedModelPtr texturedModel, glm::vec3 position, float rotX, float rotY, float rotZ,
+                                   float scale)
+        : Mesh(texturedModel, position, rotX, rotY, rotZ, scale) {
+
+}
+
+MovableCharacter::MovableCharacter(MeshPtr mesh, glm::vec3 position, float rotX, float rotY, float rotZ,
+                                   float scale)
+        : Mesh(mesh, position, rotX, rotY, rotZ, scale) {
+
 }
 
 void MovableCharacter::increasePosition(float dX, float dY, float dZ) {
@@ -28,7 +41,7 @@ void MovableCharacter::increaseRotation(float rX, float rY, float rZ) {
     this->rotZ += rZ;
 }
 
-void MovableCharacter::move(Scene *scene, float delta) {
+void MovableCharacter::move(Scene &scene, float delta) {
     glm::vec3 prevRot = glm::vec3(rotX, rotY, rotZ);
     glm::vec3 prevPos = this->position;
 
@@ -53,16 +66,29 @@ void MovableCharacter::move(Scene *scene, float delta) {
     }
 }
 
-bool MovableCharacter::collided(Scene *scene) {
-    for (auto objectLoop : scene->objects) {
+bool MovableCharacter::collided(Scene &scene) {
+    for (auto objectLoop : scene.objects) {
         if (objectLoop.get() == this)
             continue;
+
+        auto grass = std::dynamic_pointer_cast<Grass>(objectLoop);
+        if (grass) {
+            if (collidedWith(grass)) {
+                if (!grass->isAnimating) {
+                    grass->initAnimation();
+                    grass->useAnimation = true;
+
+                    return false;
+                }
+            }
+            continue;
+        }
 
         if (collidedWith(objectLoop))
             return true;
     }
 
-    for (auto wrapperLoop : scene->wrappers) {
+    for (auto wrapperLoop : scene.wrappers) {
         for (auto matrixLoop : wrapperLoop->matrixes) {
             if (collidedWith(matrixLoop, wrapperLoop->mesh->radius)) {
                 return true;
@@ -74,7 +100,6 @@ bool MovableCharacter::collided(Scene *scene) {
 }
 
 bool MovableCharacter::collidedWith(MeshPtr mesh) {
-
     if (glm::distance(this->position, mesh->position) < this->radius + mesh->radius) {
         return true;
     }

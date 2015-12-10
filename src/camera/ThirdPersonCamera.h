@@ -14,12 +14,15 @@ class ThirdPersonCamera : public Camera {
 private:
 
     glm::vec3 position;
+    glm::vec3 *followTargetPosition;
+    float *followTargetRotX;
+    float *followTargetRotY;
+    float *followTargetRotZ;
     float pitch;
     float yaw;
     float distance;
     float angle;
     MovableCharacterPtr movableCharacter;
-//    MovableCharacter *movableCharacter;
     InputManager *inputManager;
 
     void calculateZoom();
@@ -34,7 +37,8 @@ public:
     ThirdPersonCamera(MovableCharacterPtr movableCharacter, GLFWwindow * window, InputManager *inputManaget);
     void move() override;
     glm::mat4 getViewMatrix() override;
-    void setFollowTarget(MovableCharacterPtr movableCharacter) override;
+    void setFollowTarget(glm::vec3 *targetPositionVec, float *targetRotX, float *targetRotY, float *targetRotZ) override;
+    void setFollowTarget(MovableCharacterPtr followTarget) override;
     void setPosition(glm::vec3 position) override;
 };
 

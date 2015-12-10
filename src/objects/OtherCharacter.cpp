@@ -3,6 +3,7 @@
 //
 
 #include "src/objects/OtherCharacter.hpp"
+#include "Scene.hpp"
 
 OtherCharacter::OtherCharacter(LoaderPtr loader, const std::string & obj_file, const std::string &image_file, glm::vec3 position, float rotX,
                                float rotY, float rotZ, float scale)
@@ -18,10 +19,12 @@ OtherCharacter::OtherCharacter(LoaderPtr loader, const std::string &obj_file, co
 
 }
 
-void OtherCharacter::animate(Scene *scene, float delta) {
+SceneType OtherCharacter::animate(Scene &scene, float delta) {
     generateMovement();
     move(scene, delta);
     createTransformationMatrix();
+
+    return scene.sceneType;
 }
 
 void OtherCharacter::generateMovement() {

@@ -68,6 +68,8 @@ file(GLOB pokemon_gui "src/gui/*.cpp")
 file(GLOB pokemon_skybox "src/skybox/*.cpp")
 file(GLOB pokemon_repository "src/repository/*.cpp")
 file(GLOB pokemon_scenes "src/scenes/*.cpp")
+file(GLOB pokemon_animations "src/animations/*.cpp")
+file(GLOB pokemon_enums "src/enums/*.cpp")
 file(GLOB pokemon_shaders_programs "src/shaders/*.glsl")
 
 # Include header directories
@@ -102,7 +104,9 @@ add_library(libpokemon3d STATIC
         ${pokemon_gui}
         ${pokemon_skybox}
         ${pokemon_repository}
-        ${pokemon_scenes})
+        ${pokemon_scenes}
+        ${pokemon_animations}
+        ${pokemon_enums})
 
 target_link_libraries(libpokemon3d ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES})
 
@@ -127,7 +131,9 @@ set ( POKEMON3D_SRC
         ${pokemon_gui}
         ${pokemon_skybox}
         ${pokemon_repository}
-        ${pokemon_scenes})
+        ${pokemon_scenes}
+        ${pokemon_animations}
+        ${pokemon_enums})
 generate_shaders( POKEMON3D_SHADERS
         src/shaders/frag_ground.glsl
         src/shaders/vert_ground.glsl

@@ -16,6 +16,7 @@ uniform mat4 ProjectionMatrix;
 uniform mat4 ViewMatrix;
 uniform mat4 ModelMatrix;
 uniform vec3 lightPosition[4];
+uniform float useFakeLighting;
 
 const float density = 0.0035;
 const float gradient = 5;
@@ -30,7 +31,13 @@ void main() {
   // Calculate the final position on screen
   gl_Position = ProjectionMatrix * positionRelativeToCamera;
 
-  surfaceNormal = (ModelMatrix * vec4(Normal, 0.0)).xyz;
+  vec3 actualNormal = Normal;
+
+  if (useFakeLighting > 0.5) {
+    actualNormal = vec3(0.0, 1.0, 0.0);
+  }
+
+  surfaceNormal = (ModelMatrix * vec4(actualNormal, 0.0)).xyz;
 
   for (int i = 0; i < 4; i++) {
     toLightVector[i] = lightPosition[i] - worldPosition.xyz;

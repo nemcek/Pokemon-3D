@@ -23,7 +23,7 @@ public:
     OtherCharacter(LoaderPtr loader, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY,
                     float rotZ, float scale, float reflectivity, float shineDamper);
 
-    void animate(Scene *scene, float delta) override;
+    SceneType animate(Scene &scene, float delta) override;
 };
 
 typedef std::shared_ptr<OtherCharacter> OtherCharacterPtr;

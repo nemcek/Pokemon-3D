@@ -48,7 +48,7 @@ void ThirdPersonCamera::move() {
 
     calculateCameraPosition(horDist, vertDist);
 
-    this->yaw = 180 - (movableCharacter->rotY + angle);
+    this->yaw = 180 - (*followTargetRotY + angle);
 }
 
 float ThirdPersonCamera::calculateHorizontalDistance() {
@@ -60,14 +60,17 @@ float ThirdPersonCamera::calculateVerticalDistance() {
 }
 
 void ThirdPersonCamera::calculateCameraPosition(float horizontalDistance, float verticalDistance) {
-    float theta = movableCharacter->rotY + angle;
+    float theta = *followTargetRotY + angle;
     float offsetX = horizontalDistance * glm::sin(glm::radians(theta));
     float offsetZ = horizontalDistance * glm::cos(glm::radians(theta));
 
-    position.x = movableCharacter->position.x - offsetX;
-    position.z = movableCharacter->position.z - offsetZ;
+//    position.x = movableCharacter->position.x - offsetX;
+//    position.z = movableCharacter->position.z - offsetZ;
+    position.x = followTargetPosition->x - offsetX;
+    position.z = followTargetPosition->z - offsetZ;
 
-    this->position.y = this->movableCharacter->position.y + verticalDistance;
+//    position.y = movableCharacter->position.y + verticalDistance;
+    position.y = followTargetPosition->y + verticalDistance;
 }
 
 glm::mat4 ThirdPersonCamera::getViewMatrix() {
@@ -80,10 +83,17 @@ glm::mat4 ThirdPersonCamera::getViewMatrix() {
     return  viewMatrix;
 }
 
-void ThirdPersonCamera::setFollowTarget(MovableCharacterPtr movableCharacter) {
-    this->movableCharacter = movableCharacter;
+void ThirdPersonCamera::setFollowTarget(MovableCharacterPtr followTarget) {
+    setFollowTarget(&followTarget->position, &followTarget->rotX, &followTarget->rotY, &followTarget->rotZ);
+}
 
-    this->initPosition();
+void ThirdPersonCamera::setFollowTarget(glm::vec3 *targetPositionVec, float *targetRotX, float *targetRotY, float *targetRotZ) {
+    this->followTargetRotX = targetRotX;
+    this->followTargetRotY = targetRotY;
+    this->followTargetRotZ = targetRotZ;
+    this->followTargetPosition = targetPositionVec;
+
+    this->initPosition(*this->followTargetPosition);
 }
 
 void ThirdPersonCamera::initPosition() {

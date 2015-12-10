@@ -53,7 +53,13 @@ void main() {
 
   totalDiffuse = max(totalDiffuse, 0.2);
 
+  vec4 textureColor = texture(Texture, fragTexCoord);
+
+  if (textureColor.a < 0.5) {
+    discard;
+  }
+
   // Lookup the color in Texture on coordinates given by fragTexCoord
-  FragmentColor = vec4(totalDiffuse, 1.0) * texture(Texture, fragTexCoord) + vec4(totalSpecular, 1.0);
+  FragmentColor = vec4(totalDiffuse, 1.0) * textureColor + vec4(totalSpecular, 1.0);
   FragmentColor = mix(vec4(skyColor, 1.0), FragmentColor, visibility);
 }

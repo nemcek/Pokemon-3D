@@ -7,12 +7,15 @@
 
 #include <memory>
 #include <glm/glm.hpp>
+#include "src/animations/Animation.hpp"
 
 typedef struct PokemonData {
     unsigned short id;
     glm::vec3 rotation;
     glm::vec3 position;
     float scale;
+    int maxHp;
+    AnimationPtr animation;
 } PokemonData;
 
 class Repository {

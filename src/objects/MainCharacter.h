@@ -6,6 +6,7 @@
 #define POKEMON3D_MAINCHARACTER_H
 
 #include "MovableCharacter.hpp"
+#include "src/enums/Enums.hpp"
 
 class MainCharacter: public MovableCharacter {
 
@@ -24,7 +25,9 @@ public:
                   float rotZ, float scale, InputManager *inputManager);
     MainCharacter(LoaderPtr loader, const std::string &, const std::string &, glm::vec3 position, float rotX, float rotY, float rotZ,
                   float scale, float reflectivity, float shineDamper, InputManager *inputManager);
-    void animate(Scene *scene, float delta) override;
+    MainCharacter(LoaderPtr loader, MeshPtr mesh, glm::vec3 position, float rotX, float rotY, float rotZ,
+                  float scale, float reflectivity, float shineDamper, InputManager *inputManager);
+    SceneType animate(Scene &scene, float delta) override;
 };
 
 typedef std::shared_ptr<MainCharacter> MainCharacterPtr;

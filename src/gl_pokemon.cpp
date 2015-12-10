@@ -229,18 +229,10 @@ void OnKeyPress(GLFWwindow* window, int key, int scancode, int action, int mods)
         sceneManager->changeScene(SceneType::BATTLE_SCEEN);
         poll = false;
     }
-//
-//    if (key == GLFW_KEY_C && action == GLFW_PRESS) {
-//        personCam->setFollowTarget(movableCharacters[++movableCharacterIndex % movableCharacters.size()]);
-//    }
-//
-//    if (key == GLFW_KEY_T && action == GLFW_PRESS) {
-//        healthbar->takeDamage(1);
-//    }
-//
-//    if (key == GLFW_KEY_Y && action == GLFW_PRESS) {
-//        healthbar->takeDamage(2);
-//    }
+
+    if (key == GLFW_KEY_R && action == GLFW_PRESS && sceneManager->currentScene->sceneType == SceneType::BATTLE_SCEEN) {
+        sceneManager->changeScene(SceneType::MAIN_SCEEN);
+    }
 }
 
 // Mouse move event handler

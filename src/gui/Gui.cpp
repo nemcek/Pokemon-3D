@@ -6,3 +6,5 @@
 
 Gui::Gui() {
 }
+
+bool Gui::animate() { return true; }

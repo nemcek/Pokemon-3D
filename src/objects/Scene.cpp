@@ -24,14 +24,40 @@ void Scene::loadGround(GroundPtr ground) {
     this->grounds.push_back(ground);
 }
 
-void Scene::animate(float delta) {
-    for (auto objectLoop : this->objects) {
-        objectLoop->animate(this, delta);
+SceneType Scene::animate(float delta) {
+    std::list<MeshPtr> toBeDeleted;
+    auto i = std::begin(objects);
+
+    while (i != std::end(objects)) {
+        auto objectLoop = i->get();
+
+        SceneType sType = objectLoop->animate(*this, delta);
+
+        if (sType != this->sceneType)
+            return sType;
+
+        ++i;
     }
 
     this->skybox->animate(delta);
 
     camera->move();
+
+    for (auto guiLoop : this->guis) {
+        guiLoop->animate();
+    }
+
+    i = std::begin(objects);
+    while (i != std::end(objects)) {
+        auto obj = i->get();
+        if (obj->needsDeletion) {
+            obj->needsDeletion = false;
+            i = objects.erase(i);
+        } else
+            ++i;
+    }
+
+    return sceneType;
 }
 
 void Scene::update() {
@@ -102,4 +128,12 @@ void Scene::loadGrounds(std::vector<GroundPtr> grounds) {
     for (auto groundLoop : grounds) {
         loadGround(groundLoop);
     }
+}
+
+bool Scene::isTPressed() {
+    return this->inputManager->isTPressed();
+}
+
+bool Scene::isWPressed() {
+    return this->inputManager->isWPressed();
 }

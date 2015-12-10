@@ -14,7 +14,9 @@ public:
     Camera();
     virtual glm::mat4 getViewMatrix() = 0;
     virtual void move() = 0;
-    virtual void setFollowTarget(MovableCharacterPtr movableCharacter) = 0;
+//    virtual void setFollowTarget(MovableCharacterPtr movableCharacter) = 0;
+    virtual void setFollowTarget(glm::vec3 *targetPositionVec, float *targetRotX, float *targetRotY, float *targetRotZ) = 0;
+    virtual void setFollowTarget(MovableCharacterPtr followTarget) = 0;
     virtual void setPosition(glm::vec3 position) = 0;
 };
 
